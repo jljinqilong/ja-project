@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.contract.DisabilityDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.contract.Disability">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="disability_type" jdbcType="BIGINT" property="disabilityType" />
+    <result column="disability_rank" jdbcType="VARCHAR" property="disabilityRank" />
+    <result column="disability_no" jdbcType="VARCHAR" property="disabilityNo" />
+    <result column="disability_card_date" jdbcType="DATE" property="disabilityCardDate" />
+    <result column="validity_certificate_start" jdbcType="DATE" property="validityCertificateStart" />
+    <result column="validity_certificate_end" jdbcType="DATE" property="validityCertificateEnd" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+
+  <!-- 新增 -->
+  <insert id="add" parameterType="com.champlink.common.domain.staff.contract.Disability" >
+    insert into stf_disability
+    (staff_id,   disability_type,     disability_rank,   disability_no,    disability_card_date,
+        validity_certificate_start,validity_certificate_end,   remark)
+    values 
+    (#{staffId},#{disabilityType},   #{disabilityRank}, #{disabilityNo},  #{disabilityCardDate},
+       #{validityCertificateStart},#{validityCertificateEnd},#{remark})
+  </insert>
+  
+  <!-- 删除 -->
+  <update id="delById">
+    update stf_disability set del_flag = '1'
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 修改 -->
+  <update id="update" parameterType="com.champlink.common.domain.staff.contract.Disability">
+    update stf_disability
+    <set>
+        <if test="disabilityType != null" >
+        disability_type = #{disabilityType},
+        </if>
+        <if test="disabilityRank != null" >
+        disability_rank = #{disabilityRank},
+        </if>
+        <if test="disabilityNo != null" >
+        disability_no = #{disabilityNo},
+        </if>
+        <if test="disabilityCardDate != null" >
+        disability_card_date = #{disabilityCardDate},
+        </if>
+        <if test="validityCertificateStart != null" >
+        validity_certificate_start = #{validityCertificateStart},
+        </if>
+        <if test="validityCertificateEnd != null" >
+        validity_certificate_end = #{validityCertificateEnd},
+        </if>
+        <if test="remark != null" >
+        remark = #{remark},
+        </if>
+    </set>
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 查询列表 -->
+  <select id="pageList" resultMap="BaseResultMap">
+      SELECT * FROM stf_disability
+    <where>
+     del_flag= '0'
+     <if test="params.staffId != null and params.staffId != ''">
+         and staff_id = #{params.staffId}
+     </if>
+     <if test="params.disabilityType != null and params.disabilityType != ''">
+         and disability_type = #{params.disabilityType}
+     </if>
+    </where>
+  </select>
+  
+  <!-- 根据rowId查询明细 -->
+  <select id="getById" resultMap="BaseResultMap">
+      select * from stf_disability where ROW_ID = #{rowId}
+  </select>
+  
+</mapper>

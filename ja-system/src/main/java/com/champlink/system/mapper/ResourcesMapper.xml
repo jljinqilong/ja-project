@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.system.dao.ResourceDao">
+
+	<resultMap id="RMBase" type="com.champlink.common.domain.system.Resource">
+		<id column="ROW_ID" property="rowId" />
+		<result column="PID" property="pid" />
+		<result column="KEY_" property="key" />
+		<result column="KEY_" property="key" />
+		<result column="P_KEY" property="pKey" />
+		<result column="NAME_ZH" property="nameZh" />
+		<result column="NAME_EN" property="nameEn" />
+		<result column="ICON" property="icon" />
+		<result column="ORDER_NUM" property="orderNum" />
+		<result column="DEL_FLAG" property="delFlag" />
+		<result column="access_url" property="accessUrl" />
+	</resultMap>
+
+	<!-- 添加 -->
+	<insert id="insertResources" parameterType="com.champlink.common.domain.system.Resource">
+		insert into SYS_RESOURCE (ROW_ID,P_ID,KEY_,P_KEY,TYPE_,NAME_ZH,NAME_EN,ICON,ORDER_NUM,access_url)
+		values
+		(#{rowId},#{pid},#{key},#{pKey},#{type},#{nameZh},#{nameEn},#{icon},#{orderNum},#{access_url})
+	</insert>
+
+	<!-- 删除 -->
+	<delete id="delById">
+		update from SYS_RESOURCE where ROW_ID=#{rowId}
+	</delete>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.champlink.common.domain.system.Resource">
+		update SYS_RESOURCE
+		<set>
+			<if test="pid!=null">
+				PID=#{pid},
+			</if>
+			<if test="key!=null">
+				KEY_=#{key},
+			</if>
+			<if test="pKey != null">
+			     P_KEY=#{pKey},
+			</if>
+			<if test="type!=null">
+				TYPE_=#{type},
+			</if>
+			<if test="nameZh!=null">
+				NAME_ZH=#{nameZh},
+			</if>
+			<if test="nameEn!=null">
+				NAME_EN=#{nameEn},
+			</if>
+			<if test="icon != null">
+				icon=#{icon},
+			</if>
+			<if test="orderNum != null">
+				order_num=#{orderNum},
+			</if>
+			<if test="delFlag != null">
+				del_flag=#{delFlag},
+			</if>
+			<if test="accessUrl != null">
+				access_url=#{accessUrl},
+			</if>
+		</set>
+		where ROW_ID = #{rowId,jdbcType=BIGINT}
+	</update>
+
+	<!-- 查询明细 -->
+	<select id="getById" resultMap="RMBase">
+		select * from SYS_RESOURCE where ROW_ID = #{rowId}
+	</select>
+
+	<!-- 查询明细by key -->
+	<select id="getByKey" resultMap="RMBase" parameterType="String">
+		select * from SYS_RESOURCE
+		where KEY_ = #{key}
+	</select>
+
+	<!-- 根据角色查询资源 -->
+	<select id="getListByRoleIds" resultMap="RMBase">
+		select t_res.* from sys_ref_role_resource as t_ref
+		right join sys_resource as t_res on t_ref.resource_id=t_res.row_id
+		where t_ref.role_id in
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 根据用户查询资源 -->
+	<select id="getListByUserId" resultMap="RMBase">
+		select t_res.* from sys_ref_user_resource as t_ref
+		right join sys_resource as t_res on t_ref.resource_id=t_res.row_id
+		where t_ref.user_id=#{userId}
+	</select>
+
+	<!-- 获取所有的资源 -->
+	<select id="allList" resultMap="RMBase">
+		select * from SYS_RESOURCE where DEL_FLAG=0
+	</select>
+
+</mapper>

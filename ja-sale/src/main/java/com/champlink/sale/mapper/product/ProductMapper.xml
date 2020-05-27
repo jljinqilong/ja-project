@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.product.ProductDao">
+    <resultMap id="BaseResult" type="com.champlink.common.domain.sale.product.Product">
+        <id column="ROW_ID" property="rowId" />
+        <id column="DEL_FLAG" property="delFlag" />
+        <!-- status 0 为启用 1为禁用 -->
+        <result column="STATUS" property="status" />
+        <result column="BOM_ID" property="bomId" />
+        <result column="BOM_NO" property="bomNo" />
+        <result column="PRODUCT_NO" property="productNo" />
+        <result column="SILICON_TYPE" property="siliconType" />
+        <result column="SILICON_TYPE_ID" property="siliconTypeId" />
+        <result column="CELL_NUMBER" property="cellNumber" />
+        <result column="CELL_NUMBER_ID" property="cellNumberId" />
+        <result column="MUDULE_TYPE" property="muduleType" />
+        <result column="MUDULE_TYPE_ID" property="muduleTypeId" />
+        <result column="MUDULE_CODE" property="muduleCode" />
+        <result column="MUDULE_CODE_ID" property="muduleCodeId" />
+        <result column="RATED_POWER" property="ratedPower" />
+        <result column="CELL_TECHNOLOGY" property="cellTechnology" />
+        <result column="CELL_TECHNOLOGY_ID" property="cellTechnologyId" />
+    </resultMap>
+    
+    
+    <select id="searchSaleProductList"  resultMap="BaseResult" >
+        SELECT * 
+		FROM SALE_PRODUCT
+	      <trim prefix="where" prefixOverrides="AND">
+		    
+		    <if test="params.bomId != null and params.bomId != ''">
+		         AND BOM_ID = #{params.bomId}
+		    </if>
+		    <if test="params.bomNo != null and params.bomNo != ''">
+		         AND BOM_NO = #{params.bomNo}
+		    </if>
+		    <if test="params.productNo != null and params.productNo != ''">
+		         AND PRODUCT_NO like CONCAT('%',#{params.productNo},'%')
+		    </if>
+		    <if test="params.siliconTypeId != null and params.siliconTypeId != ''">
+		         AND SILICON_TYPE_ID = #{params.siliconTypeId}
+		    </if>
+		    <if test="params.cellNumberId != null and params.cellNumberId != ''">
+		         AND CELL_NUMBER_ID = #{params.cellNumberId}
+		    </if>
+		    <if test="params.muduleTypeId != null and params.muduleTypeId != ''">
+		         AND MUDULE_TYPE_ID = #{params.muduleTypeId}
+		    </if>
+		    <if test="params.muduleCodeId != null and params.muduleCodeId != ''">
+		         AND MUDULE_CODE_ID = #{params.muduleCodeId}
+		    </if>
+		    <if test="params.ratedPower != null and params.ratedPower != ''">
+		         AND RATED_POWER = #{params.ratedPower}
+		    </if>
+		    <if test="params.cellTechnologyId != null and params.cellTechnologyId != ''">
+		         AND CELL_TECHNOLOGY_ID = #{params.cellTechnologyId}
+		    </if>
+			  AND DEL_FLAG =0
+		  </trim>
+
+    </select>
+
+	<select id="getAll" resultMap="BaseResult">
+		SELECT *
+		FROM SALE_PRODUCT
+		WHERE DEL_FLAG =0
+		and status = 0
+	</select>
+    
+    <select id="getProductByProduct" parameterType="com.champlink.common.domain.sale.product.Product" resultMap="BaseResult" >
+        SELECT * 
+		FROM SALE_PRODUCT
+	      <trim prefix="where" prefixOverrides="AND">
+		    <if test="rowId != null and rowId != ''">
+		         AND ROW_ID = #{rowId}
+		    </if>
+		    <if test="bomId != null and bomId != ''">
+		         AND BOM_ID = #{bomId}
+		    </if>
+		    <if test="bomNo != null and bomNo != ''">
+		         AND BOM_NO = #{bomNo}
+		    </if>
+		    <if test="productNo != null and productNo != ''">
+		         AND PRODUCT_NO = #{productNo}
+		    </if>
+		    <if test="siliconTypeId != null and siliconTypeId != ''">
+		         AND SILICON_TYPE_ID = #{siliconTypeId}
+		    </if>
+		    <if test="cellNumberId != null and cellNumberId != ''">
+		         AND CELL_NUMBER_ID = #{cellNumberId}
+		    </if>
+		    <if test="muduleTypeId != null and muduleTypeId != ''">
+		         AND MUDULE_TYPE_ID = #{muduleTypeId}
+		    </if>
+		    <if test="muduleCodeId != null and muduleCodeId != ''">
+		         AND MUDULE_CODE_ID = #{muduleCodeId}
+		    </if>
+		    <if test="ratedPower != null and ratedPower != ''">
+		         AND RATED_POWER = #{ratedPower}
+		    </if>
+		    <if test="cellTechnologyId != null and cellTechnologyId != ''">
+		         AND CELL_TECHNOLOGY_ID = #{cellTechnologyId}
+		    </if>
+			  AND DEL_FLAG =0
+		  </trim>
+
+    </select>
+    
+    <insert id="insertProduct" parameterType="com.champlink.common.domain.sale.product.Product" >
+    	insert into SALE_PRODUCT (
+			BOM_ID,BOM_NO,PRODUCT_NO,SILICON_TYPE_ID,CELL_NUMBER_ID,
+			MUDULE_TYPE_ID,MUDULE_CODE_ID,RATED_POWER,CELL_TECHNOLOGY_ID,DEL_FLAG,STATUS,CREATED_BY
+		) values(
+			#{bomId},#{bomNo},#{productNo},#{siliconTypeId},#{cellNumberId},
+			#{muduleTypeId},#{muduleCodeId},#{ratedPower},#{cellTechnologyId},#{delFlag},#{status},#{createdBy}
+		)
+    </insert>
+    
+    <delete id="delProductByRowId" parameterType="java.lang.Long">
+    	DELETE FROM SALE_PRODUCT WHERE ROW_ID = #{rowId}
+    </delete>
+    
+    <update id="updateProductByRowId" parameterType="com.champlink.common.domain.sale.product.Product" >
+	  UPDATE SALE_PRODUCT 
+	  <trim prefix="SET" suffixOverrides=",">
+		  <if test="delFlag != null and delFlag != ''">
+	         DEL_FLAG = #{delFlag},
+	      </if>
+	      <if test="status != null and status != ''">
+	         STATUS = #{status},
+	      </if>
+	      <if test="bomId != null and bomId != ''">
+	         BOM_ID = #{bomId},
+	      </if>
+	      <if test="bomNo != null and bomNo != ''">
+	         BOM_NO = #{bomNo},
+	      </if>
+	      <if test="productNo != null and productNo != ''">
+	         PRODUCT_NO = #{productNo},
+	      </if>
+	      <if test="siliconTypeId != null and siliconTypeId != ''">
+	         SILICON_TYPE_ID = #{siliconTypeId},
+	      </if>
+	      <if test="cellNumberId != null and cellNumberId != ''">
+	         CELL_NUMBER_ID = #{cellNumberId},
+	      </if>
+	      <if test="muduleTypeId != null and muduleTypeId != ''">
+	         MUDULE_TYPE_ID = #{muduleTypeId},
+	      </if>
+	      <if test="muduleCodeId != null and muduleCodeId != ''">
+	         MUDULE_CODE_ID = #{muduleCodeId},
+	      </if>
+	      <if test="ratedPower != null and ratedPower != ''">
+	         RATED_POWER = #{ratedPower},
+	      </if>
+	      <if test="cellTechnologyId != null and cellTechnologyId != ''">
+	         CELL_TECHNOLOGY_ID = #{cellTechnologyId},
+	      </if>
+	  </trim>
+	  WHERE ROW_ID = #{rowId}
+	</update>
+	
+	
+	<insert id="insertByForeachProdect" parameterType="com.champlink.common.domain.sale.product.Product">
+	    INSERT INTO SALE_PRODUCT (
+	    		BOM_ID,BOM_NO,PRODUCT_NO,SILICON_TYPE_ID,CELL_NUMBER_ID,
+				MUDULE_TYPE_ID,MUDULE_CODE_ID,RATED_POWER,CELL_TECHNOLOGY_ID,DEL_FLAG,STATUS,CREATED_BY
+		)
+	      VALUES
+	    <foreach collection="list" item="prod" separator=",">
+	        (
+		        #{prod.bomId},#{prod.bomNo},#{prod.productNo},#{prod.siliconTypeId},#{prod.cellNumberId},
+				#{prod.muduleTypeId},#{prod.muduleCodeId},#{prod.ratedPower},#{prod.cellTechnologyId},#{prod.delFlag},#{prod.status},#{prod.createdBy}
+	        )
+	    </foreach>
+	</insert>
+
+
+	<select id="checkProductNoIsExist" parameterType="java.lang.String" resultMap="BaseResult" >
+	  SELECT *
+	  FROM SALE_PRODUCT 
+	  WHERE PRODUCT_NO in
+	  <foreach item="item" index="index" collection="list"
+	      open="(" separator="," close=")">
+	        #{item}
+	  </foreach>
+	</select>
+
+	<!--  根据rowId和status更新产品状态 -->
+	<update id="updateProductByIdAndStatus">
+
+		update sale_product
+		<set>
+			<if test="status !='' and status != null ">
+				status = #{status}
+			</if>
+		</set>
+		where row_id=#{rowId}
+	</update>
+	
+</mapper>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.attendance.dao.AttendanceRecordMapper">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.attendance.AttendanceRecord">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_no" jdbcType="VARCHAR" property="staffNo" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="base_id" jdbcType="BIGINT" property="baseId" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="job_num_id" jdbcType="BIGINT" property="jobNumId" />
+    <result column="job_num_name" jdbcType="VARCHAR" property="jobNumName" />
+    <result column="operating_post_id" jdbcType="BIGINT" property="operatingPostId" />
+    <result column="operating_post_name" jdbcType="VARCHAR" property="operatingPostName" />
+    <result column="position_id" jdbcType="BIGINT" property="positionId" />
+    <result column="position_name" jdbcType="VARCHAR" property="positionName" />
+    <result column="rank_id" jdbcType="BIGINT" property="rankId" />
+    <result column="rank_name" jdbcType="VARCHAR" property="rankName" />
+    <result column="grade_id" jdbcType="BIGINT" property="gradeId" />
+    <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
+    <result column="internal_rank_id" jdbcType="BIGINT" property="internalRankId" />
+    <result column="internal_rank__name" jdbcType="VARCHAR" property="internalRankName" />
+    <result column="entry_date" jdbcType="TIMESTAMP" property="entryDate" />
+    <result column="total_attendance" jdbcType="DOUBLE" property="totalAttendance" />
+    <result column="attendance_days" jdbcType="DOUBLE" property="attendanceDays" />
+    <result column="before_night" jdbcType="DOUBLE" property="beforeNight" />
+    <result column="late_night" jdbcType="DOUBLE" property="lateNight" />
+    <result column="overtime_days" jdbcType="DOUBLE" property="overtimeDays" />
+    <result column="duty_days" jdbcType="DOUBLE" property="dutyDays" />
+    <result column="holiday_overtime" jdbcType="DOUBLE" property="holidayOvertime" />
+    <result column="duty_holidays" jdbcType="DOUBLE" property="dutyHolidays" />
+    <result column="compassionate_leave" jdbcType="DOUBLE" property="compassionateLeave" />
+    <result column="paid_sick_leave" jdbcType="DOUBLE" property="paidSickLeave" />
+    <result column="sick_leave" jdbcType="DOUBLE" property="sickLeave" />
+    <result column="absenteeism" jdbcType="DOUBLE" property="absenteeism" />
+    <result column="bereavement" jdbcType="DOUBLE" property="bereavement" />
+    <result column="marriage_holiday" jdbcType="DOUBLE" property="marriageHoliday" />
+    <result column="maternity_leave" jdbcType="DOUBLE" property="maternityLeave" />
+    <result column="injury_job" jdbcType="DOUBLE" property="injuryJob" />
+    <result column="annual_leave" jdbcType="DOUBLE" property="annualLeave" />
+    <result column="night_shift_days" jdbcType="DOUBLE" property="nightShiftDays" />
+    <result column="overtime_pay_during_holidays" jdbcType="DOUBLE" property="overtimePayDuringHolidays" />
+    <result column="duty_pay_holidays" jdbcType="DOUBLE" property="dutyPayHolidays" />
+    <result column="before_night_shift_subsidy" jdbcType="DOUBLE" property="beforeNightShiftSubsidy" />
+    <result column="late_night_shift_subsidy" jdbcType="DOUBLE" property="lateNightShiftSubsidy" />
+    <result column="daily_overtime" jdbcType="DOUBLE" property="dailyOvertime" />
+    <result column="attendance_before_correction" jdbcType="DOUBLE" property="attendanceBeforeCorrection" />
+    <result column="attendance_after_correction" jdbcType="DOUBLE" property="attendanceAfterCorrection" />
+    <result column="overtime_before_correction" jdbcType="DOUBLE" property="overtimeBeforeCorrection" />
+    <result column="overtime_after_correction" jdbcType="DOUBLE" property="overtimeAfterCorrection" />
+    <result column="attendance_should_before_correction" jdbcType="DOUBLE" property="attendanceShouldBeforeCorrection" />
+    <result column="attendance_should_after_correction" jdbcType="DOUBLE" property="attendanceShouldAfterCorrection" />
+    <result column="working_overtime_before_holidays" jdbcType="DOUBLE" property="workingOvertimeBeforeHolidays" />
+    <result column="working_overtime_after_holidays" jdbcType="DOUBLE" property="workingOvertimeAfterHolidays" />
+    <result column="late" jdbcType="DOUBLE" property="late" />
+    <result column="early_retreat" jdbcType="DOUBLE" property="earlyRetreat" />
+    <result column="production_inspection" jdbcType="DOUBLE" property="productionInspection" />
+    <result column="lactation_leave" jdbcType="DOUBLE" property="lactationLeave" />
+    <result column="visit_family" jdbcType="DOUBLE" property="visitFamily" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from atd_attendance_record
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.champlink.common.domain.attendance.AttendanceRecord">
+    insert into atd_attendance_record (row_id, staff_no, staff_name, 
+      base_id, base_name, dept_id, 
+      dept_name, job_num_id, job_num_name, 
+      operating_post_id, operating_post_name, position_id, 
+      position_name, rank_id, rank_name, 
+      grade_id, grade_name, internal_rank_id, 
+      internal_rank__name, entry_date, total_attendance, 
+      attendance_days, before_night, late_night, 
+      overtime_days, duty_days, holiday_overtime, 
+      duty_holidays, compassionate_leave, paid_sick_leave, 
+      sick_leave, absenteeism, bereavement, 
+      marriage_holiday, maternity_leave, injury_job, 
+      annual_leave, night_shift_days, overtime_pay_during_holidays, 
+      duty_pay_holidays, before_night_shift_subsidy, 
+      late_night_shift_subsidy, daily_overtime, attendance_before_correction, 
+      attendance_after_correction, overtime_before_correction, 
+      overtime_after_correction, attendance_should_before_correction, 
+      attendance_should_after_correction, working_overtime_before_holidays, 
+      working_overtime_after_holidays, late, early_retreat, 
+      production_inspection, lactation_leave, visit_family, 
+      del_flag)
+    values (#{rowId,jdbcType=BIGINT}, #{staffNo,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, 
+      #{baseId,jdbcType=BIGINT}, #{baseName,jdbcType=VARCHAR}, #{deptId,jdbcType=BIGINT}, 
+      #{deptName,jdbcType=VARCHAR}, #{jobNumId,jdbcType=BIGINT}, #{jobNumName,jdbcType=VARCHAR}, 
+      #{operatingPostId,jdbcType=BIGINT}, #{operatingPostName,jdbcType=VARCHAR}, #{positionId,jdbcType=BIGINT}, 
+      #{positionName,jdbcType=VARCHAR}, #{rankId,jdbcType=BIGINT}, #{rankName,jdbcType=VARCHAR}, 
+      #{gradeId,jdbcType=BIGINT}, #{gradeName,jdbcType=VARCHAR}, #{internalRankId,jdbcType=BIGINT}, 
+      #{internalRankName,jdbcType=VARCHAR}, #{entryDate,jdbcType=TIMESTAMP}, #{totalAttendance,jdbcType=DOUBLE}, 
+      #{attendanceDays,jdbcType=DOUBLE}, #{beforeNight,jdbcType=DOUBLE}, #{lateNight,jdbcType=DOUBLE}, 
+      #{overtimeDays,jdbcType=DOUBLE}, #{dutyDays,jdbcType=DOUBLE}, #{holidayOvertime,jdbcType=DOUBLE}, 
+      #{dutyHolidays,jdbcType=DOUBLE}, #{compassionateLeave,jdbcType=DOUBLE}, #{paidSickLeave,jdbcType=DOUBLE}, 
+      #{sickLeave,jdbcType=DOUBLE}, #{absenteeism,jdbcType=DOUBLE}, #{bereavement,jdbcType=DOUBLE}, 
+      #{marriageHoliday,jdbcType=DOUBLE}, #{maternityLeave,jdbcType=DOUBLE}, #{injuryJob,jdbcType=DOUBLE}, 
+      #{annualLeave,jdbcType=DOUBLE}, #{nightShiftDays,jdbcType=DOUBLE}, #{overtimePayDuringHolidays,jdbcType=DOUBLE}, 
+      #{dutyPayHolidays,jdbcType=DOUBLE}, #{beforeNightShiftSubsidy,jdbcType=DOUBLE}, 
+      #{lateNightShiftSubsidy,jdbcType=DOUBLE}, #{dailyOvertime,jdbcType=DOUBLE}, #{attendanceBeforeCorrection,jdbcType=DOUBLE}, 
+      #{attendanceAfterCorrection,jdbcType=DOUBLE}, #{overtimeBeforeCorrection,jdbcType=DOUBLE}, 
+      #{overtimeAfterCorrection,jdbcType=DOUBLE}, #{attendanceShouldBeforeCorrection,jdbcType=DOUBLE}, 
+      #{attendanceShouldAfterCorrection,jdbcType=DOUBLE}, #{workingOvertimeBeforeHolidays,jdbcType=DOUBLE}, 
+      #{workingOvertimeAfterHolidays,jdbcType=DOUBLE}, #{late,jdbcType=DOUBLE}, #{earlyRetreat,jdbcType=DOUBLE}, 
+      #{productionInspection,jdbcType=DOUBLE}, #{lactationLeave,jdbcType=DOUBLE}, #{visitFamily,jdbcType=DOUBLE}, 
+      #{delFlag,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.champlink.common.domain.attendance.AttendanceRecord">
+    update atd_attendance_record
+    set staff_no = #{staffNo,jdbcType=VARCHAR},
+      staff_name = #{staffName,jdbcType=VARCHAR},
+      base_id = #{baseId,jdbcType=BIGINT},
+      base_name = #{baseName,jdbcType=VARCHAR},
+      dept_id = #{deptId,jdbcType=BIGINT},
+      dept_name = #{deptName,jdbcType=VARCHAR},
+      job_num_id = #{jobNumId,jdbcType=BIGINT},
+      job_num_name = #{jobNumName,jdbcType=VARCHAR},
+      operating_post_id = #{operatingPostId,jdbcType=BIGINT},
+      operating_post_name = #{operatingPostName,jdbcType=VARCHAR},
+      position_id = #{positionId,jdbcType=BIGINT},
+      position_name = #{positionName,jdbcType=VARCHAR},
+      rank_id = #{rankId,jdbcType=BIGINT},
+      rank_name = #{rankName,jdbcType=VARCHAR},
+      grade_id = #{gradeId,jdbcType=BIGINT},
+      grade_name = #{gradeName,jdbcType=VARCHAR},
+      internal_rank_id = #{internalRankId,jdbcType=BIGINT},
+      internal_rank__name = #{internalRankName,jdbcType=VARCHAR},
+      entry_date = #{entryDate,jdbcType=TIMESTAMP},
+      total_attendance = #{totalAttendance,jdbcType=DOUBLE},
+      attendance_days = #{attendanceDays,jdbcType=DOUBLE},
+      before_night = #{beforeNight,jdbcType=DOUBLE},
+      late_night = #{lateNight,jdbcType=DOUBLE},
+      overtime_days = #{overtimeDays,jdbcType=DOUBLE},
+      duty_days = #{dutyDays,jdbcType=DOUBLE},
+      holiday_overtime = #{holidayOvertime,jdbcType=DOUBLE},
+      duty_holidays = #{dutyHolidays,jdbcType=DOUBLE},
+      compassionate_leave = #{compassionateLeave,jdbcType=DOUBLE},
+      paid_sick_leave = #{paidSickLeave,jdbcType=DOUBLE},
+      sick_leave = #{sickLeave,jdbcType=DOUBLE},
+      absenteeism = #{absenteeism,jdbcType=DOUBLE},
+      bereavement = #{bereavement,jdbcType=DOUBLE},
+      marriage_holiday = #{marriageHoliday,jdbcType=DOUBLE},
+      maternity_leave = #{maternityLeave,jdbcType=DOUBLE},
+      injury_job = #{injuryJob,jdbcType=DOUBLE},
+      annual_leave = #{annualLeave,jdbcType=DOUBLE},
+      night_shift_days = #{nightShiftDays,jdbcType=DOUBLE},
+      overtime_pay_during_holidays = #{overtimePayDuringHolidays,jdbcType=DOUBLE},
+      duty_pay_holidays = #{dutyPayHolidays,jdbcType=DOUBLE},
+      before_night_shift_subsidy = #{beforeNightShiftSubsidy,jdbcType=DOUBLE},
+      late_night_shift_subsidy = #{lateNightShiftSubsidy,jdbcType=DOUBLE},
+      daily_overtime = #{dailyOvertime,jdbcType=DOUBLE},
+      attendance_before_correction = #{attendanceBeforeCorrection,jdbcType=DOUBLE},
+      attendance_after_correction = #{attendanceAfterCorrection,jdbcType=DOUBLE},
+      overtime_before_correction = #{overtimeBeforeCorrection,jdbcType=DOUBLE},
+      overtime_after_correction = #{overtimeAfterCorrection,jdbcType=DOUBLE},
+      attendance_should_before_correction = #{attendanceShouldBeforeCorrection,jdbcType=DOUBLE},
+      attendance_should_after_correction = #{attendanceShouldAfterCorrection,jdbcType=DOUBLE},
+      working_overtime_before_holidays = #{workingOvertimeBeforeHolidays,jdbcType=DOUBLE},
+      working_overtime_after_holidays = #{workingOvertimeAfterHolidays,jdbcType=DOUBLE},
+      late = #{late,jdbcType=DOUBLE},
+      early_retreat = #{earlyRetreat,jdbcType=DOUBLE},
+      production_inspection = #{productionInspection,jdbcType=DOUBLE},
+      lactation_leave = #{lactationLeave,jdbcType=DOUBLE},
+      visit_family = #{visitFamily,jdbcType=DOUBLE},
+      del_flag = #{delFlag,jdbcType=INTEGER}
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select row_id, staff_no, staff_name, base_id, base_name, dept_id, dept_name, job_num_id, 
+    job_num_name, operating_post_id, operating_post_name, position_id, position_name, 
+    rank_id, rank_name, grade_id, grade_name, internal_rank_id, internal_rank__name, 
+    entry_date, total_attendance, attendance_days, before_night, late_night, overtime_days, 
+    duty_days, holiday_overtime, duty_holidays, compassionate_leave, paid_sick_leave, 
+    sick_leave, absenteeism, bereavement, marriage_holiday, maternity_leave, injury_job, 
+    annual_leave, night_shift_days, overtime_pay_during_holidays, duty_pay_holidays, 
+    before_night_shift_subsidy, late_night_shift_subsidy, daily_overtime, attendance_before_correction, 
+    attendance_after_correction, overtime_before_correction, overtime_after_correction, 
+    attendance_should_before_correction, attendance_should_after_correction, working_overtime_before_holidays, 
+    working_overtime_after_holidays, late, early_retreat, production_inspection, lactation_leave, 
+    visit_family, del_flag
+    from atd_attendance_record
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </select>
+  <select id="pageList" resultMap="BaseResultMap">
+    select row_id, staff_no, staff_name, base_id, base_name, dept_id, dept_name, job_num_id, 
+    job_num_name, operating_post_id, operating_post_name, position_id, position_name, 
+    rank_id, rank_name, grade_id, grade_name, internal_rank_id, internal_rank__name, 
+    entry_date, total_attendance, attendance_days, before_night, late_night, overtime_days, 
+    duty_days, holiday_overtime, duty_holidays, compassionate_leave, paid_sick_leave, 
+    sick_leave, absenteeism, bereavement, marriage_holiday, maternity_leave, injury_job, 
+    annual_leave, night_shift_days, overtime_pay_during_holidays, duty_pay_holidays, 
+    before_night_shift_subsidy, late_night_shift_subsidy, daily_overtime, attendance_before_correction, 
+    attendance_after_correction, overtime_before_correction, overtime_after_correction, 
+    attendance_should_before_correction, attendance_should_after_correction, working_overtime_before_holidays, 
+    working_overtime_after_holidays, late, early_retreat, production_inspection, lactation_leave, 
+    visit_family, del_flag 
+    from atd_attendance_record
+    <where>
+			del_flag = 0
+			<if test="params.staffNo != null and params.staffNo != '-1'">
+				and staff_no = #{params.staffNo}
+			</if>
+		</where>
+  </select>
+</mapper>

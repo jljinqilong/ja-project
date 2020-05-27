@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.champlink.org.dao.position.PositionTypeDao">
+	<resultMap id="BaseResultMap"
+		type="com.champlink.common.domain.org.position.PositionType">
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="created_by" jdbcType="BIGINT"
+			property="createdBy" />
+		<result column="created_time" jdbcType="TIMESTAMP"
+			property="createdTime" />
+		<result column="last_update_by" jdbcType="BIGINT"
+			property="lastUpdateBy" />
+		<result column="last_update_time" jdbcType="TIMESTAMP"
+			property="lastUpdateTime" />
+		<result column="type_name" jdbcType="VARCHAR"
+			property="typeName" />
+		<result column="type_desc" jdbcType="VARCHAR"
+			property="typeDesc" />
+		<result column="del_flag" jdbcType="BIGINT" property="delFlag" />
+	</resultMap>
+	<insert id="add">
+		insert into org_position_type (created_by,
+		created_time,
+		last_update_by, last_update_time,type_name,type_desc)
+		values
+		(#{createdBy,jdbcType=BIGINT},
+		#{createdTime,jdbcType=TIMESTAMP},
+		#{lastUpdateBy,jdbcType=BIGINT},
+		#{lastUpdateTime,jdbcType=TIMESTAMP},#{typeName},#{typeDesc})
+	</insert>
+
+	<!-- 删除 -->
+	<update id="delById">
+		update org_position_type set del_flag= '1' where
+		ROW_ID=#{userId}
+	</update>
+
+	<!-- 修改 -->
+	<update id="update">
+		update org_position_type
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=BIGINT},
+			</if>
+			<if test="createdTime != null">
+				created_time = #{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="typeName != null">
+				type_name=#{typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="typeDesc != null">
+				type_desc=#{typeDesc,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where row_id = #{rowId,jdbcType=BIGINT}
+	</update>
+	<!-- 查询列表 -->
+	<select id="pageList" resultMap="BaseResultMap">
+		select * from org_position_type
+		<where>
+			del_flag=0
+			<if test="params.typeName != null and params.typeName != ''">
+				and type_name like concat('%',#{params.typeName},'%')
+			</if>
+			<if test="params.staffIdList != null">
+				and created_by in
+				<foreach collection="params.staffIdList" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	<!-- 查询明细 -->
+	<select id="getById" resultMap="BaseResultMap">
+		select * from org_position_type
+		where row_id = #{rowId} and del_flag=0
+	</select>
+
+	<!-- 查询明细 -->
+	<select id="AllPositionType" resultMap="BaseResultMap">
+		select * from
+		org_position_type where del_flag=0
+	</select>
+</mapper>

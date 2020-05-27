@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.inquiry.InquiriesHistoryDao">
+    <resultMap id="BaseResultMap" type="com.champlink.common.domain.sale.inquiry.Inquiries">
+        <id column="ROW_ID" property="rowId" jdbcType="BIGINT"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="BIGINT"/>
+        <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="LAST_UPDATE_BY" property="lastUpdateBy" jdbcType="BIGINT"/>
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="inquiry_no" property="inquiryNo" jdbcType="VARCHAR"/>
+        <result column="CUSTOMER_ID" property="customerId" jdbcType="BIGINT"/>
+        <result column="org_id" property="orgId" jdbcType="BIGINT"/>
+        <result column="product_type_id" property="productTypeId" jdbcType="BIGINT"/>
+        <result column="order_total" property="orderTotal" jdbcType="DECIMAL"/>
+        <result column="selling_price" property="sellingPrice" jdbcType="DECIMAL"/>
+        <result column="trade_mode_id" property="tradeModeId" jdbcType="BIGINT"/>
+        <result column="first_year_attenuation" property="firstYearAttenuation" jdbcType="VARCHAR"/>
+        <result column="payment_term" property="paymentTerm" jdbcType="VARCHAR"/>
+        <result column="certification_require" property="certificationRequire" jdbcType="VARCHAR"/>
+        <result column="output_power" property="outputPower" jdbcType="VARCHAR"/>
+        <result column="plate_require" property="plateRequire" jdbcType="VARCHAR"/>
+        <result column="warranty_require" property="warrantyRequire" jdbcType="VARCHAR"/>
+        <result column="special_require" property="specialRequire" jdbcType="VARCHAR"/>
+        <result column="sale_area_id" property="saleAreaId" jdbcType="BIGINT"/>
+        <result column="salesman_id" property="salesmanId" jdbcType="BIGINT"/>
+        <result column="violate_clause" property="violateClause" jdbcType="VARCHAR"/>
+        <result column="inquiry_time" property="inquiryTime" jdbcType="VARCHAR"/>
+        <result column="number" property="number" jdbcType="BIGINT"/>
+        <result column="bom_require" property="bomRequire" jdbcType="VARCHAR"/>
+        <result column="cost" property="cost" jdbcType="VARCHAR"/>
+        <result column="gross_profit_ratio" property="grossProfitRatio" jdbcType="VARCHAR"/>
+        <result column="del_flag" property="delFlag" jdbcType="VARCHAR"/>
+
+        <result column="power" property="power" jdbcType="VARCHAR"/>
+        <result column="battery_type_id" property="batteryTypeId" jdbcType="BIGINT"/>
+        <result column="main_gate_number" property="mainGateNumber" jdbcType="DECIMAL"/>
+        <result column="border_color_id" property="borderColorId" jdbcType="BIGINT"/>
+        <result column="border_specification_id" property="borderSpecificationId" jdbcType="BIGINT"/>
+        <result column="backboard_color_id" property="backboardColorId" jdbcType="BIGINT"/>
+        <result column="backboard_material_id" property="backboardMaterialId" jdbcType="BIGINT"/>
+        <result column="junction_box_id" property="junctionBoxId"/>
+        <result column="glass" property="glass" jdbcType="VARCHAR"/>
+        <result column="eva_id" property="evaId" jdbcType="BIGINT"/>
+        <result column="status" property="status"/>
+        <result column="inquiry_title" jdbcType="VARCHAR" property="inquiryTitle"/>
+        <result column="estimated_sales_amount" jdbcType="DECIMAL" property="estimatedSalesAmount"/>
+        <result column="estimated_signing_Date" property="estimatedSigningDate"/>
+        <result column="sales_phase_id" jdbcType="BIGINT" property="salesPhaseId"/>
+        <result column="product_no" jdbcType="VARCHAR" property="productNo"/>
+        <result column="actual_follow_time" property="actualFollowTime"/>
+        <result column="contract_status" property="contractStatus" />
+        <result column="contract_no" property="contractNo"/>
+        <result column="contract_id" property="contractId" />
+        <result column="status_id" property="statusId" />
+        <result column="status" property="status" />
+
+        <result column="project_address_id" jdbcType="BIGINT" property="projectAddressId" />
+        <result column="destination_country_id" jdbcType="BIGINT" property="destinationCountryId" />
+        <result column="salesman" jdbcType="VARCHAR" property="salesman" />
+        <result column="project_address" property="projectAddress" />
+        <result column="destination_country" property="destinationCountry" />
+        <result column="remark" property="remark" />
+        <result column="project_distribution_id" jdbcType="BIGINT" property="projectDistributionId" />
+        <result column="dispatch_place_id" jdbcType="BIGINT" property="dispatchPlaceId" />
+        <result column="country_id" jdbcType="BIGINT" property="countryId" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="currency_id" jdbcType="BIGINT" property="currencyId" />
+        <result column="total_power" property="totalPower"/>
+        <result column="total_amount" property="totalAmount"/>
+
+        <result column="customerName" property="customerName" jdbcType="VARCHAR"/>
+        <result column="productNo" property="productNo" jdbcType="VARCHAR"/>
+        <result column="saleAreaName" property="saleAreaName" jdbcType="VARCHAR"/>
+        <result column="inquiries_id" property="inquiriesId" />
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        i.ROW_ID, i.CREATED_BY, i.CREATED_TIME, i.LAST_UPDATE_BY, i.LAST_UPDATE_TIME, i.inquiry_no, i.CUSTOMER_ID,
+        i.org_id, i.product_type_id, i.order_total, i.selling_price, i.trade_mode_id, i.first_year_attenuation,
+        i.payment_term, i.certification_require, i.output_power, i.plate_require, i.warranty_require,
+        i.special_require, i.sale_area_id, i.salesman_id, i.violate_clause, i.inquiry_time, i.number,
+        i.bom_require, cost, i.gross_profit_ratio,i.power, i.battery_type_id, i.main_gate_number,
+        i.border_color_id, i.border_specification_id, i.backboard_color_id, i.backboard_material_id,
+        i.junction_box_id, i.glass, i.eva_id,i.status,i.inquiry_title, i.estimated_sales_amount,
+        i.estimated_signing_Date, i.sales_phase_id, i.product_no, i.actual_follow_time,
+        i.contract_status,i.contract_no,i.contract_id,i.project_address_id, i.destination_country_id, i.salesman,
+        i.project_address,i.destination_country,i.remark,
+        i.project_distribution_id, i.dispatch_place_id, i.country_id, i.province_id, i.city_id,i.currency_id,
+        i.total_power,i.total_amount,i.status_id,
+    </sql>
+
+    <!--添加询单历史记录-->
+    <insert id="insert" parameterType="com.champlink.common.domain.sale.inquiry.Inquiries">
+       insert into sale_inquiries_history (
+       CREATED_BY, CREATED_TIME,
+        inquiry_no,
+        CUSTOMER_ID, org_id, product_type_id,
+        order_total, selling_price, trade_mode_id,
+        first_year_attenuation, payment_term, certification_require,
+        output_power, plate_require, warranty_require,
+        special_require, sale_area_id, salesman_id,
+        violate_clause, inquiry_time, number,
+        bom_require, cost, gross_profit_ratio,power, battery_type_id, main_gate_number,
+        border_color_id, border_specification_id, backboard_color_id, backboard_material_id,
+        junction_box_id, glass, eva_id,status,inquiry_title, estimated_sales_amount,
+        estimated_signing_Date, sales_phase_id, product_no, actual_follow_time,contract_status,contract_no,contract_id,
+        project_address_id, destination_country_id, salesman,project_address,destination_country,remark,
+        project_distribution_id, dispatch_place_id, country_id, province_id, city_id,currency_id,total_power,total_amount,status_id,inquiries_id
+        )
+        values (
+        #{createdBy,jdbcType=BIGINT}, now(),
+        #{inquiryNo,jdbcType=VARCHAR},
+        #{customerId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{productTypeId,jdbcType=BIGINT},
+        #{orderTotal,jdbcType=DECIMAL}, #{sellingPrice,jdbcType=DECIMAL}, #{tradeModeId,jdbcType=BIGINT},
+        #{firstYearAttenuation,jdbcType=VARCHAR}, #{paymentTerm,jdbcType=VARCHAR},
+        #{certificationRequire,jdbcType=VARCHAR},
+        #{outputPower,jdbcType=VARCHAR}, #{plateRequire,jdbcType=VARCHAR}, #{warrantyRequire,jdbcType=VARCHAR},
+        #{specialRequire,jdbcType=VARCHAR}, #{saleAreaId,jdbcType=BIGINT}, #{salesmanId,jdbcType=BIGINT},
+        #{violateClause,jdbcType=VARCHAR}, #{inquiryTime,jdbcType=VARCHAR}, #{number,jdbcType=BIGINT},
+        #{bomRequire,jdbcType=VARCHAR}, #{cost,jdbcType=VARCHAR}, #{grossProfitRatio,jdbcType=VARCHAR},
+        #{power,jdbcType=VARCHAR}, #{batteryTypeId,jdbcType=BIGINT},
+        #{mainGateNumber,jdbcType=DECIMAL}, #{borderColorId,jdbcType=BIGINT}, #{borderSpecificationId,jdbcType=BIGINT},
+        #{backboardColorId,jdbcType=BIGINT}, #{backboardMaterialId,jdbcType=BIGINT},
+        #{junctionBoxId}, #{glass,jdbcType=VARCHAR}, #{evaId,jdbcType=BIGINT},#{status},#{inquiryTitle,jdbcType=VARCHAR},
+        #{estimatedSalesAmount,jdbcType=DECIMAL}, #{estimatedSigningDate,jdbcType=TIMESTAMP},
+        #{salesPhaseId,jdbcType=BIGINT}, #{productNo,jdbcType=VARCHAR}, #{actualFollowTime,jdbcType=TIMESTAMP},
+        #{contractStatus}, #{contractNo}, #{contractId},
+        #{projectAddressId,jdbcType=BIGINT}, #{destinationCountryId,jdbcType=BIGINT}, #{salesman,jdbcType=VARCHAR},
+        #{projectAddress},#{destinationCountry},#{remark},
+        #{projectDistributionId,jdbcType=BIGINT}, #{dispatchPlaceId,jdbcType=BIGINT}, #{countryId,jdbcType=BIGINT},
+        #{provinceId,jdbcType=BIGINT}, #{cityId,jdbcType=BIGINT}, #{currencyId,jdbcType=BIGINT},
+        #{totalPower}, #{totalAmount},#{statusId},#{inquiriesId}
+        )
+    </insert>
+
+
+    <select id="pageList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        c.customer_name customerName,p.product_no productNo,r.region_name saleAreaName
+        from sale_inquiries_history i
+        left join sale_customer c on i.customer_id = c.row_id
+        left join sale_product p on p.row_id = i.product_type_id
+        left join sale_region r on r.row_id = i.sale_area_id
+
+        <where>
+            i.del_flag = 0 and i.inquiries_id = #{params.inquiriesId}
+            <if test="params.customerName != null and params.customerName != ''">
+                and c.customer_name like concat('%',#{params.customerName},'%')
+            </if>
+            <if test="params.inquiryNo != null and params.inquiryNo != ''">
+                and i.inquiry_no like concat(#{params.inquiryNo},'%')
+            </if>
+            <if test="params.productTypeId != null and params.productTypeId != ''">
+                and i.product_type_id = #{params.productTypeId}
+            </if>
+            <if test="params.orgId != null and params.orgId != ''">
+                and i.org_id = #{params.orgId}
+            </if>
+            <if test="params.batteryTypeId != null and params.batteryTypeId != ''">
+                and i.battery_type_id = #{params.batteryTypeId}
+            </if>
+            <if test="params.salesPhaseId != null and params.salesPhaseId != ''">
+                and i.sales_phase_id = #{params.salesPhaseId}
+            </if>
+            <if test="params.inquiryTitle != null and params.inquiryTitle != ''">
+                and i.inquiry_title like concat('%',#{params.inquiryTitle},'%')
+            </if>
+        </where>
+        order by row_id desc
+    </select>
+
+</mapper>

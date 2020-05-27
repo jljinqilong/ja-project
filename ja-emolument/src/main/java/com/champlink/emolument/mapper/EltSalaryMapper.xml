@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.emolument.dao.EltSalaryDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.emolument.EltSalary">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="base_id" jdbcType="BIGINT" property="baseId" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="created_time" jdbcType="DATE" property="createdTime" />
+    <result column="last_update_by" jdbcType="BIGINT" property="lastUpdateBy" />
+    <result column="last_update_time" jdbcType="DATE" property="lastUpdateTime" />
+    <result column="wage_category" jdbcType="VARCHAR" property="wageCategory" />
+    <result column="pay_the_amount" jdbcType="REAL" property="payTheAmount" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+
+   <!-- 新增固定工资规则 -->
+<insert id="add" parameterType="com.champlink.common.domain.emolument.EltSalary" >
+    insert into elt_salary
+      (base_id,
+       created_by,
+       created_time,
+       last_update_by,
+       last_update_time,
+       wage_category,
+       pay_the_amount,
+       remarks)
+    values
+      (#{baseId,jdbcType=BIGINT},
+       #{createdBy,jdbcType=BIGINT},
+       NOW(),
+       #{lastUpdateBy,jdbcType=BIGINT},
+       #{lastUpdateTime,jdbcType=DATE},
+       #{wageCategory,jdbcType=VARCHAR},
+       #{payTheAmount,jdbcType=FLOAT},
+       #{remarks,jdbcType=VARCHAR})
+  </insert>
+
+
+  <!-- 查询固定工资规则列表 -->
+  <select id="pageList" resultMap="BaseResultMap" parameterType="com.champlink.common.domain.emolument.EltSalary">
+    select
+        row_id,
+        created_by,
+        created_time,
+        last_update_by,
+        last_update_time,
+        base_id,
+        wage_category,
+        pay_the_amount,
+        remarks
+    from elt_salary
+    <where>
+		del_flag=0
+		<if test="params.baseId != null and params.baseId != -1">
+			and base_id = #{params.baseId}
+		</if>
+		<if test="params.wageCategory != null and params.wageCategory != ''">
+			and wage_Category like concat('%',#{params.wageCategory},'%')
+		</if>
+	</where>
+  </select>
+
+
+<!-- 删除 -->
+	<update id="delById">
+		update elt_salary set del_flag=1 where ROW_ID=#{eltSalaryId}
+	</update>
+
+<!--批量删除-->
+    <update id="beachDel">
+        update elt_salary set del_flag=1
+        where ROW_ID in
+        <foreach collection="list" item="item" open="(" separator="," close=")">#{item}</foreach>
+    </update>
+
+    <!-- 清空 -->
+    <update id="empty">
+        update elt_salary set del_flag=1
+    </update>
+
+
+  <select id="getById" resultMap="BaseResultMap">
+		select * from elt_salary where row_id = #{rowId} and del_flag=0
+	</select>
+
+  <!-- 修改固定工资规则 -->
+  <update id="update" parameterType="com.champlink.common.domain.emolument.EltSalary" >
+    update elt_salary
+    <set>
+        <if test="baseId != null">
+            base_id = #{baseId,jdbcType=BIGINT},
+        </if>
+        <if test="createdBy != null">
+            created_by = #{createdBy,jdbcType=BIGINT},
+        </if>
+        <if test="createdTime != null">
+            created_time = #{createdTime,jdbcType=DATE},
+        </if>
+        <if test="lastUpdateBy != null">
+            last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+        </if>
+        <if test="wageCategory != null">
+            wage_category = #{wageCategory,jdbcType=VARCHAR},
+        </if>
+
+            last_update_time = NOW(),
+
+          <if test="payTheAmount != null" >
+            pay_the_amount = #{payTheAmount,jdbcType=FLOAT},
+          </if>
+          <if test="remarks != null" >
+            remarks = #{remarks,jdbcType=FLOAT}
+          </if>
+    </set>
+    where ROW_ID = #{rowId,jdbcType=BIGINT}
+  </update>
+
+    <select id="getByName" resultMap="BaseResultMap">
+        select * from elt_salary where  wage_category = #{wageCategory} and
+        base_id = #{baseId} and del_flag=0
+    </select>
+  
+</mapper>

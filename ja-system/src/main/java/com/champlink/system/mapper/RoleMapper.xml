@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.system.dao.RoleDao">
+
+	<resultMap id="BaseResultMap" type="com.champlink.common.domain.system.Role">
+		<id column="ROW_ID" property="rowId" />
+		<result column="STATUS" property="status" />
+		<result column="NAME_" property="name" />
+		<result column="DESC_" property="desc" />
+		<result column="DEL_FLAG" property="delFlag" />
+	</resultMap>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="com.champlink.common.domain.system.Role">
+		insert into SYS_ROLE (NAME_,DESC_) values (#{name},#{desc})
+	</insert>
+
+	<!-- 删除 -->
+	<update id="delById" parameterType="Long">
+		update SYS_ROLE set del_flag=1 where ROW_ID = #{roleId}
+	</update>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.champlink.common.domain.system.Role">
+		update SYS_ROLE
+		<set>
+			<if test="name!=null">
+				NAME_=#{name},
+			</if>
+			<if test="desc!=null">
+				DESC_=#{desc },
+			</if>
+			<if test="status != null">
+				status=#{status},
+			</if>
+		</set>
+		where ROW_ID = #{rowId}
+	</update>
+
+	<!-- 查询列表 -->
+	<select id="pageList" resultMap="BaseResultMap">
+		select * from SYS_ROLE
+		<where>
+			del_flag=0
+			<if test="params.roleName != null and params.roleName != ''">
+				and name_ like concat('%',concat(#{params.roleName},'%'))
+			</if>
+			<if test="params.status != null and params.status != -1">
+				and status=#{params.status}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询全部列表 -->
+	<select id="allList" resultMap="BaseResultMap">
+		select * from SYS_ROLE where del_flag = 0 and status = 0
+	</select>
+
+	<!-- 查询明细 -->
+	<select id="getById" resultMap="BaseResultMap">
+		select * from SYS_ROLE where ROW_ID = #{rowId}
+	</select>
+
+	<!-- 根据名称查询 -->
+	<select id="getByName" resultMap="BaseResultMap">
+		select * from SYS_ROLE where del_flag = 0 and NAME_ = #{name}
+	</select>
+
+	<!-- 查询用户的所有角色 -->
+	<select id="getByUid" parameterType="Long" resultMap="BaseResultMap">
+		SELECT DISTINCT SYS_ROLE.* FROM SYS_ROLE
+		INNER JOIN sys_ref_user_role on SYS_ROLE.ROW_ID = sys_ref_user_role.ROLE_ID
+		WHERE SYS_ROLE.del_flag = 0
+		and SYS_ROLE.status = 0
+		and sys_ref_user_role.USER_ID = #{userId}
+	</select>
+	
+	<!-- 根据名称查询 -->
+    <select id="getRoleByName" resultType="int">
+        select count(1) from SYS_ROLE 
+        where del_flag = 0 
+        and NAME_ = #{name}
+        <if test="rowId != null">
+            and row_id != #{rowId}
+        </if>
+    </select>
+    
+    <!-- 查询该角色是否被用户使用 -->
+    <select id="checkRoleIsUse" parameterType="Long" resultType="int">
+        select count(1) 
+        from sys_user u 
+        left join sys_ref_user_role ur on u.row_id = ur.user_id 
+        left join sys_role r on ur.role_id = r.row_id
+        where u.del_flag = 0
+        and r.row_id = #{rowId}
+    </select>
+
+</mapper>

@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.customer.CustomerDao">
+
+	<resultMap id="BaseResult" type="com.champlink.common.domain.sale.customer.Customer">
+		<id column="ROW_ID" property="rowId" />
+        <result column="created_by" property="createdBy"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="last_update_by" property="lastUpdateBy"></result>
+        <result column="last_update_time" property="lastUpdateTime"></result>
+        <result column="del_flag" property="delFlag"></result>
+
+        <result column="modifiction" property="modifiction"></result>
+        <result column="customer_name" property="customerName"></result>
+        <result column="short_name" property="shortName"></result>
+        <result column="address" property="address"></result>
+        <result column="payment_days" property="paymentDays"></result>
+        <result column="account_unit_id" property="accountUnitId"></result>
+        <result column="area_id" property="areaId"></result>
+        <result column="postal_code" property="postalCode"></result>
+        <result column="fax" property="fax"></result>
+        <result column="customer_level_id" property="customerLevelId"></result>
+        <result column="duty_paragraph" property="dutyParagraph"></result>
+        <result column="invoice_sending_address" property="invoiceSendingAddress"></result>
+        <result column="invoice_sending_pcode" property="invoiceSendingPcode"></result>
+        <result column="delivery_address" property="deliveryAddress"></result>
+        <result column="bank_account" property="bankAccount"></result>
+        <result column="reg_time" property="regTime"></result>
+        <result column="reg_capital" property="regCapital"></result>
+        <result column="payment_type_id" property="paymentTypeId"></result>
+        <result column="web_site" property="webSite"></result>
+        <result column="customer_info" property="customerInfo"></result>
+        <result column="currency_id" property="currencyId"></result>
+        <result column="debt_limit" property="debtLimit"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="fixed_phone" property="fixedPhone"></result>
+        <result column="customer_status" property="customerStatus"></result>
+        <result column="REGION_NAME" property="regionName"></result>
+
+        <result column="short_en_name" property="shortEnName" />
+        <result column="zxb_arrears" property="zxbArrears"/>
+        <result column="zxb_currency_id" property="zxbCurrencyId"  />
+        <result column="ja_currency_id" property="jaCurrencyId"  />
+
+        <result column="country_id" property="countryId" />
+
+    </resultMap>
+
+    <resultMap id="BaseResultAndContacts" type="com.champlink.common.domain.sale.customer.Customer">
+        <id column="ROW_ID" property="rowId" />
+        <result column="created_by" property="createdBy"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="last_update_by" property="lastUpdateBy"></result>
+        <result column="last_update_time" property="lastUpdateTime"></result>
+        <result column="del_flag" property="delFlag"></result>
+
+        <result column="modifiction" property="modifiction"></result>
+        <result column="customer_name" property="customerName"></result>
+        <result column="short_name" property="shortName"></result>
+        <result column="address" property="address"></result>
+        <result column="payment_days" property="paymentDays"></result>
+        <result column="account_unit_id" property="accountUnitId"></result>
+        <result column="area_id" property="areaId"></result>
+        <result column="postal_code" property="postalCode"></result>
+        <result column="fax" property="fax"></result>
+        <result column="customer_level_id" property="customerLevelId"></result>
+        <result column="duty_paragraph" property="dutyParagraph"></result>
+        <result column="invoice_sending_address" property="invoiceSendingAddress"></result>
+        <result column="invoice_sending_pcode" property="invoiceSendingPcode"></result>
+        <result column="delivery_address" property="deliveryAddress"></result>
+        <result column="bank_account" property="bankAccount"></result>
+        <result column="reg_time" property="regTime"></result>
+        <result column="reg_capital" property="regCapital"></result>
+        <result column="payment_type_id" property="paymentTypeId"></result>
+        <result column="web_site" property="webSite"></result>
+        <result column="customer_info" property="customerInfo"></result>
+        <result column="currency_id" property="currencyId"></result>
+        <result column="debt_limit" property="debtLimit"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="fixed_phone" property="fixedPhone"></result>
+        <result column="customer_status" property="customerStatus"></result>
+        <result column="REGION_NAME" property="regionName"></result>
+        <result column="short_en_name" property="shortEnName" />
+        <result column="zxb_arrears" property="zxbArrears"/>
+        <result column="zxb_currency_id" property="zxbCurrencyId"  />
+        <result column="country_id" property="countryId" />
+        <result column="ja_currency_id" property="jaCurrencyId"  />
+
+        <!--查询联系人信息-->
+        <association property="customerContactsList" column="{customerId = ROW_ID}" javaType="java.util.List"
+                     select="com.champlink.sale.dao.customer.CustomerContactsDao.getContactsByCustomerId"/>
+
+    </resultMap>
+	<!-- 新增 -->
+	<insert id="add" parameterType="com.champlink.common.domain.sale.customer.Customer" useGeneratedKeys="true" keyProperty="rowId" keyColumn="row_id">
+		insert into sale_customer(
+            created_by, created_time, modifiction, customer_name, short_name,
+            address, payment_days, account_unit_id, area_id, postal_code, fax, customer_level_id, duty_paragraph, invoice_sending_address,
+            invoice_sending_pcode, delivery_address, bank_account, reg_time, reg_capital, payment_type_id, web_site, customer_info, currency_id, debt_limit,
+            mobile, fixed_phone, short_en_name, zxb_arrears, zxb_currency_id, country_id,ja_currency_id
+        )
+		values (
+            #{createdBy},
+            now(),
+            #{modifiction},
+            #{customerName},
+            #{shortName},
+            #{address},
+            #{paymentDays},
+            #{accountUnitId},
+            #{areaId},
+            #{postalCode},
+            #{fax},
+            #{customerLevelId},
+            #{dutyParagraph},
+            #{invoiceSendingAddress},
+            #{invoiceSendingPcode},
+            #{deliveryAddress},
+            #{bankAccount},
+            #{regTime},
+            #{regCapital},
+            #{paymentTypeId},
+            #{webSite},
+            #{customerInfo},
+            #{currencyId},
+            #{debtLimit},
+            #{mobile},
+            #{fixedPhone},
+            #{shortEnName,jdbcType=VARCHAR},
+            #{zxbArrears,jdbcType=DECIMAL},
+            #{zxbCurrencyId,jdbcType=BIGINT},
+            #{countryId,jdbcType=BIGINT},
+            #{jaCurrencyId,jdbcType=BIGINT}
+        )
+	</insert>
+
+    <!-- 查询列表 -->
+    <select id="pageList" resultMap="BaseResult">
+        select c.row_id,c.created_by, c.modifiction, c.customer_name, c.short_name, c.address,
+            c.payment_days, c.account_unit_id, c.postal_code, c.fax, c.customer_level_id, c.duty_paragraph, c.invoice_sending_address,
+            c.invoice_sending_pcode, c.delivery_address, c.bank_account, c.reg_time, c.reg_capital, c.payment_type_id, c.web_site, c.customer_info,
+            c.currency_id, c.debt_limit, c.mobile, c.fixed_phone, c.customer_status,sr.row_id area_id,sr.REGION_NAME,
+            c.short_en_name, c.zxb_arrears, c.zxb_currency_id, c.country_id,c.ja_currency_id
+        from sale_customer c
+        left join sale_region sr on sr.row_id = c.area_id
+        <!--left join sale_customer_contacts cc on c.row_id = cc.customer_id-->
+        <where>
+            1=1
+            <if test="params.customerName != null and params.customerName != ''">
+                and c.customer_name like concat('%',#{params.customerName},'%')
+            </if>
+            <if test="params.areaId != null and params.areaId != ''">
+                and sr.row_id = #{params.areaId}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="checkCustomerByName" resultType="long" parameterType="com.champlink.common.domain.sale.customer.Customer">
+        select count(1) from sale_customer
+        <where>
+            1=1
+            <choose>
+                <when test="customerName != null and customerName != '' and shortName != null and shortName != ''">
+                    and (customer_name = #{customerName} or short_name = #{shortName})
+                </when>
+                <when test="customerName != null and customerName != ''">
+                    and customer_name = #{customerName}
+                </when>
+                <when test="shortName != null and shortName != ''">
+                    and short_name = #{shortName}
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+            <if test="rowId != null and rowId != ''">
+                and row_id != #{rowId}
+            </if>
+        </where>
+    </select>
+
+
+    <update id="update">
+        update sale_customer
+        <set>
+            LAST_UPDATE_TIME = now(),
+            <if test="customerName != null">
+                customer_name=#{customerName},
+            </if>
+            <if test="shortName != null">
+                short_name=#{shortName},
+            </if>
+            <if test="fixedPhone != null">
+                fixed_phone=#{fixedPhone},
+            </if>
+            <if test="mobile != null">
+                mobile=#{mobile},
+            </if>
+            <if test="debtLimit != null">
+                debt_limit=#{debtLimit},
+            </if>
+            <if test="currencyId != null">
+                currency_id=#{currencyId},
+            </if>
+            <if test="customerInfo != null">
+                customer_info=#{customerInfo},
+            </if>
+            <if test="webSite != null">
+                web_site=#{webSite},
+            </if>
+            <if test="paymentTypeId != null">
+                payment_type_id=#{paymentTypeId},
+            </if>
+            <if test="regCapital != null">
+                reg_capital=#{regCapital},
+            </if>
+            <if test="regTime != null">
+                reg_time=#{regTime},
+            </if>
+            <if test="bankAccount != null">
+                bank_account=#{bankAccount},
+            </if>
+            <if test="deliveryAddress != null">
+                delivery_address=#{deliveryAddress},
+            </if>
+            <if test="invoiceSendingPcode != null">
+                invoice_sending_pcode=#{invoiceSendingPcode},
+            </if>
+            <if test="invoiceSendingAddress != null">
+                invoice_sending_address=#{invoiceSendingAddress},
+            </if>
+            <if test="dutyParagraph != null">
+                duty_paragraph=#{dutyParagraph},
+            </if>
+            <if test="customerLevelId != null">
+                customer_level_id=#{customerLevelId},
+            </if>
+            <if test="fax != null">
+                fax=#{fax},
+            </if>
+            <if test="postalCode != null">
+                postal_code=#{postalCode},
+            </if>
+            <if test="areaId != null">
+                area_id=#{areaId},
+            </if>
+            <if test="accountUnitId != null">
+                account_unit_id=#{accountUnitId},
+            </if>
+            <if test="paymentDays != null">
+                payment_days=#{paymentDays},
+            </if>
+            <if test="address != null">
+                address=#{address},
+            </if>
+            <if test="shortEnName != null" >
+                short_en_name = #{shortEnName,jdbcType=VARCHAR},
+            </if>
+            <if test="zxbArrears != null" >
+                zxb_arrears = #{zxbArrears,jdbcType=DECIMAL},
+            </if>
+            <if test="zxbCurrencyId != null" >
+                zxb_currency_id = #{zxbCurrencyId,jdbcType=BIGINT},
+            </if>
+            <if test="countryId != null" >
+                country_id = #{countryId,jdbcType=BIGINT},
+            </if>
+            <if test="jaCurrencyId != null" >
+                ja_currency_id = #{jaCurrencyId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+    <!--获取客户对象-->
+    <select id="getCustomerById" resultMap="BaseResult" parameterType="long">
+        select * from sale_customer where row_id = #{rowId}
+    </select>
+
+    <!--统计客户状态数量-->
+    <select id="getCustomerStatus" resultType="long" parameterType="long">
+        select count(1) from sale_customer
+        where customer_status != 1
+        and row_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteCustomerById" parameterType="long">
+        delete from sale_customer
+        where ROW_ID in
+        <foreach item="id" collection="array" open="(" separator=","
+                 close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--查询客户以及联系人list-->
+    <select id="getCustomerAndContacts" resultMap="BaseResultAndContacts">
+        select c.*,sr.REGION_NAME from sale_customer c
+        left join sale_region sr on sr.row_id = c.area_id
+        where c.row_id = #{rowId}
+    </select>
+
+
+    <resultMap id="BaseSelectResult" type="com.champlink.common.domain.BaseSelect">
+        <result column="rowId" property="rowId"/>
+        <result column="name" property="name" />
+    </resultMap>
+
+    <!--查询所有客户信息-->
+    <select id="getAllCustomer" resultMap="BaseSelectResult">
+        select row_id as rowId,customer_name as name from sale_customer where del_flag = 0
+    </select>
+
+    <!-- 根据区域和国家查询币别 -->
+    <select id="getCurrencyId" resultType="long">
+        select * from sale_region_dtls r
+        where r.REGION_ID = #{regionId} and r.COUNTRY_ID = #{countryId}
+    </select>
+    
+    <insert id="insertByForeachCustomer" parameterType="com.champlink.common.domain.sale.customer.Customer">
+	    INSERT INTO SALE_CUSTOMER (
+	    	created_by, customer_name, short_name,
+            address, payment_days, account_unit_id, area_id, postal_code, fax, customer_level_id, duty_paragraph, invoice_sending_address,
+            invoice_sending_pcode, delivery_address, bank_account, reg_time, reg_capital, payment_type_id, web_site, customer_info, currency_id, debt_limit,
+            mobile, fixed_phone, short_en_name, zxb_arrears, zxb_currency_id, country_id,ja_currency_id
+	    		
+		)
+	      VALUES
+	    <foreach collection="list" item="prod" separator=",">
+	        (
+	        	#{prod.createdBy},
+	            #{prod.customerName},
+	            #{prod.shortName},
+	            #{prod.address},
+	            #{prod.paymentDays},
+	            #{prod.accountUnitId},
+	            #{prod.areaId},
+	            #{prod.postalCode},
+	            #{prod.fax},
+	            #{prod.customerLevelId},
+	            #{prod.dutyParagraph},
+	            #{prod.invoiceSendingAddress},
+	            #{prod.invoiceSendingPcode},
+	            #{prod.deliveryAddress},
+	            #{prod.bankAccount},
+	            #{prod.regTime},
+	            #{prod.regCapital},
+	            #{prod.paymentTypeId},
+	            #{prod.webSite},
+	            #{prod.customerInfo},
+	            #{prod.currencyId},
+	            #{prod.debtLimit},
+	            #{prod.mobile},
+	            #{prod.fixedPhone},
+	            #{prod.shortEnName,jdbcType=VARCHAR},
+	            #{prod.zxbArrears,jdbcType=DECIMAL},
+	            #{prod.zxbCurrencyId,jdbcType=BIGINT},
+	            #{prod.countryId,jdbcType=BIGINT},
+	            #{prod.jaCurrencyId,jdbcType=BIGINT}
+	        )
+	    </foreach>
+	</insert>
+	
+	<select id="checkCustomerNoIsExist" parameterType="java.lang.String" resultMap="BaseResult" >
+	  SELECT *
+	  FROM SALE_CUSTOMER 
+	  WHERE CUSTOMER_NAME in
+	  <foreach item="item" index="index" collection="list"
+	      open="(" separator="," close=")">
+	        #{item}
+	  </foreach>
+	</select>
+
+	<select id="getCustomerByRowIds" parameterType="java.lang.Long" resultMap="BaseResult" >
+	  SELECT *
+	  FROM SALE_CUSTOMER
+	  WHERE ROW_ID in
+	  <foreach item="item" index="index" collection="list"
+	      open="(" separator="," close=")">
+	        #{item}
+	  </foreach>
+	</select>
+
+
+    <select id="getCustomerListById" resultMap="BaseResult">
+
+        SELECT a.row_id,a.customer_name,b.region_name,a.address,a.customer_status FROM sale_customer a LEFT JOIN sale_region b ON a.area_id=b.row_id
+        <where>
+            <if test="params.transferMan != null and params.transferMan != ''">
+                and transfer_man = #{params.transferMan}
+            </if>
+
+        </where>
+    </select>
+
+    <update id="updateTransferMan">
+        update sale_customer set transfer_man = #{staffId} where row_id = #{rowId}
+    </update>
+    
+    <select id="getCustomerByName" resultMap="BaseResult">
+	  SELECT *
+	  FROM SALE_CUSTOMER 
+	  WHERE CUSTOMER_NAME = #{customerName}
+    </select>
+	
+</mapper>

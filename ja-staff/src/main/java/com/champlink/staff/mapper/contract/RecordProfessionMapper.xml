@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.contract.RecordProfessionDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.contract.RecordProfession">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="certificate_name" jdbcType="VARCHAR" property="certificateName" />
+    <result column="professional_title_rank" jdbcType="VARCHAR" property="professionalTitleRank" />
+    <result column="qualify_time" jdbcType="DATE" property="qualifyTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="certificate_start_date" jdbcType="DATE" property="certificateStartDate" />
+    <result column="certificate_end_date" jdbcType="DATE" property="certificateEndDate" />
+    <result column="grant_org" jdbcType="VARCHAR" property="grantOrg" />
+    <result column="grant_level" jdbcType="VARCHAR" property="grantLevel" />
+  </resultMap>
+
+  <!-- 增加 -->
+  <insert id="add" parameterType="com.champlink.common.domain.staff.contract.RecordProfession">
+      insert into stf_record_profession
+      (staff_id,    certificate_name, professional_title_rank,qualify_time,remark,certificate_start_date,certificate_end_date,
+      grant_org,grant_level)
+      values 
+      (#{staffId},  #{certificateName}, #{professionalTitleRank}, #{qualifyTime}, #{remark},#{certificateStartDate},#{certificateEndDate},
+      #{grantOrg},#{grantLevel})
+  </insert>
+
+  <!-- 删除 -->
+  <update id="delById">
+      update stf_record_profession set del_flag= '1' where ROW_ID=#{rowId}
+  </update>
+
+  <!-- 修改 -->
+  <update id="update" parameterType="com.champlink.common.domain.staff.contract.RecordProfession">
+      update stf_record_profession
+      <set>
+          <if test="certificateName != null">
+              certificate_name=#{certificateName},
+          </if>
+          <if test="professionalTitleRank != null">
+              professional_title_rank=#{professionalTitleRank},
+          </if>
+          <if test="qualifyTime != null">
+              qualify_time=#{qualifyTime},
+          </if>
+          <if test="remark != null">
+              remark=#{remark},
+          </if>
+          <if test="certificateStartDate != null">
+              certificate_start_date=#{certificateStartDate},
+          </if>
+          <if test="certificateEndDate != null">
+              certificate_end_date=#{certificateEndDate},
+          </if>
+          <if test="grantOrg != null">
+              grant_org=#{grantOrg},
+          </if>
+          <if test="grantLevel != null">
+              grant_level=#{grantLevel},
+          </if>
+      </set>
+      where row_id = #{rowId}
+  </update>
+  
+  <!-- 查询列表 -->
+  <select id="pageList" resultMap="BaseResultMap">
+      select * from stf_record_profession
+      <where>
+          del_flag= '0'
+          <if test="params.staffId != null and params.staffId != ''">
+              and staff_id = #{params.staffId}
+          </if>
+          <if test="params.certificateName != null and params.certificateName != ''">
+              and certificate_name=#{params.certificateName}
+          </if>
+      </where>
+  </select>
+  
+  <!-- 根据rowId查询明细 -->
+  <select id="getById" resultMap="BaseResultMap">
+      select * from stf_record_profession where ROW_ID = #{rowId}
+  </select>
+  
+   <!-- 删除 -->
+  <update id="delAllByStaffId">
+      update stf_record_profession set del_flag= '1' where staff_id=#{staffId}
+  </update>
+  
+</mapper>

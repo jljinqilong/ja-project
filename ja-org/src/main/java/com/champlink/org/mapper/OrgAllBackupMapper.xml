@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.org.dao.OrgAllBackupDao">
+	<resultMap id="BaseResultMap"
+		type="com.champlink.common.domain.org.OrgAllBackup">
+		<!-- WARNING - @mbg.generated -->
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="created_time" jdbcType="TIMESTAMP"
+			property="createdTime" />
+		<result column="parent_id" jdbcType="VARCHAR"
+			property="parentId" />
+		<result column="function_type" jdbcType="BIGINT"
+			property="functionType" />
+		<result column="base_or_dept_name" jdbcType="VARCHAR"
+			property="baseOrDeptName" />
+
+		<result column="base_or_dept_code" jdbcType="VARCHAR"
+			property="baseOrDeptCode" />
+		<result column="base_or_dept_short_name" jdbcType="VARCHAR"
+			property="baseOrDeptShortName" />
+
+		<result column="establish_date" jdbcType="TIMESTAMP"
+			property="establishDate" />
+		<result column="effective_date" jdbcType="TIMESTAMP"
+			property="effectiveDate" />
+		<result column="business_unit" jdbcType="VARCHAR"
+			property="businessUnit" />
+		<result column="level_id" jdbcType="BIGINT" property="levelId" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="is_fictitious" jdbcType="INTEGER"
+			property="isFictitious" />
+		<result column="dept_duty" jdbcType="VARCHAR"
+			property="deptDuty" />
+		<result column="summary" jdbcType="VARCHAR" property="summary" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="is_org" jdbcType="INTEGER" property="isOrg" />
+		<result column="report_latitude" jdbcType="VARCHAR"
+			property="reportLatitude" />
+		<result column="report_superior" jdbcType="VARCHAR"
+			property="reportSuperior" />
+		<result column="contact_phone" jdbcType="VARCHAR"
+			property="contactPhone" />
+		<result column="contact_facsimile" jdbcType="VARCHAR"
+			property="contactFacsimile" />
+		<result column="contact_zipcode" jdbcType="VARCHAR"
+			property="contactZipcode" />
+		<result column="contact_url" jdbcType="VARCHAR"
+			property="contactUrl" />
+		<result column="contact_address" jdbcType="VARCHAR"
+			property="contactAddress" />
+		<result column="leader_no" jdbcType="VARCHAR"
+			property="leaderNo" />
+		<result column="leader_name" jdbcType="VARCHAR"
+			property="leaderName" />
+		<result column="leader_phone" jdbcType="VARCHAR"
+			property="leaderPhone" />
+		<result column="is_valid" jdbcType="INTEGER" property="isValid" />
+		<result column="dept_num" jdbcType="BIGINT" property="deptNum" />
+
+		<result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+		<result column="back_up_time" jdbcType="TIMESTAMP"
+			property="backUpTime" />
+	</resultMap>
+
+
+	<!-- 新增 -->
+	<insert id="add"  parameterType="java.util.List">
+		insert into org_all_backup(total_staff_num,row_id,created_time, parent_id, function_type,
+		establish_date,effective_date,business_unit,level_id,address,is_fictitious,dept_duty,summary,remark,is_org,base_or_dept_name,base_or_dept_code,base_or_dept_short_name,
+		report_latitude, report_superior,contact_phone,contact_facsimile,contact_zipcode,contact_url,contact_address,leader_no,leader_name,leader_phone,is_valid,dept_num,back_up_time)
+		values 
+		<foreach collection="list" item="item" separator=",">
+		(#{item.totalStaffNum},#{item.rowId},#{item.createdTime}, #{item.parentId}, #{item.functionType},
+		#{item.establishDate},
+		#{item.effectiveDate}, #{item.businessUnit}, #{item.levelId},
+		#{item.address},#{item.isFictitious},#{item.deptDuty},#{item.summary}, #{item.remark},
+		#{item.isOrg},#{item.baseOrDeptName},#{item.baseOrDeptCode},#{item.baseOrDeptShortName},#{item.reportLatitude}, #{item.reportSuperior}, #{item.contactPhone}, #{item.contactFacsimile}, #{item.contactZipcode}, #{item.contactUrl}, #{item.contactAddress}, #{item.leaderNo}, #{item.leaderName}, #{item.leaderPhone},#{item.isValid},#{item.deptNum},#{item.backUpTime})
+	</foreach>
+	</insert>
+
+	<!-- 删除 -->
+	<delete id="deleteByBackUpTime">
+	     delete from org_all_backup where back_up_time = #{backUpTime}
+	</delete>
+
+<!--  parameterType="java.util.Date" -->
+    <!-- 根据备份时间查询  -->
+	<select id="findByBackUpTime" resultMap="BaseResultMap">
+	    select * from org_all_backup a 
+	    where back_up_time=(select max(back_up_time) from org_all_backup where back_up_time&lt;=#{backUpTime}) 
+	</select>
+	
+	<select id="findByBackUpTimeAndDeptIdList" resultMap="BaseResultMap">
+	    select * from org_all_backup a 
+	    where back_up_time=(select max(back_up_time) from org_all_backup where back_up_time&lt;=#{backUpTime}) 
+	    and row_id in
+		<foreach collection="deptIdList" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!--根据rowId查询单条备份数据  -->
+	<select id="findOneByRowId" resultMap="BaseResultMap">
+	     select * from org_all_backup a  
+	     where back_up_time=(select max(back_up_time) from org_all_backup where back_up_time&lt;= #{backUpTime}) and row_id=#{rowId}
+	</select>
+	
+	<!--根据parentId查询单条备份数据  -->
+	<select id="findOneByParentId" resultMap="BaseResultMap">
+	      select * from org_all_backup a  
+	     where back_up_time=(select max(back_up_time) from org_all_backup where back_up_time&lt;= #{backUpTime}) and row_id=#{parentId}
+	</select>
+
+</mapper>

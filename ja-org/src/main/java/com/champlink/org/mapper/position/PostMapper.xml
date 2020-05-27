@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.org.dao.position.PostDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.org.position.Post">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+   <result column="position_type" jdbcType="INTEGER" property="positionType" />
+   <result column="position_name" jdbcType="VARCHAR" property="positionName" />
+   <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+   <result column="staff_size" jdbcType="INTEGER" property="staffSize" />
+  </resultMap>
+  <resultMap id="BaseResultMap1" type="com.champlink.common.vo.PositionVO">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+   <result column="position_type" jdbcType="INTEGER" property="positionType" />
+   <result column="position_name" jdbcType="VARCHAR" property="positionName" />
+   <result column="rank_name" jdbcType="VARCHAR" property="rankName" />
+   <result column="salary_max" jdbcType="INTEGER" property="salaryMax" />
+   <result column="salary_min" jdbcType="INTEGER" property="salaryMin" />
+   <result column="post_assignment" jdbcType="VARCHAR" property="postAssignment" />
+   <result column="staff_size" jdbcType="VARCHAR" property="staffSize" />
+   <result column="file_desc" jdbcType="VARCHAR" property="fileDesc" />
+   <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
+  </resultMap>
+
+  <!-- 增加 -->
+  <insert id="add" useGeneratedKeys="true" keyProperty="rowId"  parameterType="com.champlink.common.domain.org.position.Post">
+      insert into org_position
+      (position_type,position_name,staff_size,file_desc)
+      values 
+      (#{positionType},#{positionName},#{fileDesc})
+  </insert>
+  
+
+  <!-- 删除 -->
+  <update id="delById">
+      update org_position set del_flag= '1' where ROW_ID=#{userId}
+  </update>
+
+  <!-- 修改 -->
+  <update id="update" parameterType="com.champlink.common.domain.org.position.Post">
+      update org_position
+      <set>
+          <if test="positionType != null">
+
+              position_type =#{positionType,jdbcType=VARCHAR},
+          </if>
+           <if test="positionName != null">
+              position_name =#{positionName,jdbcType=VARCHAR},
+          </if>
+         <if test="positionDescription != null">
+              position_description =#{positionDescription,jdbcType=VARCHAR},
+          </if>
+          <if test="fileDesc != null">
+              file_desc =#{fileDesc,jdbcType=VARCHAR},
+ 		  </if>
+          <if test="remark != null">
+              remark =#{remark,jdbcType=VARCHAR},
+          </if>
+      </set>
+      where ROW_ID = #{rowId}
+  </update>
+  
+ 
+  
+    <!-- 查询列表 -->
+  <select id="pageList1" resultMap="BaseResultMap">
+SELECT
+  *
+FROM
+	org_position a where del_flag=0
+
+  </select>
+  
+  
+  	<!-- 查询明细 -->
+	<select id="getById" resultMap="BaseResultMap">
+		SELECT * from org_position where row_id = #{rowId} and  del_flag=0
+  
+	</select>
+	
+	
+ 
+	<insert id="insertPositionList" parameterType="java.util.List">
+     
+  </insert>
+	
+</mapper>

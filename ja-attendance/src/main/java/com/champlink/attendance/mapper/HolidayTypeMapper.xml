@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.champlink.attendance.dao.HolidayTypeMapper">
+	<resultMap id="BaseResultMap"
+		type="com.champlink.common.domain.attendance.HolidayType">
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="created_by" jdbcType="BIGINT"
+			property="createdBy" />
+		<result column="created_time" jdbcType="TIMESTAMP"
+			property="createdTime" />
+		<result column="last_update_by" jdbcType="BIGINT"
+			property="lastUpdateBy" />
+		<result column="last_update_time" jdbcType="TIMESTAMP"
+			property="lastUpdateTime" />
+		<result column="type_name" jdbcType="VARCHAR"
+			property="typeName" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="unit" jdbcType="INTEGER" property="unit" />
+		<result column="min_leave_time" jdbcType="DOUBLE"
+			property="minLeaveTime" />
+		<result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+	</resultMap>
+
+	<!-- 删除 -->
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		update
+		atd_holiday_type
+		set del_flag = 1
+		where row_id =
+		#{rowId,jdbcType=BIGINT}
+	</update>
+
+	<!-- 插入 -->
+	<insert id="insert"
+		parameterType="com.champlink.common.domain.attendance.HolidayType">
+		insert into atd_holiday_type (created_by, created_time,
+		last_update_by, last_update_time, type_name,
+		status, unit,
+		min_leave_time)
+		values (#{createdBy,jdbcType=BIGINT},
+		#{createdTime,jdbcType=TIMESTAMP},
+		#{lastUpdateBy,jdbcType=BIGINT},
+		#{lastUpdateTime,jdbcType=TIMESTAMP},
+		#{typeName,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER}, #{unit,jdbcType=INTEGER},
+		#{minLeaveTime,jdbcType=BIGINT})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateByPrimaryKey"
+		parameterType="com.champlink.common.domain.attendance.HolidayType">
+		update atd_holiday_type
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=BIGINT},
+			</if>
+			<if test="createdTime != null">
+			created_time = #{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+			last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+			</if>
+			<if test="lastUpdateTime != null">
+			last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="typeName != null">
+			type_name = #{typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+			status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="unit != null">
+			unit = #{unit,jdbcType=INTEGER},
+			</if>
+			<if test="minLeaveTime != null">
+			min_leave_time = #{minLeaveTime,jdbcType=BIGINT}
+			</if>
+		</set>
+		where row_id = #{rowId,jdbcType=BIGINT}
+
+	</update>
+
+	<!-- 根据ID查询 -->
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select *
+		from atd_holiday_type
+		where del_flag = 0
+		and row_id =
+		#{rowId,jdbcType=BIGINT}
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="selectAll" resultMap="BaseResultMap">
+		select *
+		from atd_holiday_type
+		where del_flag = 0
+	</select>
+
+	<select id="pageList" resultMap="BaseResultMap">
+		select *
+		from atd_holiday_type
+		where del_flag = 0
+	</select>
+
+</mapper>

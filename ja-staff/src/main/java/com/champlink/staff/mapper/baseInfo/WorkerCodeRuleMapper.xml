@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.baseInfo.WorkerCodeRuleDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.baseInfo.WorkerCodeRule">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="base_id" jdbcType="VARCHAR" property="baseId" />
+    <result column="worker_code_prefix" jdbcType="VARCHAR" property="workerCodePrefix" />
+    <result column="worker_code_len" jdbcType="INTEGER" property="workerCodeLen" />
+    <result column="format" jdbcType="VARCHAR" property="format" />
+    <result column="usable" jdbcType="INTEGER" property="usable" />
+    <result column="current_id" jdbcType="INTEGER" property="currentId" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+  
+  <!-- 插入编号 -->
+  <insert id="add" parameterType="com.champlink.common.domain.staff.baseInfo.WorkerCodeRule">
+      insert into stf_worker_code_rule
+        (base_id,worker_code_prefix,worker_code_len,format,usable)
+      values 
+        (#{baseId},#{workerCodePrefix},#{workerCodeLen},#{format},#{usable})
+  </insert>
+  
+  
+  <!-- 删除工号编码规则 -->
+  <update id="delByRowId">
+    update stf_worker_code_rule 
+    set del_flag = 1
+    where row_id = #{rowId}
+  </update>
+  
+  <!-- 更新工号编码规则 -->
+  <update id="update" parameterType="com.champlink.common.domain.staff.baseInfo.WorkerCodeRule">
+    update stf_worker_code_rule 
+    <set>
+        <if test="baseId != null">
+            base_id=#{baseId},
+        </if>
+        <if test="workerCodePrefix != null">
+            worker_code_prefix=#{workerCodePrefix},
+        </if>
+        <if test="workerCodeLen != null">
+            worker_code_len=#{workerCodeLen},
+        </if>
+        <if test="format != null">
+            format=#{format},
+        </if>
+        <if test="usable != null">
+            usable=#{usable},
+        </if>
+    </set>
+    where row_id = #{rowId}
+  </update>
+   
+  <!-- 查询所有工号编码规则 -->
+  <select id="queryAll" resultType="com.champlink.common.domain.staff.baseInfo.WorkerCodeRule">
+    select *
+    from stf_worker_code_rule 
+		<where>
+			del_flag=0
+			
+			<if test="params.baseId != null and params.baseId != '-1'">
+				and base_id=#{params.baseId}
+			</if>
+			
+			<if test="params.usable != null">
+				and usable=#{params.usable}
+			</if>
+		</where>
+  </select>
+  
+  
+   <!-- 根据基地id查询工号编码规则 -->
+  <select id="queryOneByBaseId" resultType="com.champlink.common.domain.staff.baseInfo.WorkerCodeRule">
+    select *
+    from stf_worker_code_rule 
+    where del_flag = 0 and base_id = #{baseId} and usable = 0
+  </select>
+
+ <select id="queryOneByRowId" resultType="com.champlink.common.domain.staff.baseInfo.WorkerCodeRule">
+    select *
+    from stf_worker_code_rule 
+    where del_flag = 0 and row_id = #{rowId}
+  </select>
+  
+   <select id="queryCountByBaseId" resultType="Integer">
+    select count(row_id)
+    from stf_worker_code_rule 
+    where del_flag = 0 and base_id = #{baseId}
+  </select>
+  
+  
+    <!-- 更新工号编码规则 -->
+  <update id="updateByDeptId" >
+    update stf_worker_code_rule 
+  		 set
+            current_id=#{currentId}
+    where base_id = #{deptId}
+  </update>
+  
+</mapper>

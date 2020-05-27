@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.contract.AgreementDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.contract.Agreement">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="agreement_no" jdbcType="VARCHAR" property="agreementNo" />
+    <result column="agreement_type" jdbcType="BIGINT" property="agreementType" />
+    <result column="sign_date" jdbcType="DATE" property="signDate" />
+    <result column="agreement_date_start" jdbcType="DATE" property="agreementDateStart" />
+    <result column="agreement_date_end" jdbcType="DATE" property="agreementDateEnd" />
+    <result column="agreement_period" jdbcType="INTEGER" property="agreementPeriod" />
+    <result column="work_place" jdbcType="VARCHAR" property="workPlace" />
+    <result column="owner" jdbcType="VARCHAR" property="owner" />
+    <result column="file" jdbcType="VARCHAR" property="file" />
+    <result column="describe_" jdbcType="VARCHAR" property="describe" />
+    <result column="sign_time" jdbcType="INTEGER" property="signTime" />
+    <result column="end_date" jdbcType="DATE" property="endDate" />
+    <result column="responsible_person" jdbcType="VARCHAR" property="responsiblePerson" />
+    <result column="end_reason" jdbcType="VARCHAR" property="endReason" />
+    <result column="relieve_date" jdbcType="DATE" property="relieveDate" />
+    <result column="relieve_reason" jdbcType="VARCHAR" property="relieveReason" />
+    <result column="agreement_state" jdbcType="BIGINT" property="agreementState" />
+    <result column="renew_status" jdbcType="BIGINT" property="renewStatus" />
+    <result column="relevance_contract" jdbcType="VARCHAR" property="relevanceContract" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="last_update_by" jdbcType="BIGINT" property="lastUpdateBy" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="discontinue_date" jdbcType="DATE" property="discontinueDate" />
+    <result column="discontinue_reason" jdbcType="VARCHAR" property="discontinueReason" />
+  </resultMap>
+  
+  <!-- 新增 -->
+  <insert id="add" parameterType="com.champlink.common.domain.staff.contract.Agreement" >
+    insert into stf_agreement
+    (staff_id,          agreement_no,      agreement_type,    sign_date,      agreement_date_start,   agreement_date_end, work_place,
+     owner,             file,              describe_,         sign_time,      end_date,               responsible_person, end_reason,
+     relieve_date,      relieve_reason,    agreement_state,   renew_status,   relevance_contract,     agreement_period,
+     created_by,        created_time,      discontinue_date,  discontinue_reason)
+    values 
+    (#{staffId},        #{agreementNo},   #{agreementType},   #{signDate},    #{agreementDateStart},  #{agreementDateEnd}, #{workPlace},
+     #{owner},          #{file},          #{describe},        #{signTime},    #{endDate},             #{responsiblePerson},#{endReason},
+     #{relieveDate},    #{relieveReason}, #{agreementState},  #{renewStatus}, #{relevanceContract},   #{agreementPeriod},
+     #{createdBy},      #{createdTime},   #{discontinueDate}, #{discontinueReason})
+  </insert>
+  
+  <!-- 删除 -->
+  <update id="delById">
+    update stf_agreement set del_flag = '1'
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 修改协议续签状态 -->
+  <update id="updateRenewStauts">
+    update stf_agreement set renew_status = #{renewStatus}
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 修改 -->
+  <update id="update" parameterType="com.champlink.common.domain.staff.contract.Agreement">
+    update stf_agreement
+    <set>
+        <if test="agreementType != null" >
+        agreement_type = #{agreementType},
+        </if>
+        <if test="signDate != null" >
+        sign_date = #{signDate},
+        </if>
+        <if test="agreementDateStart != null" >
+        agreement_date_start = #{agreementDateStart},
+        </if>
+        <if test="agreementDateEnd != null" >
+        agreement_date_end = #{agreementDateEnd},
+        </if>
+        <if test="agreementPeriod != null" >
+        agreement_period = #{agreementPeriod},
+        </if>
+        <if test="workPlace != null and workPlace != ''" >
+        work_place = #{workPlace},
+        </if>
+        <if test="owner != null and owner != ''" >
+        owner = #{owner},
+        </if>
+        <if test="file != null and file != ''" >
+        file = #{file},
+        </if>
+        <if test="describe != null and describe != ''" >
+        describe_ = #{describe},
+        </if>
+        <if test="signTime != null" >
+        sign_time = #{signTime},
+        </if>
+        <if test="endDate != null" >
+        end_date = #{endDate},
+        </if>
+        <if test="responsiblePerson != null and responsiblePerson != ''" >
+        responsible_person = #{responsiblePerson},
+        </if>
+        <if test="endReason != null and endReason != ''" >
+        end_reason = #{endReason},
+        </if>
+        <if test="relieveDate != null" >
+        relieve_date = #{relieveDate},
+        </if>
+        <if test="relieveReason != null and relieveReason != ''" >
+        relieve_reason = #{relieveReason},
+        </if>
+        <if test="agreementState != null" >
+        agreement_state = #{agreementState},
+        </if>
+        <if test="renewStatus != null" >
+        renew_status = #{renewStatus},
+        </if> 
+        <if test="relevanceContract != null and relevanceContract != ''" >
+        relevance_contract = #{relevanceContract},
+        </if>
+        <if test="lastUpdateBy != null">
+        last_update_by = #{lastUpdateBy},
+        </if>
+        <if test="lastUpdateTime != null">
+        last_update_time = #{lastUpdateTime},
+        </if>
+        <if test="discontinueDate != null" >
+        discontinue_date = #{discontinueDate},
+        </if>
+        <if test="discontinueReason != null and discontinueReason != ''" >
+        discontinue_reason = #{discontinueReason},
+        </if>
+    </set>
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 查询列表 -->
+  <select id="pageList" resultMap="BaseResultMap">
+      select b.staff_name,b.staff_no,c.* from stf_agreement c ,stf_base_info b
+     <where>
+     c.staff_id=b.row_id and c.del_flag= '0'
+     <if test="params.staffName != null and params.staffName != ''">
+         and b.staff_name like '%${params.staffName}%'
+     </if>
+     <if test="params.staffNo != null and params.staffNo != ''">
+         and b.staff_no like '%${params.staffNo}%'
+     </if>
+     <if test="params.deptIds != null and params.deptIds.size > 0">
+         and (b.dept_id in
+         <foreach collection="params.deptIds" item="item" open="(" close=")" separator=",">
+             #{item.rowId}
+         </foreach>
+         or b.dept_id is null)
+     </if>
+     <if test="params.staffId != null and params.staffId != ''">
+         and c.staff_id = #{params.staffId}
+     </if>
+     <if test="params.agreementNo != null and params.agreementNo != ''">
+         and c.agreement_no like '%${params.agreementNo}%'
+     </if>
+     <if test="params.agreementType != null">
+         and c.agreement_type = #{params.agreementType}
+     </if>
+     <if test="params.agreementState != null">
+         and c.agreement_state = #{params.agreementState}
+     </if>
+     <if test="params.renewStatus != null">
+         and c.renew_status = #{params.renewStatus}
+     </if>
+	 <if test="params.staffIdList != null">
+		 and c.created_by in
+		 <foreach collection="params.staffIdList" item="item" open="(" close=")" separator=",">
+			 #{item}
+		 </foreach>
+	 </if>
+   </where>
+  </select>
+  
+  <!-- 根据rowId查询明细 -->
+  <select id="getById" resultMap="BaseResultMap">
+      select * from stf_agreement where ROW_ID = #{rowId}
+  </select>
+  
+  <!-- 按staffID查询协议信息 -->
+  <select id="getAgreementByStaffId" resultMap="BaseResultMap">
+      select * from stf_agreement where staff_id = #{staffId} and del_flag= '0'
+  </select>
+  
+  <!-- 查询协议数量 -->
+  <select id="getLastAgreementNo" resultType="String">
+      select max(row_id) from stf_agreement
+  </select>
+  
+  <select id="getAgreementByContract" resultMap="BaseResultMap">
+      select * from stf_agreement where relevance_contract = #{contractNo}
+  </select>
+  
+  <!-- 根据agreement查询明细 -->
+  <select id="getByAgreementNo" resultMap="BaseResultMap">
+      select * from stf_agreement where agreement_no = #{agreementNo}
+  </select>
+  
+  <!-- 查询所有的协议 -->
+  <select id="allList" resultMap="BaseResultMap">
+      select * from stf_agreement where del_flag = 0
+  </select>
+
+  <!-- 查询所有未生效，履行中的协议 -->
+  <select id="allListByState" resultMap="BaseResultMap">
+      select * from stf_agreement where agreement_state in ('1','2') and del_flag = 0
+  </select>
+  
+  <!-- 定时更新协议状态 -->
+  <update id="updateAgreementState" parameterType="com.champlink.common.domain.staff.contract.Agreement">
+    update stf_agreement
+    set
+    agreement_state = #{agreementState}
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 员工离职更改协议状态 -->
+  <update id="updateAgreementStateByStaffId" parameterType="com.champlink.common.domain.staff.contract.Agreement">
+    update stf_agreement
+    set
+    relieve_date = #{relieveDate},
+    relieve_reason = #{relieveReason},
+    agreement_state = #{agreementState}
+    where staff_id = #{staffId}
+  </update>
+  
+  <!-- 合同解除关联协议解除 -->
+  <update id="updateAgreementStateByContractNo">
+    update stf_agreement
+    <set>
+        <if test="relieveDate != null " >
+        relieve_date = #{relieveDate},
+        </if>
+        <if test="relieveReason != null and relieveReason != ''" >
+        relieve_reason = #{relieveReason},
+        </if>
+        <if test="endDate != null " >
+        end_date = #{endDate},
+        </if>
+        <if test="endReason != null and endReason != ''" >
+        end_reason = #{endReason},
+        </if>
+        agreement_state = #{agreementState}
+    </set>
+    where relevance_contract = #{relevanceContract}
+  </update>
+  
+</mapper>

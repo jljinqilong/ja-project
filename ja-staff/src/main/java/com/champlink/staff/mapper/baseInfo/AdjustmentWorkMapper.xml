@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.champlink.staff.dao.baseInfo.AdjustmentWorkMapper">
+	<resultMap id="BaseResultMap"
+		type="com.champlink.common.domain.staff.baseInfo.AdjustmentWork">
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="staff_id" jdbcType="BIGINT" property="staffId" />
+		<result column="change_type" jdbcType="VARCHAR" property="changeType" />
+		<result column="change_date" jdbcType="TIMESTAMP" property="changeDate" />
+		<result column="change_reason" jdbcType="VARCHAR" property="changeReason" />
+		<result column="original_base" jdbcType="VARCHAR" property="originalBase" />
+		<result column="original_dept" jdbcType="VARCHAR" property="originalDept" />
+		<result column="original_position" jdbcType="VARCHAR" property="originalPosition" />
+		<result column="original_grade" jdbcType="VARCHAR" property="originalGrade" />
+		<result column="original_rank" jdbcType="VARCHAR" property="originalRank" />
+		<result column="new_base" jdbcType="VARCHAR" property="newBase" />
+		<result column="new_dept" jdbcType="VARCHAR" property="newDept" />
+		<result column="new_position" jdbcType="VARCHAR" property="newPosition" />
+		<result column="new_grade" jdbcType="VARCHAR" property="newGrade" />
+		<result column="new_rank" jdbcType="VARCHAR" property="newRank" />
+		<result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+		<result column="is_wage_adjustment" jdbcType="VARCHAR" property="isWageAdjustment" />
+		<result column="temporarily_type" jdbcType="VARCHAR" property="temporarilyType" />
+		<result column="temporarily_start_date" jdbcType="TIMESTAMP" property="temporarilyStartDate" />
+		<result column="temporarily_end_date" jdbcType="TIMESTAMP" property="temporarilyEndDate" />
+		<result column="expatriate_type" jdbcType="VARCHAR" property="expatriateType" />
+		<result column="expatriate_start_date" jdbcType="TIMESTAMP" property="expatriateStartDate" />
+		<result column="expatriate_end_date" jdbcType="TIMESTAMP" property="expatriateEndDate" />
+		<result column="job_content" jdbcType="VARCHAR" property="jobContent" />
+		<result column="retire_type" jdbcType="VARCHAR" property="retireType" />
+		<result column="retire_date" jdbcType="TIMESTAMP" property="retireDate" />
+		<result column="retire_management_unit" jdbcType="VARCHAR" property="retireManagementUnit" />
+		<result column="examine_unit" jdbcType="VARCHAR" property="examineUnit" />
+		<result column="approval_number" jdbcType="VARCHAR" property="approvalNumber" />
+		<result column="other_explain" jdbcType="VARCHAR" property="otherExplain" />
+		<result column="leave_type" jdbcType="VARCHAR" property="leaveType" />
+		<result column="leave_reason" jdbcType="VARCHAR" property="leaveReason" />
+		<result column="leave_date" jdbcType="TIMESTAMP" property="leaveDate" />
+		<result column="leave_direction" jdbcType="VARCHAR" property="leaveDirection" />
+		<result column="is_blacklist" jdbcType="VARCHAR" property="isBlacklist" />
+		<result column="blacklist_reason" jdbcType="VARCHAR" property="blacklistReason" />
+		<result column="is_lieu_notice_wages" jdbcType="VARCHAR" property="isLieuNoticeWages" />
+		<result column="is_compensatory_payment" jdbcType="VARCHAR" property="isCompensatoryPayment" />
+		<result column="compensation_month" jdbcType="VARCHAR" property="compensationMonth" />
+		<result column="amount_compensation" jdbcType="VARCHAR" property="amountCompensation" />
+		<result column="is_perform_competitive_restriction" jdbcType="VARCHAR" property="isPerformCompetitiveRestriction" />
+		<result column="start_perform_date" jdbcType="TIMESTAMP" property="startPerformDate" />
+		<result column="end_perform_date" jdbcType="TIMESTAMP" property="endPerformDate" />
+		<result column="is_train_agreement" jdbcType="VARCHAR" property="isTrainAgreement" />
+		<result column="under_service_compensate" jdbcType="VARCHAR" property="underServiceCompensate" />
+		<result column="job_status" jdbcType="VARCHAR" property="jobStatus" />
+		<result column="work_date" jdbcType="TIMESTAMP" property="workDate" />
+		<result column="entry_before_age" jdbcType="VARCHAR" property="entryBeforeAge" />
+		<result column="created_by" jdbcType="BIGINT" property="createdBy" />
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+		<result column="real_end_time" jdbcType="TIMESTAMP" property="realEndTime" />
+		<result column="job_title" jdbcType="VARCHAR" property="jobTitle" />
+		<result column="staff_classify" jdbcType="VARCHAR" property="staffClassify" />
+		<result column="original_staff_no" jdbcType="VARCHAR" property="originalStaffNo" />
+		<result column="new_staff_no" jdbcType="VARCHAR" property="newStaffNo" />
+		<result column="new_dept_id" jdbcType="BIGINT" property="newDeptId" />
+	</resultMap>
+
+<!-- 批量插入人员信息 -->
+  <insert id="insertStaffMove" parameterType="java.util.List">
+      insert into stf_adjustment_work
+        (staff_id,change_type,leave_date,leave_reason,
+        created_by, created_time)
+      values 
+      <foreach collection="list" item="item" separator=",">
+        (#{item.staffId},'DIMISSION',#{item.leaveDate},#{item.leaveReason},
+        #{item.createdBy}, #{item.createdTime})
+      </foreach>
+  </insert>
+
+	<!-- 添加 -->
+	<insert id="insertAdjustmentWork"
+		parameterType="com.champlink.common.domain.staff.baseInfo.AdjustmentWork">
+		insert into stf_adjustment_work
+		(staff_id, change_type, change_date,
+		original_company, original_dept,
+		original_position, original_duty,
+		original_staff_type, change_reason, new_company, new_dept,
+		new_position, new_duty,
+		new_staff_type)
+		values
+		<foreach collection="ids" item="item" separator=",">
+			(#{item},#{work.changeType}, #{work.changeDate},
+			#{work.originalCompany}, #{work.originalDept},
+			#{work.originalPosition}, #{work.originalDuty},
+			#{work.originalStaffType}, #{work.changeReason}, #{work.newCompany},
+			#{work.newDept}, #{work.newPosition}, #{work.newDuty},
+			#{work.newStaffType})
+		</foreach>
+	</insert>
+
+	<insert id="addStaffMove"
+		parameterType="com.champlink.common.domain.staff.baseInfo.AdjustmentWork">
+		insert into stf_adjustment_work (staff_id, change_type,
+		change_date, change_reason, original_base,
+		original_dept,
+		original_position, original_grade,
+		original_rank, new_base, new_dept,
+		new_position, new_grade, new_rank,
+		is_wage_adjustment,
+		temporarily_type,
+		temporarily_start_date, temporarily_end_date,
+		expatriate_type, expatriate_start_date,
+		expatriate_end_date,
+		job_content, retire_type,
+		retire_date, retire_management_unit,
+		examine_unit,
+		approval_number, other_explain, leave_type,
+		leave_reason,
+		leave_date, leave_direction,
+		is_blacklist, blacklist_reason,
+		is_lieu_notice_wages,
+		is_compensatory_payment, compensation_month,
+		amount_compensation, is_perform_competitive_restriction,
+		start_perform_date, end_perform_date, is_train_agreement,
+		under_service_compensate,job_status, work_date, entry_before_age,
+		created_by, created_time,job_title,staff_classify,
+		original_staff_no, new_staff_no, new_dept_id, real_end_time)
+		values (#{staffId}, #{changeType},
+		#{changeDate}, #{changeReason}, #{originalBase},
+		#{originalDept},
+		#{originalPosition}, #{originalGrade},
+		#{originalRank}, #{newBase},
+		#{newDept},
+		#{newPosition}, #{newGrade}, #{newRank},
+		#{isWageAdjustment}, #{temporarilyType},
+		#{temporarilyStartDate},
+		#{temporarilyEndDate},
+		#{expatriateType}, #{expatriateStartDate},
+		#{expatriateEndDate}, #{jobContent}, #{retireType},
+		#{retireDate},
+		#{retireManagementUnit}, #{examineUnit},
+		#{approvalNumber},
+		#{otherExplain}, #{leaveType},
+		#{leaveReason}, #{leaveDate},
+		#{leaveDirection},
+		#{isBlacklist}, #{blacklistReason},
+		#{isLieuNoticeWages},
+		#{isCompensatoryPayment}, #{compensationMonth},
+		#{amountCompensation}, #{isPerformCompetitiveRestriction},
+		#{startPerformDate}, #{endPerformDate}, #{isTrainAgreement},
+		#{underServiceCompensate}, #{jobStatus}, #{workDate},
+		#{entryBeforeAge},
+		#{createdBy}, #{createdTime}, #{jobTitle},#{staffClassify},
+		#{originalStaffNo}, #{newStaffNo}, #{newDeptId}, #{realEndTime})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateAdjustmentWork"
+		parameterType="com.champlink.common.domain.staff.baseInfo.AdjustmentWork">
+		update stf_adjustment_work
+		<set>
+			<if test="temporarilyEndDate != null">
+				temporarily_end_date = #{temporarilyEndDate},
+			</if>
+			<if test="expatriateEndDate != null">
+				expatriate_end_date = #{expatriateEndDate},
+			</if>
+			<if test="realEndTime != null">
+				real_end_time = #{realEndTime}
+			</if>
+		</set>
+		<where>
+			created_time = (select created_time from ( select
+			max(created_time) as created_time from stf_adjustment_work t1 where
+			t1.created_time &lt;= now() and change_type = #{changeType}) as b )
+			<if test="rowId != null">
+				and row_id = #{rowId}
+			</if>
+			and change_type = #{changeType}
+		</where>
+	</update>
+
+	<!-- 根据人员id删除 -->
+	<delete id="delAdjustmentWorkListByStaffId">
+		delete from stf_adjustment_work
+		where row_id = #{rowId}
+	</delete>
+
+	<!-- 根据人员id查询 -->
+	<select id="queryAdjustmentWorkList" resultMap="BaseResultMap">
+		select *
+		from
+		stf_adjustment_work
+		<where>
+		  del_flag= '0'
+		  <if test="staffId != null and staffId != '' ">
+		  and staff_id = #{staffId}
+		  </if>
+		  <if test="changeType != null and changeType != '' ">
+		  and change_type = #{changeType}
+		  </if>
+		</where>
+	</select>
+
+	<select id="getAdjustmentBy" resultMap="BaseResultMap">
+		<![CDATA[
+			select * from
+			stf_adjustment_work
+			where created_time =
+			(SELECT
+			    max(created_time) as created_time
+			FROM
+			    stf_adjustment_work
+			WHERE
+			    del_flag= '0'
+			AND created_time <= now()
+			AND change_type = #{changeType}
+			AND staff_id = #{staffId})
+		]]>
+	</select>
+
+
+	<!-- 根据人员id查询 -->
+	<select id="pageList" resultMap="BaseResultMap">
+		select b.staff_name,b.staff_no,c.* from stf_adjustment_work c ,stf_base_info b
+	   <where>
+	         c.staff_id=b.row_id and c.del_flag= '0'
+          <if test="params.staffName != null and params.staffName != ''">
+	         and b.staff_name like '%${params.staffName}%'
+	       </if>
+	      <if test="params.staffNo != null and params.staffNo != ''">
+	         and b.staff_no like '%${params.staffNo}%'
+	      </if>
+	      <if test="params.identityNo != null and params.identityNo != ''">
+            and b.identity_no like concat('%',concat(#{params.identityNo},'%'))
+          </if>
+          <if test="params.deptIds != null and params.deptIds.size > 0">
+             and (c.new_dept_id in
+             <foreach collection="params.deptIds" item="item" open="(" close=")" separator=",">
+                 #{item.rowId}
+             </foreach>
+             or c.new_dept_id is null)
+          </if>
+          <if test="params.staffId != null and params.staffId != '' ">
+          and c.staff_id = #{params.staffId}
+          </if>
+          <if test="params.changeType != null and params.changeType != '' ">
+             and c.change_type = #{params.changeType}
+          </if>
+          <if test="params.startDate != null">
+            <![CDATA[
+            AND DATE_FORMAT(c.created_time,'%Y-%m-%d') >= DATE_FORMAT(#{params.startDate},'%Y-%m-%d')
+             ]]>
+          </if>
+          <if test="params.endDate != null">
+            <![CDATA[
+            AND DATE_FORMAT(c.created_time,'%Y-%m-%d') <= DATE_FORMAT(#{params.endDate},'%Y-%m-%d')
+             ]]>
+          </if>
+          <if test="params.staffIdList != null">
+			 and  c.created_by in
+			 <foreach collection="params.staffIdList" item="item" open="(" close=")" separator=",">
+				 #{item}
+			 </foreach>
+		  </if>	
+        </where>
+        order by c.created_time desc
+	</select>
+
+
+	<select id="getByRowId" resultMap="BaseResultMap">
+		select * 
+		from 
+		stf_adjustment_work 
+		where del_flag= '0' and row_id = #{rowId} 
+	</select>
+	
+  <!-- 根据人员id删除 -->
+  <update id="delAllStaffId">
+    update  stf_adjustment_work set del_flag = 1 where staff_id = #{staffId}
+  </update>
+  
+  <!-- 查询所有未处理的借调外派信息 -->
+  <select id="allList" resultMap="BaseResultMap">
+        select * 
+        from 
+        stf_adjustment_work 
+        where del_flag= '0' 
+        and status = '0'
+        and change_type in ('TEMPORARILY','EXPATRIATE')
+    </select>
+    
+    <!--  -->
+    <update id="updateStatus">
+    update  stf_adjustment_work set status = 1 where row_id = #{rowId}
+  </update>
+	
+</mapper>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.attendance.dao.PersonalLeaveMapper">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.attendance.PersonalLeave">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="last_update_by" jdbcType="BIGINT" property="lastUpdateBy" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="staff_no" jdbcType="VARCHAR" property="staffNo" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="job_no_id" jdbcType="BIGINT" property="jobNoId" />
+    <result column="job_no_name" jdbcType="VARCHAR" property="jobNoName" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="holiday_type_id" jdbcType="BIGINT" property="holidayTypeId" />
+    <result column="holiday_type_name" jdbcType="VARCHAR" property="holidayTypeName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="agent_staff_id" jdbcType="BIGINT" property="agentStaffId" />
+    <result column="agent_staff_no" jdbcType="VARCHAR" property="agentStaffNo" />
+    <result column="agent_staff_name" jdbcType="VARCHAR" property="agentStaffName" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="hours" jdbcType="DOUBLE" property="hours" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="base_id" jdbcType="BIGINT" property="baseId" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <result column="real_start_date" jdbcType="TIMESTAMP" property="realStartDate" />
+    <result column="real_end_date" jdbcType="TIMESTAMP" property="realEndDate" />
+    <result column="real_hours" jdbcType="DOUBLE" property="realHours" />
+  </resultMap>
+  
+  <!-- 删除 -->
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update  atd_personal_leave set del_flag = 1 
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 插入 -->
+  <insert id="insert" parameterType="com.champlink.common.domain.attendance.PersonalLeave">
+    insert into atd_personal_leave (row_id, created_by, created_time, 
+      last_update_by, last_update_time, staff_id, 
+      staff_no, staff_name, job_no_id, 
+      job_no_name, dept_id, dept_name, 
+      holiday_type_id, holiday_type_name, status, 
+      agent_staff_id, agent_staff_no, agent_staff_name, 
+      start_date, end_date, hours,base_id, base_name)
+    values (#{rowId,jdbcType=BIGINT}, #{createdBy,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateBy,jdbcType=BIGINT}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{staffId,jdbcType=BIGINT}, 
+      #{staffNo,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, #{jobNoId,jdbcType=BIGINT}, 
+      #{jobNoName,jdbcType=VARCHAR}, #{deptId,jdbcType=BIGINT}, #{deptName,jdbcType=VARCHAR}, 
+      #{holidayTypeId,jdbcType=BIGINT}, #{holidayTypeName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{agentStaffId,jdbcType=BIGINT}, #{agentStaffNo,jdbcType=VARCHAR}, #{agentStaffName,jdbcType=VARCHAR}, 
+      #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{hours,jdbcType=BIGINT}, #{baseId}, #{baseName})
+  </insert>
+  
+  <!-- 更新 -->
+  <update id="updateByPrimaryKey" parameterType="com.champlink.common.domain.attendance.PersonalLeave">
+    update atd_personal_leave
+    <set>
+    <if test="createdBy != null and createdBy != '' ">
+    created_by = #{createdBy,jdbcType=BIGINT},
+    </if>
+    <if test="createdTime != null">
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+       </if>
+      <if test="lastUpdateBy != null and lastUpdateBy != '' ">
+      last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+       </if>
+      <if test="lastUpdateTime != null ">
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+       </if>
+      <if test="staffId != null and staffId != '' ">
+      staff_id = #{staffId,jdbcType=BIGINT},
+       </if>
+      <if test="staffNo != null and staffNo != '' ">
+      staff_no = #{staffNo,jdbcType=VARCHAR},
+       </if>
+      <if test="staffName != null and staffName != '' ">
+      staff_name = #{staffName,jdbcType=VARCHAR},
+       </if>
+      <if test="jobNoId != null and jobNoId != '' ">
+      job_no_id = #{jobNoId,jdbcType=BIGINT},
+       </if>
+      <if test="jobNoName != null and jobNoName != '' ">
+      job_no_name = #{jobNoName,jdbcType=VARCHAR},
+       </if>
+      <if test="deptId != null and deptId != '' ">
+      dept_id = #{deptId,jdbcType=BIGINT},
+       </if>
+      <if test="deptName != null and deptName != '' ">
+      dept_name = #{deptName,jdbcType=VARCHAR},
+       </if>
+      <if test="holidayTypeId != null and holidayTypeId != '' ">
+      holiday_type_id = #{holidayTypeId,jdbcType=BIGINT},
+       </if>
+      <if test="holidayTypeName != null and holidayTypeName != '' ">
+      holiday_type_name = #{holidayTypeName,jdbcType=VARCHAR},
+       </if>
+      <if test="status != null and status != '' ">
+      status = #{status,jdbcType=INTEGER},
+       </if>
+      <if test="baseId != null and baseId != '' ">
+      base_id = #{baseId},
+       </if>
+      <if test="baseName != null and baseName != '' ">
+      base_name = #{baseName},
+       </if>
+      <if test="agentStaffId != null and agentStaffId != '' ">
+      agent_staff_id = #{agentStaffId,jdbcType=BIGINT},
+       </if>
+      <if test="agentStaffNo != null and agentStaffNo != '' ">
+      agent_staff_no = #{agentStaffNo,jdbcType=VARCHAR},
+       </if>
+      <if test="agentStaffName != null and agentStaffName != '' ">
+      agent_staff_name = #{agentStaffName,jdbcType=VARCHAR},
+       </if>
+      <if test="startDate != null ">
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+       </if>
+      <if test="endDate != null">
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+       </if>
+      <if test="hours != null">
+      hours = #{hours,jdbcType=BIGINT},
+       </if>
+      <if test="realStartDate != null ">
+      real_start_date = #{realStartDate,jdbcType=TIMESTAMP},
+       </if>
+      <if test="realEndDate != null ">
+      real_end_date = #{realEndDate,jdbcType=TIMESTAMP},
+       </if>
+      <if test="realHours != null and realHours != '' ">
+      real_hours = #{realHours,jdbcType=BIGINT}
+       </if>
+      </set>
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 根据ID查询 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select * from atd_personal_leave
+    where del_flag = 0
+    and row_id = #{rowId,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 分页查询 -->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select * from atd_personal_leave
+    where del_flag = 0
+  </select>
+  
+  	 <!-- 查询列表 -->
+	<select id="pageList" resultMap="BaseResultMap">
+		select * from atd_personal_leave 
+		<where>
+			del_flag=0
+			<if test="params.staffId != null and params.staffId != '-1' ">
+				and staff_id =#{params.staffId} 
+			</if>
+			<if test="params.status != null ">
+				and status =#{params.status} 
+			</if>
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.inquiry.InquiriesDeliveryTimeDao">
+    <resultMap id="BaseResultMap" type="com.champlink.common.domain.sale.inquiry.InquiriesDeliveryTime">
+        <id column="ROW_ID" property="rowId" jdbcType="BIGINT"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="BIGINT"/>
+        <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="LAST_UPDATE_BY" property="lastUpdateBy" jdbcType="BIGINT"/>
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="del_flag" property="delFlag" jdbcType="INTEGER"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="num" property="num" jdbcType="BIGINT"/>
+        <result column="inquiries_id" property="inquiriesId" jdbcType="BIGINT"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ROW_ID, CREATED_BY, CREATED_TIME, LAST_UPDATE_BY, LAST_UPDATE_TIME, del_flag, delivery_time,
+        num, inquiries_id
+    </sql>
+
+    <!-- 分页 -->
+    <select id="pageList" resultMap="BaseResultMap"
+            parameterType="com.champlink.common.domain.sale.inquiry.InquiriesDeliveryTime">
+        select
+        <include refid="Base_Column_List"/>
+        from sale_inquiries_delivery_time
+        <where>
+            <if test="params.deliveryTime != null">
+                and delivery_time = #{params.deliveryTime}
+            </if>
+        </where>
+        order by row_id desc
+    </select>
+
+    <!-- 添加 -->
+    <insert id="insert" parameterType="com.champlink.common.domain.sale.inquiry.InquiriesDeliveryTime">
+        insert into sale_inquiries_delivery_time (CREATED_BY, CREATED_TIME, del_flag,
+          delivery_time, num, inquiries_id
+          )
+        values (
+          #{createdBy,jdbcType=BIGINT},now(), #{delFlag,jdbcType=INTEGER},
+          #{deliveryTime}, #{num,jdbcType=BIGINT}, #{inquiriesId,jdbcType=BIGINT}
+          )
+    </insert>
+
+    <!-- 批量添加交期 -->
+    <insert id="insertDeliveryTimesBatch" parameterType="java.util.List" >
+        insert into sale_inquiries_delivery_time (
+            CREATED_BY, CREATED_TIME,
+            delivery_time, num, inquiries_id
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            #{item.createdBy,jdbcType=BIGINT}, now(),
+            #{item.deliveryTime}, #{item.num,jdbcType=BIGINT}, #{item.inquiriesId,jdbcType=BIGINT}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据询单记录id批量删除 -->
+    <delete id="delByinquiriesId" parameterType="java.lang.Long">
+        delete from sale_inquiries_delivery_time
+        where inquiries_id = #{rowId,jdbcType=BIGINT}
+    </delete>
+
+    <update id="update" parameterType="com.champlink.common.domain.sale.inquiry.InquiriesDeliveryTime">
+        update sale_inquiries_delivery_time
+        <set>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy,jdbcType=BIGINT},
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                LAST_UPDATE_BY = #{lastUpdateBy,jdbcType=BIGINT},
+            </if>
+            <if test="lastUpdateTime != null">
+                LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="num != null">
+                num = #{num,jdbcType=BIGINT},
+            </if>
+            <if test="inquiriesId != null">
+                inquiries_id = #{inquiriesId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where ROW_ID = #{rowId,jdbcType=BIGINT}
+    </update>
+
+    <!-- 1vn关联查询 -->
+    <select id="getInquiriesDeliveryTimeList" resultMap="BaseResultMap">
+        select row_id, CREATED_BY, CREATED_TIME,
+            LAST_UPDATE_BY, LAST_UPDATE_TIME, del_flag,
+            delivery_time, num, inquiries_id
+        from sale_inquiries_delivery_time
+        <where>
+            1=1
+            <if test="inquiriesId != null">
+                and inquiries_id = #{inquiriesId}
+            </if>
+
+        </where>
+    </select>
+
+</mapper>

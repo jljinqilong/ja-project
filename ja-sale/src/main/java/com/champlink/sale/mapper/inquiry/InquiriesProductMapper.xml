@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.inquiry.InquiriesProductDao">
+    <resultMap id="BaseResultMap" type="com.champlink.common.domain.sale.inquiry.InquiriesProduct">
+        <id column="ROW_ID" property="rowId" jdbcType="BIGINT"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="BIGINT"/>
+        <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="LAST_UPDATE_BY" property="lastUpdateBy" jdbcType="BIGINT"/>
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="del_flag" property="delFlag" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="product_no" property="productNo" jdbcType="VARCHAR"/>
+        <result column="cell_number_id" property="cellNumberId" jdbcType="BIGINT"/>
+        <result column="cell_number" property="cellNumber" jdbcType="INTEGER"/>
+        <result column="power" property="power" jdbcType="VARCHAR"/>
+        <result column="unit_price" property="unitPrice" jdbcType="DECIMAL"/>
+        <result column="unit_id" property="unitId" jdbcType="BIGINT"/>
+        <result column="num" property="num" jdbcType="BIGINT"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL"/>
+        <result column="battery_type_id" property="batteryTypeId" jdbcType="BIGINT"/>
+        <result column="inquiries_id" property="inquiriesId" jdbcType="BIGINT"/>
+        <result column="product_id" property="productId" jdbcType="BIGINT"/>
+        <result column="total_power" property="totalPower"/>
+        <result column="give_num" property="giveNum"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ROW_ID, CREATED_BY, CREATED_TIME, LAST_UPDATE_BY, LAST_UPDATE_TIME, del_flag, status,
+        product_no, cell_number_id, cell_number, power, unit_price, unit_id, num, amount, battery_type_id,
+        inquiries_id,product_id,total_power
+    </sql>
+
+    <!-- 分页 -->
+    <select id="pageList" resultMap="BaseResultMap"
+            parameterType="com.champlink.common.domain.sale.inquiry.InquiriesProduct">
+        select
+          <include refid="Base_Column_List"/>
+        from sale_inquiries_product
+        <where>
+            i.del_flag = 0
+            <if test="params.customerName != null and params.customerName != ''">
+                and c.customer_name like concat('%',#{params.customerName},'%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取对象 -->
+    <select id="getInquiriesProduct" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sale_inquiries_product
+        where ROW_ID = #{rowId,jdbcType=BIGINT}
+    </select>
+
+    <!-- 删除 -->
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from sale_inquiries_product
+        where ROW_ID = #{rowId,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 根据询单记录id批量删除 -->
+    <delete id="delByinquiriesId" parameterType="java.lang.Long">
+        delete from sale_inquiries_product
+        where inquiries_id = #{rowId,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 插入 -->
+    <insert id="insert" parameterType="com.champlink.common.domain.sale.inquiry.InquiriesProduct">
+    insert into sale_inquiries_product (CREATED_BY, CREATED_TIME,
+      status, product_no, cell_number_id, 
+      cell_number, power, unit_price, 
+      unit_id, num, amount, battery_type_id, inquiries_id,product_id,total_power,give_num
+      )
+    values (
+        #{createdBy,jdbcType=BIGINT},
+        now(),
+        #{productNo,jdbcType=VARCHAR},
+        #{cellNumberId,jdbcType=BIGINT},
+        #{cellNumber,jdbcType=INTEGER},
+        #{power,jdbcType=VARCHAR},
+        #{unitPrice,jdbcType=DECIMAL},
+        #{unitId},
+        #{num},
+        #{amount,jdbcType=DECIMAL},
+        #{batteryTypeId,jdbcType=BIGINT},
+        #{inquiriesId,jdbcType=BIGINT},
+        #{productId,jdbcType=BIGINT},
+        #{totalPower},
+        #{giveNum}
+      )
+  </insert>
+
+    <!-- 批量添加产品 -->
+    <insert id="insertProductBatch" parameterType="java.util.List" >
+        insert into sale_inquiries_product (
+            CREATED_BY,CREATED_TIME, product_no,
+            cell_number_id,cell_number, power,
+            unit_price,unit_id, num, amount, battery_type_id, inquiries_id,product_id,total_power, give_num
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            #{item.createdBy,jdbcType=BIGINT},
+            now(),
+            #{item.productNo},
+            #{item.cellNumberId},
+            #{item.cellNumber},
+            #{item.power},
+            #{item.unitPrice},
+            #{item.unitId},
+            #{item.num},
+            #{item.amount},
+            #{item.batteryTypeId},
+            #{item.inquiriesId},
+            #{item.productId},
+            #{item.totalPower},
+            #{item.giveNum}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 逻辑删除 -->
+    <update id="updateDel" parameterType="java.lang.Long">
+      update sale_inquiries_product set del_flag = 1 where row_id = #{rowId}
+    </update>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="com.champlink.common.domain.sale.inquiry.InquiriesProduct">
+        update sale_inquiries_product
+        <set>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy,jdbcType=BIGINT},
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                LAST_UPDATE_BY = #{lastUpdateBy,jdbcType=BIGINT},
+            </if>
+            <if test="lastUpdateTime != null">
+                LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="productNo != null">
+                product_no = #{productNo,jdbcType=VARCHAR},
+            </if>
+            <if test="cellNumberId != null">
+                cell_number_id = #{cellNumberId,jdbcType=BIGINT},
+            </if>
+            <if test="cellNumber != null">
+                cell_number = #{cellNumber,jdbcType=INTEGER},
+            </if>
+            <if test="power != null">
+                power = #{power,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="unitId != null">
+                unit_id = #{unitId},
+            </if>
+            <if test="num != null">
+                num = #{num,jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="batteryTypeId != null">
+                battery_type_id = #{batteryTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="inquiriesId != null">
+                inquiries_id = #{inquiriesId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where ROW_ID = #{rowId,jdbcType=BIGINT}
+    </update>
+
+    <!-- 1vn关联查询 -->
+    <select id="getInquiriesProductList" resultMap="BaseResultMap">
+        select i.row_id, i.CREATED_BY, i.del_flag,
+          i.status, i.cell_number_id,
+          i.cell_number, i.power, i.unit_price,
+          i.unit_id, i.num, i.amount, i.battery_type_id,i.product_id,i.total_power,
+          p.product_no,i.give_num,i.inquiries_id
+        from sale_inquiries_product i left join sale_product p on i.product_id = p.row_id
+        <where>
+            1=1
+            <if test="inquiriesId != null">
+                and i.inquiries_id = #{inquiriesId}
+            </if>
+        </where>
+    </select>
+</mapper>

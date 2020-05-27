@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.contract.CompanyRecordDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.contract.CompanyRecord">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="job_application_a" jdbcType="INTEGER" property="jobApplicationA" />
+    <result column="competition_agreement" jdbcType="INTEGER" property="competitionAgreement" />
+    <result column="staff_register_b" jdbcType="INTEGER" property="staffRegisterB" />
+    <result column="hr_read_receipt" jdbcType="INTEGER" property="hrReadReceipt" />
+    <result column="hire_chack" jdbcType="INTEGER" property="hireChack" />
+    <result column="staff_handbook" jdbcType="INTEGER" property="staffHandbook" />
+    <result column="resume" jdbcType="INTEGER" property="resume" />
+    <result column="photo" jdbcType="INTEGER" property="photo" />
+    <result column="id_card_copies" jdbcType="INTEGER" property="idCardCopies" />
+    <result column="pay_card_info" jdbcType="INTEGER" property="payCardInfo" />
+    <result column="residence_booklet_copies" jdbcType="INTEGER" property="residenceBookletCopies" />
+    <result column="position_description" jdbcType="INTEGER" property="positionDescription" />
+    <result column="graduation_certificate_copies" jdbcType="INTEGER" property="graduationCertificateCopies" />
+    <result column="student_id_card_copies" jdbcType="INTEGER" property="studentIdCardCopies" />
+    <result column="diploma_copies" jdbcType="INTEGER" property="diplomaCopies" />
+    <result column="internship_contract" jdbcType="INTEGER" property="internshipContract" />
+    <result column="relevant_certificate_copies" jdbcType="INTEGER" property="relevantCertificateCopies" />
+    <result column="labour_agreement" jdbcType="INTEGER" property="labourAgreement" />
+    <result column="medical_examination_report" jdbcType="INTEGER" property="medicalExaminationReport" />
+    <result column="back_survey_report" jdbcType="INTEGER" property="backSurveyReport" />
+    <result column="before_company_dimission" jdbcType="INTEGER" property="beforeCompanyDimission" />
+    <result column="labor_contract" jdbcType="INTEGER" property="laborContract" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="intellectual_property_agreement" jdbcType="INTEGER" property="intellectualPropertyAgreement" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+  
+  <!-- 新增 -->
+  <insert id="add" parameterType="com.champlink.common.domain.staff.contract.CompanyRecord" >
+    insert into stf_company_record
+    (staff_id,      job_application_a,             competition_agreement,      staff_register_b,
+     hr_read_receipt,               hire_chack,                 staff_handbook,
+     resume,                        photo,                      id_card_copies,   
+     pay_card_info,                 residence_booklet_copies,   position_description,
+     graduation_certificate_copies, student_id_card_copies,     diploma_copies,
+     internship_contract,           relevant_certificate_copies,labour_agreement, 
+     medical_examination_report,    back_survey_report,         before_company_dimission,  
+     labor_contract,                remark ,                    intellectual_property_agreement)
+    values 
+    (#{staffId},     #{jobApplicationA},          #{competitionAgreement},      #{staffRegisterB},  
+     #{hrReadReceipt},            #{hireChack},                 #{staffHandbook},          
+     #{resume},                   #{photo},                     #{idCardCopies},
+     #{payCardInfo},              #{residenceBookletCopies},    #{positionDescription},
+   #{graduationCertificateCopies},#{studentIdCardCopies},       #{diplomaCopies},          
+     #{internshipContract},       #{relevantCertificateCopies}, #{labourAgreement},        
+     #{medicalExaminationReport}, #{backSurveyReport},          #{beforeCompanyDimission},    
+     #{laborContract},            #{remark},                    #{intellectualPropertyAgreement})
+  </insert>
+  
+  <!-- 删除 -->
+  <update id="delById">
+    update stf_company_record set del_flag = '1'
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 修改 -->
+  <update id="update" parameterType="com.champlink.common.domain.staff.contract.CompanyRecord">
+    update stf_company_record
+    <set>
+        <if test="jobApplicationA != null" >
+		job_application_a = #{jobApplicationA},
+		</if>
+		<if test="competitionAgreement != null" >
+		competition_agreement = #{competitionAgreement},
+		</if>
+		<if test="staffRegisterB != null" >
+		staff_register_b = #{staffRegisterB},
+		</if>
+		<if test="hrReadReceipt != null" >
+		hr_read_receipt = #{hrReadReceipt},
+		</if>
+		<if test="hireChack != null" >
+		hire_chack = #{hireChack},
+		</if>
+		<if test="staffHandbook != null" >
+		staff_handbook = #{staffHandbook},
+		</if>
+		<if test="resume != null" >
+		resume = #{resume},
+		</if>
+		<if test="photo != null" >
+		photo = #{photo},
+		</if>
+		<if test="idCardCopies != null" >
+		id_card_copies = #{idCardCopies},
+		</if>
+		<if test="payCardInfo != null" >
+		pay_card_info = #{payCardInfo},
+		</if>
+		<if test="residenceBookletCopies != null" >
+		residence_booklet_copies = #{residenceBookletCopies},
+		</if>
+		<if test="positionDescription != null" >
+		position_description = #{positionDescription},
+		</if>
+		<if test="graduationCertificateCopies != null" >
+		graduation_certificate_copies = #{graduationCertificateCopies},
+		</if>
+		<if test="studentIdCardCopies != null" >
+		student_id_card_copies = #{studentIdCardCopies},
+		</if>
+		<if test="diplomaCopies != null" >
+		diploma_copies = #{diplomaCopies},
+		</if>
+		<if test="internshipContract != null" >
+		internship_contract = #{internshipContract},
+		</if>
+		<if test="relevantCertificateCopies != null" >
+		relevant_certificate_copies = #{relevantCertificateCopies},
+		</if>
+		<if test="labourAgreement != null" >
+		labour_agreement = #{labourAgreement},
+		</if>
+		<if test="medicalExaminationReport != null" >
+		medical_examination_report = #{medicalExaminationReport},
+		</if>
+		<if test="backSurveyReport != null" >
+		back_survey_report = #{backSurveyReport},
+		</if>
+		<if test="beforeCompanyDimission != null" >
+		before_company_dimission = #{beforeCompanyDimission},
+		</if>
+		<if test="laborContract != null" >
+		labor_contract = #{laborContract},
+		</if>
+		<if test="remark != null" >
+		remark = #{remark},
+		</if>
+		<if test="intellectualPropertyAgreement != null" >
+		intellectual_property_agreement = #{intellectualPropertyAgreement},
+        </if>
+    </set>
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 查询列表 -->
+  <select id="pageList" resultMap="BaseResultMap">
+      select * from stf_company_record
+   <where>
+     del_flag= '0'
+     <if test="params.staffId != null and params.staffId != ''">
+         and staff_id = #{params.staffId}
+     </if>
+   </where>
+  </select>
+  
+  <!-- 根据rowId查询明细 -->
+  <select id="getById" resultMap="BaseResultMap">
+      select * from stf_company_record where ROW_ID = #{rowId}
+  </select>
+  
+</mapper>

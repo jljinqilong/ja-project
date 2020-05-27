@@ -1,0 +1,16 @@
+server:
+  port: 10003
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.3.138:3333/ja_erp?zeroDateTimeBehavior=convertToNull&useUnicode=TRUE&characterEncoding=utf8&autoReconnect=true
+    username: root
+    password: 123456
+    hikari:
+      maximum-pool-size: 1
+  redis:
+    host: 192.168.3.138
+    port: 6379
+  activemq:
+    broker-url: tcp://192.168.3.138:61617
+    user: admin
+    password: admin

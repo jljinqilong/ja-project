@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.system.dao.RefRoleDataDao">
+
+	<insert id="addBatch">
+		insert into sys_ref_role_data (role_id,org_id,is_half) values
+		<foreach collection="list" item="item" separator=",">
+		    (#{roleId},#{item},#{isHalf})
+		</foreach>
+	</insert>
+	
+	<select id="queryRoleDataForId" resultType="java.lang.String">
+	    select org_id 
+	    from sys_ref_role_data
+	    where role_id = #{roleId} and is_half = 1
+	</select>
+
+	<!-- 根据角色ID删除该角色关联所有数据权限 -->
+	<delete id="delByRoleId">
+		delete from sys_ref_role_data where role_id=#{roleId}
+	</delete>
+	
+	<!-- 根据用户id查询数据权限 -->
+	<select id="searchRoleDataByUserId" resultType="java.lang.Long">
+	    select distinct rd.org_id from sys_ref_user_role ur 
+	    left join sys_ref_role_data rd on ur.role_id = rd.role_id
+	    where ur.user_id = #{userId}
+	</select>
+
+
+    <update id="addOrgToUpdateData">
+        update sys_ref_role_data set is_half = 0 where org_id in
+        <foreach collection="orgIds" item="item" open="(" separator="," close=")">
+		    #{item}
+		</foreach>
+    </update>
+
+</mapper>

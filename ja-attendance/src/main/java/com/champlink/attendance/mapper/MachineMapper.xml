@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.attendance.dao.MachineMapper">
+	<resultMap id="BaseResultMap"
+		type="com.champlink.common.domain.attendance.Machine">
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="created_by" jdbcType="BIGINT"
+			property="createdBy" />
+		<result column="created_time" jdbcType="TIMESTAMP"
+			property="createdTime" />
+		<result column="last_update_by" jdbcType="BIGINT"
+			property="lastUpdateBy" />
+		<result column="last_update_time" jdbcType="TIMESTAMP"
+			property="lastUpdateTime" />
+		<result column="machine_name" jdbcType="VARCHAR"
+			property="machineName" />
+		<result column="base_id" jdbcType="BIGINT" property="baseId" />
+		<result column="factory_id" jdbcType="BIGINT"
+			property="factoryId" />
+		<result column="seq" jdbcType="BIGINT" property="seq" />
+		<result column="earliest_sign_in" jdbcType="BIGINT"
+			property="earliestSignIn" />
+		<result column="latest_sign_in" jdbcType="BIGINT"
+			property="latestSignIn" />
+		<result column="earliest_sign_off" jdbcType="BIGINT"
+			property="earliestSignOff" />
+		<result column="latest_sign_off" jdbcType="BIGINT"
+			property="latestSignOff" />
+		<result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+	</resultMap>
+
+	<!--逻辑删除 -->
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		update atd_machine set del_flag = 1 where row_id = #{rowId}
+	</update>
+
+	<!-- 插入 -->
+	<insert id="insert"
+		parameterType="com.champlink.common.domain.attendance.Machine">
+		insert into atd_machine (created_by, created_time,
+		last_update_by, last_update_time, machine_name,
+		base_id, factory_id, seq,
+		earliest_sign_in, latest_sign_in, earliest_sign_off,
+		latest_sign_off)
+		values (#{createdBy,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP},
+		#{lastUpdateBy,jdbcType=BIGINT}, #{lastUpdateTime,jdbcType=TIMESTAMP},
+		#{machineName,jdbcType=VARCHAR},
+		#{baseId,jdbcType=BIGINT}, #{factoryId,jdbcType=BIGINT}, #{seq,jdbcType=BIGINT},
+		#{earliestSignIn,jdbcType=BIGINT}, #{latestSignIn,jdbcType=BIGINT},
+		#{earliestSignOff,jdbcType=BIGINT},
+		#{latestSignOff,jdbcType=BIGINT})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateByPrimaryKey"
+		parameterType="com.champlink.common.domain.attendance.Machine">
+		update atd_machine
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=BIGINT},
+			</if>
+			<if test="createdTime != null">
+				created_time = #{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="machineName != null">
+				machine_name = #{machineName,jdbcType=VARCHAR},
+			</if>
+			<if test="baseId != null">
+				base_id = #{baseId,jdbcType=BIGINT},
+			</if>
+			<if test="factoryId != null">
+				factory_id = #{factoryId,jdbcType=BIGINT},
+			</if>
+			<if test="seq != null">
+				seq = #{seq,jdbcType=BIGINT},
+			</if>
+			<if test="earliestSignIn != null">
+				earliest_sign_in = #{earliestSignIn,jdbcType=BIGINT},
+			</if>
+			<if test="latestSignIn != null">
+				latest_sign_in = #{latestSignIn,jdbcType=BIGINT},
+			</if>
+			<if test="earliestSignOff != null">
+				earliest_sign_off = #{earliestSignOff,jdbcType=BIGINT},
+			</if>
+			<if test="latestSignOff != null">
+				latest_sign_off = #{latestSignOff,jdbcType=BIGINT},
+			</if>
+		</set>
+		where row_id = #{rowId,jdbcType=BIGINT}
+	</update>
+
+	<!-- 根据ID查询 -->
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select *
+		from atd_machine
+		where del_flag = 0
+		and row_id = #{rowId,jdbcType=BIGINT}
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="selectAll" resultMap="BaseResultMap">
+		select *
+		from atd_machine
+		where del_flag = 0
+	</select>
+	
+	 <!-- 查询列表 -->
+	<select id="pageList" resultMap="BaseResultMap">
+		select * from atd_machine 
+		<where>
+			del_flag=0
+			<if test="params.baseId != null and params.baseId != '' and params.baseId != '-1' ">
+				and base_id =#{params.baseId} 
+			</if>
+			<if test="params.factoryId != null and params.factoryId != '' and params.factoryId != '-1' ">
+				and factory_id =#{params.factoryId}  
+			</if>
+			<if test="params.seq != null and params.seq != ''">
+				and seq like concat('%',#{params.seq},'%')
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="getCountByMachineName" resultType="int">
+		select count(row_id) from atd_machine 
+		where del_flag = 0 and machine_name = #{machineName}
+	</select>
+	
+	<select id="getMachineByMachineName" resultMap="BaseResultMap">
+		select * from atd_machine 
+		where del_flag = 0 and machine_name = #{machineName}
+	</select>
+</mapper>

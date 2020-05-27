@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.contract.AwardDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.contract.Award">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="award_name" jdbcType="VARCHAR" property="awardName" />
+    <result column="award_type" jdbcType="BIGINT" property="awardType" />
+    <result column="award_rank" jdbcType="BIGINT" property="awardRank" />
+    <result column="award_time" jdbcType="DATE" property="awardTime" />
+    <result column="year" jdbcType="DATE" property="year" />
+    <result column="ratify_unit" jdbcType="VARCHAR" property="ratifyUnit" />
+    <result column="award_cause" jdbcType="VARCHAR" property="awardCause" />
+    <result column="award_gist" jdbcType="VARCHAR" property="awardGist" />
+    <result column="award_measure" jdbcType="VARCHAR" property="awardMeasure" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="file" jdbcType="VARCHAR" property="file" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="credential_issue_date" jdbcType="DATE" property="credentialIssueDate" />
+    <result column="credential_issue_org" jdbcType="VARCHAR" property="credentialIssueOrg" />
+    <result column="reward_form" jdbcType="VARCHAR" property="rewardForm" />
+  </resultMap>
+  
+  <!-- 新增 -->
+  <insert id="add" parameterType="com.champlink.common.domain.staff.contract.Award" >
+    insert into stf_award
+    (staff_id,        award_name,    award_type,    award_rank,    award_time,
+     year,            ratify_unit,   award_cause,   award_gist,
+     award_measure,   remark,        file,credential_issue_date,credential_issue_org,reward_form)
+    values 
+    (#{staffId},     #{awardName},  #{awardType},  #{awardRank},  #{awardTime},
+     #{year},        #{ratifyUnit}, #{awardCause}, #{awardGist},
+     #{awardMeasure},#{remark},     #{file},#{credentialIssueDate},#{credentialIssueOrg},#{rewardForm})
+  </insert>
+  
+  <!-- 删除 -->
+  <update id="delById">
+    update stf_award set del_flag = '1'
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 修改 -->
+  <update id="update" parameterType="com.champlink.common.domain.staff.contract.Award">
+    update stf_award
+    <set>
+      <if test="awardName != null" >
+        award_name = #{awardName},
+      </if>
+      <if test="awardType != null" >
+         award_type = #{awardType},
+      </if>
+      <if test="awardRank != null" >
+        award_rank = #{awardRank},
+      </if>
+      <if test="awardTime != null" >
+        award_time = #{awardTime},
+      </if>
+      <if test="year != null" >
+        year = #{year},
+      </if>
+      <if test="ratifyUnit != null" >
+        ratify_unit = #{ratifyUnit},
+      </if>
+      <if test="awardCause != null" >
+        award_cause = #{awardCause},
+      </if>
+      <if test="awardGist != null" >
+        award_gist = #{awardGist},
+      </if>
+      <if test="awardMeasure != null" >
+        award_measure = #{awardMeasure},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark}
+      </if>
+      <if test="file != null" >
+        file = #{file},
+      </if>
+      <if test="credentialIssueDate != null" >
+        credential_issue_date = #{credentialIssueDate},
+      </if>
+      <if test="credentialIssueOrg != null" >
+        credential_issue_org = #{credentialIssueOrg},
+      </if>
+      <if test="rewardForm != null" >
+        reward_form = #{rewardForm},
+      </if>
+    </set>
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 查询列表 -->
+  <select id="pageList" resultMap="BaseResultMap">
+      SELECT * FROM stf_award
+   <where>
+     del_flag= '0'
+     <if test="params.staffId != null and params.staffId != ''">
+         and staff_id = #{params.staffId}
+     </if>
+     <if test="params.awardName != null and params.awardName != ''">
+         and award_name=#{params.awardName}
+     </if>
+   </where>
+  </select>
+  
+  <!-- 根据rowId查询明细 -->
+  <select id="getById" resultMap="BaseResultMap">
+      select * from stf_award where ROW_ID = #{rowId}
+  </select>
+  
+   <!-- 删除 -->
+  <update id="delAllByStaffId">
+    update stf_award set del_flag = '1'
+    where staff_id = #{staffId}
+  </update>
+  
+</mapper>

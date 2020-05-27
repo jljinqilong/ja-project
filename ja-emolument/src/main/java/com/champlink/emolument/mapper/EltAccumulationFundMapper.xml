@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.emolument.dao.EltAccumulationFundDao">
+    <resultMap id="BaseResultMap" type="com.champlink.common.domain.emolument.EltAccumulationFund">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="row_id" jdbcType="BIGINT" property="rowId"/>
+        <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+        <result column="created_time" jdbcType="DATE" property="createdTime" />
+        <result column="last_update_by" jdbcType="BIGINT" property="lastUpdateBy" />
+        <result column="last_update_time" jdbcType="DATE" property="lastUpdateTime" />
+        <result column="base_id" jdbcType="BIGINT" property="baseId"/>
+        <result column="rule_name" jdbcType="VARCHAR" property="ruleName"/>
+        <result column="social_insurance_base" jdbcType="DECIMAL" property="socialInsuranceBase"/>
+        <result column="personal_proportion" jdbcType="DECIMAL" property="personalProportion"/>
+        <result column="personal_amount" jdbcType="DECIMAL" property="personalAmount"/>
+        <result column="company_ratio" jdbcType="DECIMAL" property="companyRatio"/>
+        <result column="company_amount" jdbcType="DECIMAL" property="companyAmount"/>
+        <result column="personal_supplementary_ratio" jdbcType="DECIMAL" property="personalSupplementaryRatio"/>
+        <result column="personal_supplementary_amount" jdbcType="DECIMAL" property="personalSupplementaryAmount"/>
+        <result column="company_supplementary_proportion" jdbcType="DECIMAL" property="companySupplementaryProportion"/>
+        <result column="company_supplementary_amount" jdbcType="DECIMAL" property="companySupplementaryAmount"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+    </resultMap>
+
+    <!-- 新增公积金规则 -->
+    <insert id="add" parameterType="com.champlink.common.domain.emolument.EltAccumulationFund">
+    insert into elt_accumulation_fund (
+        base_id,
+        created_by,
+        created_time,
+        last_update_by,
+        last_update_time,
+        rule_name,
+        social_insurance_base,
+        personal_proportion,
+        personal_amount,
+        company_ratio,
+        company_amount,
+        personal_supplementary_ratio,
+        personal_supplementary_amount,
+        company_supplementary_proportion,
+        company_supplementary_amount,
+        remarks)
+    values (
+        #{baseId,jdbcType=INTEGER},
+        #{createdBy,jdbcType=BIGINT},
+        NOW(),
+        #{lastUpdateBy,jdbcType=BIGINT},
+        #{lastUpdateTime,jdbcType=DATE},
+        #{ruleName,jdbcType=VARCHAR},
+        #{socialInsuranceBase,jdbcType=DECIMAL},
+        #{personalProportion,jdbcType=DECIMAL},
+        #{personalAmount,jdbcType=DECIMAL},
+        #{companyRatio,jdbcType=DECIMAL},
+        #{companyAmount,jdbcType=DECIMAL},
+        #{personalSupplementaryRatio,jdbcType=DECIMAL},
+        #{personalSupplementaryAmount,jdbcType=DECIMAL},
+        #{companySupplementaryProportion,jdbcType=DECIMAL},
+        #{companySupplementaryAmount,jdbcType=DECIMAL},
+        #{remarks,jdbcType=VARCHAR})
+  </insert>
+
+
+    <!-- 查询公积金规则列表 -->
+    <select id="pageList" resultMap="BaseResultMap">
+        select * from elt_accumulation_fund
+        <where>
+            del_flag=0
+            <if test="params.baseId != null and params.baseId != -1">
+                and base_id = #{params.baseId}
+            </if>
+            <if test="params.ruleName != null and params.ruleName != ''">
+                and rule_name like concat('%',#{params.ruleName},'%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 删除 -->
+    <update id="delById">
+      update elt_accumulation_fund set del_flag=1 where ROW_ID=#{eltAccumulationFundId}
+    </update>
+
+    <!-- 批量删除 -->
+    <update id="beachDel">
+        update elt_accumulation_fund set del_flag=1
+        where ROW_ID in
+        <foreach collection="list" item="item" open="(" separator="," close=")">#{item}</foreach>
+    </update>
+
+    <update id="empty">
+        update elt_accumulation_fund set del_flag=1
+    </update>
+
+    <!-- 修改公积金 -->
+    <update id="update" parameterType="com.champlink.common.domain.emolument.EltAccumulationFund">
+        update elt_accumulation_fund
+        <set>
+            <if test="baseId != null">
+                base_id = #{baseId,jdbcType=BIGINT},
+            </if>
+            <if test="createdBy != null">
+                created_by = #{createdBy,jdbcType=BIGINT},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime,jdbcType=DATE},
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+            </if>
+                last_update_time = now(),
+            <if test="ruleName != null">
+                rule_name = #{ruleName,jdbcType=BIGINT},
+            </if>
+            <if test="socialInsuranceBase != null">
+                social_insurance_base = #{socialInsuranceBase,jdbcType=DECIMAL},
+            </if>
+            <if test="personalProportion != null">
+                personal_proportion = #{personalProportion,jdbcType=DECIMAL},
+            </if>
+            <if test="personalAmount != null">
+                personal_amount = #{personalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="companyRatio != null">
+                company_ratio = #{companyRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="companyAmount != null">
+                company_amount = #{companyAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="personalSupplementaryRatio != null">
+                personal_supplementary_ratio = #{personalSupplementaryRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="personalSupplementaryAmount != null">
+                personal_supplementary_amount = #{personalSupplementaryAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="companySupplementaryProportion != null">
+                company_supplementary_proportion = #{companySupplementaryProportion,jdbcType=DECIMAL},
+            </if>
+            <if test="companySupplementaryAmount != null">
+                company_supplementary_amount = #{companySupplementaryAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ROW_ID = #{rowId,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据公积金规则名称和基地查询 -->
+    <select id="getByNameAndId" parameterType="com.champlink.common.domain.emolument.EltAccumulationFund" resultMap="BaseResultMap">
+        select
+          *
+        from
+          elt_accumulation_fund
+            <where>
+                del_flag=0
+                <if test="baseId != null and baseId != ''">
+                    and base_id = #{baseId}
+                </if>
+                <if test="ruleName != null and ruleName != ''">
+                    and rule_name = #{ruleName}
+                </if>
+            </where>
+  </select>
+
+    <!-- 根据EltAccumulationFund查询明细 -->
+    <select id="getById" resultMap="BaseResultMap">
+      select * from elt_accumulation_fund where row_id = #{rowId} and del_flag=0
+    </select>
+
+</mapper>

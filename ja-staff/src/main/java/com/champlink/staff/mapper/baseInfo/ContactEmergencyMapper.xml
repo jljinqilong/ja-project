@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.baseInfo.ContactEmergencyMapper">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.baseInfo.ContactEmergency">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+    <result column="relationship" jdbcType="VARCHAR" property="relationship" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="wechat_qq" jdbcType="VARCHAR" property="wechatQq" />
+  </resultMap>
+  
+  <!-- 添加 -->
+  <insert id="insertContactEmergency" parameterType="com.champlink.common.domain.staff.baseInfo.ContactEmergency">
+      insert into stf_contact_emergency
+        (staff_id, contact_name, relationship, mobile, address,wechat_qq)
+      values 
+        (#{staffId}, #{contactName}, #{relationship}, #{mobile}, #{address},#{wechatQq})
+  </insert>
+  
+  <!-- 更新 -->
+  <update id="updateContactEmergency" parameterType="com.champlink.common.domain.staff.baseInfo.ContactEmergency">
+    update stf_contact_emergency
+    <set>
+        <if test="staffId != null">
+            staff_id = #{staffId},
+        </if>
+        <if test="contactName != null">
+            contact_name = #{contactName},
+        </if>
+        <if test="relationship != null">
+            relationship = #{relationship},
+        </if>
+        <if test="mobile != null">
+            mobile = #{mobile},
+        </if>
+        <if test="address != null">
+            address = #{address}
+        </if>
+        <if test="wechatQq != null">
+            wechat_qq = #{wechatQq}
+        </if>
+    </set>
+    where row_id = #{rowId}
+  </update>
+  
+  <!-- 根据人员id删除 -->
+  <delete id="delContactEmergencyListByStaffId">
+    delete from stf_contact_emergency where row_id = #{rowId}
+  </delete>
+  
+  <!-- 根据人员id查询 -->
+  <select id="queryContactEmergencyList" resultMap="BaseResultMap">
+    select * 
+    from stf_contact_emergency
+    where staff_id = #{staffId}
+  </select>
+  
+  <select id="getByRowId" resultMap="BaseResultMap">
+    select * 
+    from stf_contact_emergency
+    where row_id = #{rowId}
+  </select>
+  
+    <!-- 根据人员id删除 -->
+  <delete id="delAllStaffId">
+    delete from stf_contact_emergency where staff_id = #{staffId}
+  </delete>
+  
+</mapper>

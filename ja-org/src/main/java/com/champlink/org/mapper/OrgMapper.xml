@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.org.dao.OrgDao">
+	<resultMap id="BaseResultMap"
+		type="com.champlink.common.domain.org.Org">
+		<!-- WARNING - @mbg.generated -->
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="created_by" jdbcType="BIGINT"
+			property="createdBy" />
+		<result column="last_update_by" jdbcType="BIGINT"
+			property="lastUpdateBy" />
+		<result column="last_update_time" jdbcType="TIMESTAMP"
+			property="lastUpdateTime" />
+		<result column="created_time" jdbcType="TIMESTAMP"
+			property="createdTime" />
+		<result column="parent_id" jdbcType="VARCHAR"
+			property="parentId" />
+		<result column="function_type" jdbcType="BIGINT"
+			property="functionType" />
+		<result column="base_or_dept_name" jdbcType="VARCHAR"
+			property="baseOrDeptName" />
+
+		<result column="base_or_dept_code" jdbcType="VARCHAR"
+			property="baseOrDeptCode" />
+		<result column="base_or_dept_short_name" jdbcType="VARCHAR"
+			property="baseOrDeptShortName" />
+
+		<result column="establish_date" jdbcType="TIMESTAMP"
+			property="establishDate" />
+		<result column="effective_date" jdbcType="TIMESTAMP"
+			property="effectiveDate" />
+		<result column="business_unit" jdbcType="VARCHAR"
+			property="businessUnit" />
+		<result column="level_id" jdbcType="BIGINT" property="levelId" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="is_fictitious" jdbcType="INTEGER"
+			property="isFictitious" />
+		<result column="dept_duty" jdbcType="VARCHAR"
+			property="deptDuty" />
+		<result column="summary" jdbcType="VARCHAR" property="summary" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="is_org" jdbcType="INTEGER" property="isOrg" />
+		<result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+	</resultMap>
+
+
+	<!-- 新增 -->
+	<insert id="add"
+		parameterType="com.champlink.common.domain.org.Org">
+
+		<selectKey keyProperty="rowId" resultType="long"
+			order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+
+		insert into org(created_by,
+		last_update_by,
+		last_update_time,created_time, parent_id, function_type,
+		establish_date,effective_date,business_unit,level_id,address,is_fictitious,dept_duty,summary,remark,is_org,base_or_dept_name,base_or_dept_code,base_or_dept_short_name)
+		values (#{createdBy,jdbcType=BIGINT},
+		#{lastUpdateBy,jdbcType=BIGINT},
+		#{lastUpdateTime,jdbcType=TIMESTAMP},#{createdTime}, #{parentId},
+		#{functionType},
+		#{establishDate},
+		#{effectiveDate}, #{businessUnit},
+		#{levelId},
+		#{address},#{isFictitious},#{deptDuty},#{summary}, #{remark},
+		#{isOrg},#{baseOrDeptName},#{baseOrDeptCode},#{baseOrDeptShortName})
+	</insert>
+
+	<!-- 删除 -->
+	<update id="delById">
+		update org set del_flag=1 where ROW_ID=#{rowId}
+	</update>
+
+	<!-- 更新 -->
+	<update id="update">
+		update org
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=BIGINT},
+			</if>
+			<if test="createdTime != null">
+				created_time = #{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="establishDate != null">
+				establish_date = #{establishDate},
+			</if>
+			<if test="levelId != null">
+				level_id = #{levelId},
+			</if>
+			<if test="baseOrDeptName != null and baseOrDeptName != ''">
+				base_or_dept_name = #{baseOrDeptName},
+			</if>
+			<if
+				test="baseOrDeptShortName != null and baseOrDeptShortName != ''">
+				base_or_dept_short_name = #{baseOrDeptShortName},
+			</if>
+			<if test="effectiveDate != null">
+				effective_date = #{effectiveDate},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId},
+			</if>
+			<if test="baseOrDeptCode != null and baseOrDeptCode != ''">
+				base_or_dept_code = #{baseOrDeptCode},
+			</if>
+			<if test="deptDuty != null">
+				dept_duty = #{deptDuty},
+			</if>
+			<if test="address != null">
+				address = #{address},
+			</if>
+		</set>
+		where ROW_ID=#{rowId}
+	</update>
+
+
+	<select id="findOne" resultMap="BaseResultMap">
+		select
+		*
+		from org
+
+		where
+		row_id=#{rowId} and del_flag=0
+	</select>
+	
+	<select id="findListByRowIds" resultMap="BaseResultMap">
+		select
+		*
+		from org
+		where
+		row_id in 
+			<foreach collection="ids" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+			and del_flag=0
+	</select>
+
+	<!-- 获取所有的组织架构 -->
+	<select id="allList" resultMap="BaseResultMap">
+		select * from org
+		where del_flag=0
+	</select>
+
+	<select id="findListByParentId" resultMap="BaseResultMap">
+		select * from org
+		where del_flag=0 and parent_id=#{parentId}
+	</select>
+
+	<select id="queryOrgAndOrgInfoList"
+		resultType="com.champlink.common.domain.org.OrgAndOrgInfo">
+		select a.row_id,a.created_time, a.parent_id,
+		a.function_type,
+		a.establish_date,a.effective_date,a.business_unit,a.level_id,a.address,a.is_fictitious,a.dept_duty,a.summary,a.remark,is_org,a.base_or_dept_name,a.base_or_dept_code,a.base_or_dept_short_name,
+		b.org_id, b.report_latitude,
+		b.report_superior,b.contact_phone,contact_facsimile,b.contact_zipcode,b.contact_url,b.contact_address,b.leader_no,b.leader_name,b.leader_phone,b.is_valid,dept_num
+		from org a,org_info b
+		where a.del_flag=0 and b.del_flag = 0 and a.row_id = b.org_id
+	</select>
+
+	<select id="queryOrgByParentId"
+		resultType="com.champlink.common.domain.org.Org">
+		select * from org where
+		del_flag=0 and row_id = #{parentId}
+	</select>
+
+
+	<select id="queryOrgCount" resultType="int">
+		select count(row_id) from
+		org
+	</select>
+
+	<!-- 查询组织机构简称是否已经存在 -->
+	<select id="queryOrgCountByShortName" resultType="int">
+		select
+		count(row_id) from org where base_or_dept_short_name =
+		#{baseOrDeptShortName} and del_flag = 0
+	</select>
+
+	<!-- 查询基地名称是否已经存在 -->
+	<select id="queryBaseCountByName" resultType="int">
+		select
+		count(row_id) from org where base_or_dept_name = #{baseOrDeptName} and
+		del_flag = 0 and is_org = 0
+	</select>
+	
+		<!--  -->
+	<select id="queryMaxCountByParent" resultMap="BaseResultMap">
+		select * from org where base_or_dept_code = (select max(base_or_dept_code + 0) from org where parent_id = #{parentId});
+	</select>
+
+</mapper>

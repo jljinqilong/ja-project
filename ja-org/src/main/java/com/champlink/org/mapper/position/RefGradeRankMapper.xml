@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.org.dao.position.RefGradeRankDao">
+ <resultMap id="BaseResultMap" type="com.champlink.common.domain.org.position.RefGradeRank">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="grade_id" jdbcType="BIGINT" property="gradeId" />
+    <result column="rank_id" jdbcType="BIGINT" property="rankId" />
+  </resultMap>
+	<insert id="addRefGradeRank">
+		insert into org_ref_grade_rank (grade_id,rank_id)
+		values
+		(#{gradeId},#{rankId})
+	</insert>
+	<delete id="delById" parameterType="com.champlink.common.domain.org.position.RefGradeRank">
+		delete from org_ref_grade_rank where row_id=#{rowId}
+	</delete>
+	<!-- 查询明细 -->
+	
+	<select id="getByGradeId" resultMap="BaseResultMap">
+	    select * from org_ref_grade_rank where grade_id = #{gradeId}
+	</select>
+	
+	<delete id="delByGradeId" parameterType="long">
+		delete from org_ref_grade_rank where grade_id=#{gradeId}
+	</delete>
+	
+	<delete id="delByRankId" parameterType="long">
+		delete from org_ref_grade_rank where rank_id=#{rankId}
+	</delete>
+	
+	<select id="allList" resultMap="BaseResultMap">
+		select * from org_ref_grade_rank
+	</select>
+	
+	</mapper>

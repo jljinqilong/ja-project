@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.system.dao.CodeDao">
+	<resultMap id="RMBase" type="com.champlink.common.domain.system.Code">
+		<id column="ROW_ID" property="rowId" />
+		<result column="TYPE_ID" property="typeId" />
+		<result column="CODE" property="code" />
+		<result column="NAME" property="name" />
+		<result column="DESC_" property="desc" />
+		<result column="ORDER_NO" property="orderNo" />
+		<result column="STATUS" property="status" />
+		<result column="DEL_FLAG" property="delFlag" />
+	</resultMap>
+
+	<!-- 新增 -->
+	<insert id="add" parameterType="com.champlink.common.domain.system.Code">
+		insert into SYS_CODE(TYPE_ID, CODE, NAME, DESC_,ORDER_NO)
+		values (#{typeId}, #{code}, #{name}, #{desc}, #{orderNo})
+	</insert>
+
+	<!-- 删除 -->
+	<update id="delByIds">
+		update SYS_CODE set del_flag=1 where ROW_ID in
+		<foreach collection="list" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</update>
+	<update id="changeStatus">
+		update SYS_CODE set status=#{status} where ROW_ID in
+		<foreach collection="list" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</update>
+
+	<!-- 修改 -->
+	<update id="update">
+		update SYS_CODE
+		<set>
+			<if test="name != null">
+				NAME=#{name},
+			</if>
+			<if test="code != null">
+				code=#{code},
+			</if>
+			<if test="desc != null">
+				desc_=#{desc},
+			</if>
+			<if test="orderNo != null">
+				order_no=#{orderNo},
+			</if>
+			<if test="status != null">
+				status=#{status},
+			</if>
+		</set>
+		where row_id = #{rowId}
+	</update>
+
+	<!-- 根据id查询明细 -->
+	<select id="getById" resultMap="RMBase">
+		select * from SYS_CODE where ROW_ID = #{rowId}
+	</select>
+
+	<!-- 根据类型code查询列表 -->
+	<select id="getByTypeCode" resultMap="RMBase">
+		select t1.* 
+		from SYS_CODE t1 
+		left join sys_code_type t2 on t1.type_id=t2.row_id 
+		where t2.CODE = #{typeCode} 
+		and status=0 
+		and t1.del_flag=0
+	</select>
+
+	<!-- 根据code 和 name 查询 -->
+	<select id="getByCodeAndName" resultMap="RMBase">
+		select t1.*
+		from SYS_CODE t1
+		left join sys_code_type t2 on t1.type_id=t2.row_id
+		where t2.CODE = #{typeCode}
+		and t1.name = #{name}
+		and status=0
+		and t1.del_flag=0
+	</select>
+
+	<!-- 查询所有字典项 -->
+	<select id="getAllCode" resultMap="RMBase">
+		select * 
+		from SYS_CODE
+		where del_flag=0
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="pageList" resultMap="RMBase">
+		select * from SYS_CODE
+		<where>
+			del_flag=0
+			<if test="params.code != null and params.code != ''">
+				and code like concat('%',concat(#{params.code},'%'))
+			</if>
+			<if test="params.name != null and params.name != ''">
+				and name like concat('%',concat(#{params.name},'%'))
+			</if>
+			<if test="params.typeId != null and params.typeId != -1">
+				and type_id=#{params.typeId}
+			</if>
+			<if test="params.status != null and params.status != -1">
+				and status=#{params.status}
+			</if>
+		</where>
+	</select>
+<!-- 根据typeId查询 -->
+	<select id="findByTypeId" resultMap="RMBase">
+		select * from SYS_CODE where TYPE_ID = #{typeId} and del_flag=0 order by ORDER_NO asc
+	</select>
+	
+	
+	<!-- 根据typeId查询多条code -->
+	<select id="getByTypeId" resultMap="RMBase">
+		select * from SYS_CODE where type_id = #{typeId} and del_flag = 0
+	</select>
+</mapper>

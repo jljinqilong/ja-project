@@ -1,0 +1,66 @@
+server:
+  port: 10001
+spring:
+  application:
+    name: JA-GATEWAY
+  redis:
+    host: 192.168.3.138
+    port: 6379
+    database: 0
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1
+        min-idle: 0
+  messages:
+    basename: i18n/messages
+zuul:
+  sensitive-headers:
+  okhttp:
+    enabled: true
+  semaphore:
+    max-semaphores: 500
+  host:
+    socket-timeout-millis: 30000
+    connect-timeout-millis: 30000
+    max-total-connections: 5000
+    max-per-route-connections: 5
+  routes:
+    user:
+      path: /system/**
+      service-id: JA-SYSTEM
+    staff:
+      path: /staff/**
+      service-id: JA-STAFF
+    org:
+      path: /org/**
+      service-id: JA-ORG
+    emolument:
+      path: /emolument/**
+      service-id: JA-EMOLUMENT
+    sale:
+      path: /sale/**
+      service-id: JA-SALE
+    attendance:
+      path: /attendance/**
+      service-id: JA-ATTENDANCE
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 90000
+          strategy: THREAD
+ribbon:
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  MaxTotalHttpConnections: 2000
+  MaxConnectionsPerHost: 1000
+filter: 
+  exclude:
+    login: /system/login;/system/logout;/system/user/changePassword;/staff/baseInfo/pushStaffInfo;
+    auth: /system/resource/tree/menuRes;/system/user/get/current;/system/user/get/;/system/file/download;/system/file/upload/single;/org/org/findOrgChart;/system/code/getByTpye;/org/org/baseList;/org/position/getAllPosition;/staff/outerExperience/list/;/staff/projectExperience/list/;/staff/education/list/;/staff/address/list/;/staff/relationshipSocial/list/;/staff/relationshipInner/list/;/staff/contactEmergency/list/;/org/org/getSonOrgTree/;/staff/baseInfo/getCountByIdNo/;/org/position/getAllGradeByPosition/;/org/position/getAllRankByPositionAndGrade/;/system/moduleLog/allList;/staff/baseInfo/queryBaseInfoForParams;/sale/countryCascader/list;

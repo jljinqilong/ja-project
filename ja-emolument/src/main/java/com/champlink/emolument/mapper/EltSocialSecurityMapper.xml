@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.emolument.dao.EltSocialSecurityDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.emolument.EltSocialSecurity">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="created_time" jdbcType="DATE" property="createdTime" />
+    <result column="last_update_by" jdbcType="BIGINT" property="lastUpdateBy" />
+    <result column="last_update_time" jdbcType="DATE" property="lastUpdateTime" />
+    <result column="base_id" jdbcType="BIGINT" property="baseId" />
+    <result column="rule_name" jdbcType="VARCHAR" property="ruleName" />
+    <result column="social_insurance_base" jdbcType="REAL" property="socialInsuranceBase" />
+    <result column="iindividual_person_ratio" jdbcType="REAL" property="iindividualPersonRatio" />
+    <result column="personal_pension_amount" jdbcType="REAL" property="personalPensionAmount" />
+    <result column="personal_medical_ratio" jdbcType="REAL" property="personalMedicalRatio" />
+    <result column="personal_medical_amount" jdbcType="REAL" property="personalMedicalAmount" />
+    <result column="personal_injury_ratio" jdbcType="REAL" property="personalInjuryRatio" />
+    <result column="personal_injury_amount" jdbcType="REAL" property="personalInjuryAmount" />
+    <result column="personal_unemployment_ratio" jdbcType="REAL" property="personalUnemploymentRatio" />
+    <result column="personal_unemployment_amount" jdbcType="REAL" property="personalUnemploymentAmount" />
+    <result column="personal_fertility_ratio" jdbcType="REAL" property="personalFertilityRatio" />
+    <result column="personal_fertility_amount" jdbcType="REAL" property="personalFertilityAmount" />
+    <result column="company_pension_ratio" jdbcType="REAL" property="companyPensionRatio" />
+    <result column="company_pension_amount" jdbcType="REAL" property="companyPensionAmount" />
+    <result column="company_medical_ratio" jdbcType="REAL" property="companyMedicalRatio" />
+    <result column="company_medical_amount" jdbcType="REAL" property="companyMedicalAmount" />
+    <result column="company_injury_ratio" jdbcType="REAL" property="companyInjuryRatio" />
+    <result column="company_injury_amount" jdbcType="REAL" property="companyInjuryAmount" />
+    <result column="company_unemployment_ratio" jdbcType="REAL" property="companyUnemploymentRatio" />
+    <result column="company_unemployment_amount" jdbcType="REAL" property="companyUnemploymentAmount" />
+    <result column="company_birth_ratio" jdbcType="REAL" property="companyBirthRatio" />
+    <result column="company_birth_amount" jdbcType="REAL" property="companyBirthAmount" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="del_falg" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+
+
+  <!-- 新增社保规则 -->
+  <insert id="add" parameterType="com.champlink.common.domain.emolument.EltSocialSecurity" >
+    insert into elt_social_security
+      (base_id,
+       created_by,
+       created_time,
+       last_update_by,
+       last_update_time,
+       rule_name,
+       social_insurance_base,
+       iindividual_person_ratio,
+       personal_pension_amount,
+       personal_medical_ratio,
+       personal_medical_amount,
+       personal_injury_ratio,
+       personal_injury_amount,
+       personal_unemployment_ratio,
+       personal_unemployment_amount,
+       personal_fertility_ratio,
+       personal_fertility_amount,
+       company_pension_ratio,
+       company_pension_amount,
+       company_medical_ratio,
+       company_medical_amount,
+       company_injury_ratio,
+       company_injury_amount,
+       company_unemployment_ratio,
+       company_unemployment_amount,
+       company_birth_ratio,
+       company_birth_amount,
+       remarks)
+    values
+       (#{baseId,jdbcType=BIGINT},
+       #{createdBy,jdbcType=BIGINT},
+        NOW(),
+        #{lastUpdateBy,jdbcType=BIGINT},
+        #{lastUpdateTime,jdbcType=DATE},
+        #{ruleName,jdbcType=VARCHAR},
+        #{socialInsuranceBase,jdbcType=FLOAT},
+        #{iindividualPersonRatio,jdbcType=FLOAT},
+		#{personalPensionAmount,jdbcType=FLOAT},
+		#{personalMedicalRatio,jdbcType=FLOAT},
+		#{personalMedicalAmount,jdbcType=FLOAT},
+		#{personalInjuryRatio,jdbcType=FLOAT},
+		#{personalInjuryAmount,jdbcType=FLOAT},
+		#{personalUnemploymentRatio,jdbcType=FLOAT},
+		#{personalUnemploymentAmount,jdbcType=FLOAT},
+		#{personalFertilityRatio,jdbcType=FLOAT},
+		#{personalFertilityAmount,jdbcType=FLOAT},
+		#{companyPensionRatio,jdbcType=FLOAT},
+		#{companyPensionAmount,jdbcType=FLOAT},
+		#{companyMedicalRatio,jdbcType=FLOAT},
+		#{companyMedicalAmount,jdbcType=FLOAT},
+		#{companyInjuryRatio,jdbcType=FLOAT},
+		#{companyInjuryAmount,jdbcType=FLOAT},
+		#{companyUnemploymentRatio,jdbcType=FLOAT},
+		#{companyUnemploymentAmount,jdbcType=FLOAT},
+		#{companyBirthRatio,jdbcType=FLOAT},
+		#{companyBirthAmount,jdbcType=FLOAT},
+		#{remarks,jdbcType=VARCHAR})
+  </insert>
+
+  <!-- 查询社保规则列表 -->
+  <select id="pageList" resultMap="BaseResultMap" parameterType="com.champlink.common.domain.emolument.EltSocialSecurity">
+    select
+    row_id,created_by,created_time,last_update_by,last_update_time,base_id,rule_name,social_insurance_base,iindividual_person_ratio,personal_pension_amount,personal_medical_ratio,
+    personal_medical_amount,personal_injury_ratio,personal_injury_amount,personal_unemployment_ratio,
+    personal_unemployment_amount,personal_fertility_ratio,personal_fertility_amount,company_pension_ratio,company_pension_amount,company_medical_ratio,company_medical_amount,
+    company_injury_ratio,company_injury_amount,company_unemployment_ratio,company_unemployment_amount,company_birth_ratio,company_birth_amount,remarks
+    from elt_social_security 
+    <where>
+		del_flag=0
+		<if test="params.baseId != null and params.baseId != -1">
+			and base_id = #{params.baseId}
+		</if>
+		<if test="params.ruleName != null and params.ruleName != ''">
+			and rule_name like concat('%',#{params.ruleName},'%')
+		</if>
+	</where>
+  </select>
+
+
+    <!-- 删除 -->
+	<update id="delById">
+		update elt_social_security set del_flag=1 where ROW_ID=#{eltSocialSecurityId}
+	</update>
+
+    <!-- 批量删除 -->
+    <update id="beachDel">
+        update elt_social_security set del_flag=1
+        where ROW_ID in
+        <foreach collection="list" item="item" open="(" separator="," close=")">#{item}</foreach>
+    </update>
+
+    <!-- 清空 -->
+    <update id="empty">
+        update elt_social_security set del_flag=1
+    </update>
+
+
+  <!-- 修改公积金 -->
+  <update id="update" parameterType="com.champlink.common.domain.emolument.EltSocialSecurity" >
+    update elt_social_security
+    <set>
+      <if test="baseId != null">
+        base_id = #{baseId,jdbcType=BIGINT},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=DATE},
+      </if>
+      <if test="lastUpdateBy != null">
+        last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+      </if>
+        last_update_time = NOW(),
+      <if test="ruleName != null" >
+        rule_name = #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="socialInsuranceBase != null" >
+        social_insurance_base = #{socialInsuranceBase,jdbcType=FLOAT},
+      </if>
+      <if test="iindividualPersonRatio != null" >
+        iindividual_person_ratio = #{iindividualPersonRatio,jdbcType=FLOAT},
+      </if>
+      <if test="personalPensionAmount != null" >
+        personal_pension_amount = #{personalPensionAmount,jdbcType=FLOAT},
+      </if>
+      <if test="personalMedicalRatio != null" >
+        personal_medical_ratio = #{personalMedicalRatio,jdbcType=FLOAT},
+      </if>
+      <if test="personalMedicalAmount != null" >
+        personal_medical_amount = #{personalMedicalAmount,jdbcType=FLOAT},
+      </if>
+      <if test="personalInjuryRatio != null" >
+        personal_injury_ratio = #{personalInjuryRatio,jdbcType=FLOAT},
+      </if>
+      <if test="personalInjuryAmount != null" >
+        personal_injury_amount = #{personalInjuryAmount,jdbcType=FLOAT},
+      </if>
+      <if test="personalUnemploymentRatio != null" >
+        personal_unemployment_ratio = #{personalUnemploymentRatio,jdbcType=FLOAT},
+      </if>
+      <if test="personalUnemploymentAmount != null" >
+        personal_unemployment_amount = #{personalUnemploymentAmount,jdbcType=FLOAT},
+      </if>
+      <if test="personalFertilityRatio != null" >
+        personal_fertility_ratio = #{personalFertilityRatio,jdbcType=FLOAT},
+      </if>
+      <if test="personalFertilityAmount != null" >
+        personal_fertility_amount = #{personalFertilityAmount,jdbcType=FLOAT},
+      </if>
+      <if test="companyPensionRatio != null" >
+        company_pension_ratio = #{companyPensionRatio,jdbcType=FLOAT},
+      </if>
+      <if test="companyPensionAmount != null" >
+        company_pension_amount = #{companyPensionAmount,jdbcType=FLOAT},
+      </if>
+      <if test="companyMedicalRatio != null" >
+        company_medical_ratio = #{companyMedicalRatio,jdbcType=FLOAT},
+      </if>
+      <if test="companyMedicalAmount != null" >
+        company_medical_amount = #{companyMedicalAmount,jdbcType=FLOAT},
+      </if>
+      <if test="companyInjuryRatio != null" >
+        company_injury_ratio = #{companyInjuryRatio,jdbcType=FLOAT},
+      </if>
+      <if test="companyInjuryAmount != null" >
+        company_injury_amount = #{companyInjuryAmount,jdbcType=FLOAT},
+      </if>
+      <if test="companyUnemploymentRatio != null" >
+        company_unemployment_ratio = #{companyUnemploymentRatio,jdbcType=FLOAT},
+      </if>
+      <if test="companyUnemploymentAmount != null" >
+        company_unemployment_amount = #{companyUnemploymentAmount,jdbcType=FLOAT},
+      </if>
+      <if test="companyBirthRatio != null" >
+        company_birth_ratio = #{companyBirthRatio,jdbcType=FLOAT},
+      </if>
+      <if test="companyBirthAmount != null" >
+        company_birth_amount = #{companyBirthAmount,jdbcType=FLOAT},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where ROW_ID = #{rowId,jdbcType=BIGINT}
+  </update>
+  
+  
+	<select id="getById" resultMap="BaseResultMap">
+		select * from elt_social_security where row_id = #{rowId} and del_flag = 0
+	</select>
+	
+	<select id="getByName" resultMap="BaseResultMap">
+		select * from elt_social_security where rule_name = #{ruleName} and del_flag=0
+	</select>
+  
+  
+  
+</mapper>

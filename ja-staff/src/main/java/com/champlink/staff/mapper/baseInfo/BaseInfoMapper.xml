@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.champlink.staff.dao.baseInfo.BaseInfoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.champlink.common.domain.staff.baseInfo.BaseInfo">
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="staff_no" jdbcType="VARCHAR" property="staffNo" />
+		<result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+		<result column="sex" jdbcType="BIGINT" property="sex" />
+		<result column="base_id" jdbcType="BIGINT" property="baseId" />
+		<result column="dept_id" jdbcType="BIGINT" property="deptId" />
+		<result column="position_id" jdbcType="BIGINT" property="positionId" />
+		<result column="rank_id" jdbcType="BIGINT" property="rankId" />
+		<result column="grade_id" jdbcType="BIGINT" property="gradeId" />
+		<result column="identity_type_id" jdbcType="BIGINT" property="identityTypeId" />
+		<result column="identity_no" jdbcType="VARCHAR" property="identityNo" />
+		<result column="identity_valid_date" jdbcType="TIMESTAMP" property="identityValidDate" />
+		<result column="birthdate" jdbcType="TIMESTAMP" property="birthdate" />
+		<result column="nationality" jdbcType="BIGINT" property="nationality" />
+		<result column="nation" jdbcType="BIGINT" property="nation" />
+		<result column="registered_residence" jdbcType="VARCHAR" property="registeredResidence" />
+		<result column="native_place" jdbcType="VARCHAR" property="nativePlace" />
+		<result column="fertility_status" jdbcType="VARCHAR" property="fertilityStatus" />
+		<result column="marital_status" jdbcType="BIGINT" property="maritalStatus" />
+		<result column="political_status" jdbcType="BIGINT" property="politicalStatus" />
+		<result column="first_working_time" jdbcType="TIMESTAMP" property="firstWorkingTime" />
+		<result column="staff_type" jdbcType="BIGINT" property="staffType" />
+		<result column="social_security_type" jdbcType="BIGINT" property="socialSecurityType" />
+		<result column="cost_center" jdbcType="BIGINT" property="costCenter" />
+		<result column="office_place" jdbcType="VARCHAR" property="officePlace" />
+		<result column="entry_date" jdbcType="TIMESTAMP" property="entryDate" />
+		<result column="work_type" jdbcType="BIGINT" property="workType" />
+		<result column="job_status" jdbcType="BIGINT" property="jobStatus" />
+		<result column="leave_date" jdbcType="TIMESTAMP" property="leaveDate" />
+		<result column="is_blacklist" jdbcType="BIGINT" property="isBlacklist" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="lines" jdbcType="BIGINT" property="lines_" />
+		<result column="staffClassify" jdbcType="BIGINT" property="staff_classify" />
+		<result column="operatingPost" jdbcType="BIGINT" property="operating_post" />
+		<result column="mobile" jdbcType="VARCHAR" property="mobile" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+		<result column="factory_category" jdbcType="VARCHAR" property="factoryCategory" />
+		<result column="classes" jdbcType="VARCHAR" property="classes" />
+		<result column="recruitment_channel" jdbcType="BIGINT" property="recruitmentChannel" />
+		<result column="work_card" jdbcType="VARCHAR" property="workCard" />
+		<result column="dormitory_no" jdbcType="VARCHAR" property="dormitoryNo" />
+		<result column="locker_shoebox" jdbcType="VARCHAR" property="lockerShoebox" />
+		<result column="speciality" jdbcType="VARCHAR" property="speciality" />
+		<result column="job_title" jdbcType="VARCHAR" property="jobTitle" />
+		<result column="lunar_solar_calendar" jdbcType="VARCHAR" property="lunarSolarCalendar" />
+		<result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+		<result column="created_by" jdbcType="BIGINT" property="createdBy" />
+	    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+	    <result column="last_update_by" jdbcType="BIGINT" property="lastUpdateBy" />
+	    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+	    <result column="times" jdbcType="VARCHAR" property="times" />
+	</resultMap>
+
+
+	<resultMap id="BaseResultMap2"
+		type="com.champlink.common.form.org.org.QueryCountBaseInfoByDeptId">
+		<result column="deptId" jdbcType="BIGINT" property="deptId" />
+		<result column="count" jdbcType="INTEGER" property="count" />
+	</resultMap>
+
+	<!-- 插入人员信息 -->
+	<insert id="insertBaseInfo"
+		parameterType="com.champlink.common.domain.staff.baseInfo.BaseInfo">
+		<selectKey keyProperty="rowId" resultType="long"
+			order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+		insert into stf_base_info
+		(staff_no,staff_name,sex,base_id,dept_id,position_id,rank_id,grade_id,identity_type_id,identity_no,
+		identity_valid_date,birthdate,nationality,nation,registered_residence,
+		native_place,fertility_status,marital_status,political_status,first_working_time,
+		staff_type,social_security_type,cost_center,office_place,entry_date,
+		work_type,job_status,leave_date,is_blacklist,remark,lines_,staff_classify,operating_post,mobile,email,
+		factory_category,classes,recruitment_channel,work_card,dormitory_no,locker_shoebox,speciality,job_title,lunar_solar_calendar,
+		created_by, created_time)
+		values
+		(#{staffNo},#{staffName},#{sex},#{baseId},#{deptId},#{positionId},#{rankId},#{gradeId},
+		#{identityTypeId},#{identityNo},#{identityValidDate},
+		#{birthdate},#{nationality},#{nation},#{registeredResidence},#{nativePlace},
+		#{fertilityStatus},#{maritalStatus},#{politicalStatus},#{firstWorkingTime},
+		#{staffType},#{socialSecurityType},#{costCenter},#{officePlace},#{entryDate},
+		#{workType},#{jobStatus},#{leaveDate},#{isBlacklist},#{remark},#{lines},#{staffClassify},#{operatingPost},#{mobile},#{email},
+		#{factoryCategory},#{classes},#{recruitmentChannel},#{workCard},#{dormitoryNo},#{lockerShoebox},#{speciality},#{jobTitle},#{lunarSolarCalendar},
+		#{createdBy}, #{createdTime})
+
+  </insert>
+  
+  <!-- 批量插入人员信息 -->
+  <insert id="insertBaseInfoList" parameterType="java.util.List">
+      insert into stf_base_info
+        (staff_no,staff_name,sex,base_id,dept_id,position_id,rank_id,grade_id,identity_type_id,identity_no,
+        identity_valid_date,birthdate,nationality,nation,registered_residence,
+        native_place,fertility_status,marital_status,political_status,first_working_time,
+        staff_type,social_security_type,cost_center,office_place,entry_date,
+        work_type,job_status,leave_date,is_blacklist,remark,lines_,staff_classify,operating_post,mobile,email,
+        factory_category,classes,recruitment_channel,work_card,dormitory_no,locker_shoebox,speciality,job_title,lunar_solar_calendar,
+        created_by, created_time)
+      values 
+      <foreach collection="list" item="item" separator=",">
+        (#{item.staffNo},#{item.staffName},#{item.sex},#{item.baseId},#{item.deptId},#{item.positionId},#{item.rankId},#{item.gradeId},
+        #{item.identityTypeId},#{item.identityNo},#{item.identityValidDate},
+        #{item.birthdate},#{item.nationality},#{item.nation},#{item.registeredResidence},#{item.nativePlace},
+        #{item.fertilityStatus},#{item.maritalStatus},#{item.politicalStatus},#{item.firstWorkingTime},
+        #{item.staffType},#{item.socialSecurityType},#{item.costCenter},#{item.officePlace},#{item.entryDate},
+        #{item.workType},#{item.jobStatus},#{item.leaveDate},#{item.isBlacklist},#{item.remark},#{item.lines},
+        #{item.staffClassify},#{item.operatingPost},#{item.mobile},#{item.email},
+        #{item.factoryCategory},#{item.classes},#{item.recruitmentChannel},#{item.workCard},#{item.dormitoryNo},
+        #{item.lockerShoebox},#{item.speciality},#{item.jobTitle},#{item.lunarSolarCalendar},
+        #{item.createdBy}, #{item.createdTime})
+      </foreach>
+  </insert>
+  
+  <!-- 根据人员id获取人员信息 -->
+  <select id="getBaseInfoByStaffId" resultMap="BaseResultMap">
+    select *
+    from stf_base_info 
+    <where>
+        row_id = #{staffId}
+      <if test="delFlag != null">
+          and del_flag = #{delFlag}
+      </if>
+    </where>
+  </select>
+  
+  <!-- 根据人员id逻辑删除人员信息 -->
+  <update id="logicDelBaseInfoByStaffId">
+    update stf_base_info 
+    set del_flag = #{delFlag}
+    where row_id = #{staffId}
+  </update>
+  
+  <!-- 更新人员信息 -->
+  <update id="updateBaseInfo" parameterType="com.champlink.common.domain.staff.baseInfo.BaseInfo">
+    update stf_base_info 
+    <set>
+        <if test="staffNo != null">
+            staff_no=#{staffNo},
+        </if>
+        <if test="staffName != null">
+            staff_name=#{staffName},
+        </if>
+        <if test="sex != null">
+            sex=#{sex},
+        </if>
+        <if test="baseId != null">
+            base_id=#{baseId},
+        </if>
+        <if test="deptId != null">
+            dept_id=#{deptId},
+        </if>
+        <if test="positionId != null">
+            position_id=#{positionId},
+        </if>
+        <if test="rankId != null">
+            rank_id=#{rankId},
+        </if>
+        <if test="gradeId != null">
+            grade_id=#{gradeId},
+        </if>
+        <if test="identityTypeId != null">
+            identity_type_id=#{identityTypeId},
+        </if>
+        <if test="identityNo != null">
+            identity_no=#{identityNo},
+        </if>
+        <if test="identityValidDate != null">
+            identity_valid_date=#{identityValidDate},
+        </if>
+        <if test="birthdate != null">
+            birthdate=#{birthdate},
+        </if>
+        <if test="nationality != null">
+            nationality=#{nationality},
+        </if>
+        <if test="nation != null">
+            nation=#{nation},
+        </if>
+        <if test="registeredResidence != null">
+            registered_residence=#{registeredResidence},
+        </if>
+        <if test="nativePlace != null">
+            native_place=#{nativePlace},
+        </if>
+        <if test="fertilityStatus != null">
+            fertility_status=#{fertilityStatus},
+        </if>
+        <if test="maritalStatus != null">
+            marital_status=#{maritalStatus},
+        </if>
+        <if test="politicalStatus != null">
+            political_status=#{politicalStatus},
+        </if>
+        <if test="firstWorkingTime != null">
+            first_working_time=#{firstWorkingTime},
+        </if>
+        <if test="staffType != null">
+            staff_type=#{staffType},
+        </if>
+        <if test="socialSecurityType != null">
+            social_security_type=#{socialSecurityType},
+        </if>
+        <if test="costCenter != null">
+            cost_center=#{costCenter},
+        </if>
+        <if test="officePlace != null">
+            office_place=#{officePlace},
+        </if>
+        <if test="entryDate != null">
+            entry_date=#{entryDate},
+        </if>
+        <if test="workType != null">
+            work_type=#{workType},
+        </if>
+        <if test="jobStatus != null">
+            job_status=#{jobStatus},
+        </if>
+        <if test="leaveDate != null">
+            leave_date=#{leaveDate},
+        </if>
+        <if test="isBlacklist != null">
+            is_blacklist=#{isBlacklist},
+        </if>
+        <if test="lines != null">
+            lines_ = #{lines},
+        </if>
+        <if test="staffClassify != null">
+            staff_classify=#{staffClassify},
+        </if>
+        <if test="operatingPost != null">
+            operating_post=#{operatingPost},
+        </if>
+        <if test="mobile != null">
+            mobile=#{mobile},
+        </if>
+        <if test="email != null">
+            email=#{email},
+        </if>
+        <if test="remark != null">
+            remark=#{remark},
+        </if>
+        <if test="factoryCategory != null">
+            factory_category=#{factoryCategory},
+        </if>
+        <if test="classes != null">
+            classes=#{classes},
+        </if>
+        <if test="recruitmentChannel != null">
+            recruitment_channel=#{recruitmentChannel},
+        </if>
+        <if test="workCard != null">
+            work_card=#{workCard},
+        </if>
+        <if test="dormitoryNo != null">
+            dormitory_no=#{dormitoryNo},
+        </if>
+        <if test="lockerShoebox != null">
+            locker_shoebox=#{lockerShoebox},
+        </if>
+        <if test="speciality != null">
+            speciality=#{speciality},
+        </if>
+        <if test="jobTitle != null">
+            job_title=#{jobTitle},
+        </if>
+        <if test="lunarSolarCalendar != null">
+            lunar_solar_calendar=#{lunarSolarCalendar},
+        </if>
+        <if test="lastUpdateBy != null">
+            last_update_by = #{lastUpdateBy},
+        </if>
+        <if test="lastUpdateTime != null">
+            last_update_time = #{lastUpdateTime},
+        </if>
+    </set>
+    where row_id = #{rowId}
+  </update>
+  
+  <!-- 分页查询人员信息 -->
+  <select id="queryBaseInfoList" resultMap="BaseResultMap">
+    select * 
+    from stf_base_info 
+    <where>
+        del_flag = 0
+        <if test="params.jobStatus != null">
+            and job_status = #{params.jobStatus} 
+        </if>
+        <if test="params.staffNo != null and params.staffNo != ''">
+            and staff_no like concat('%',concat(#{params.staffNo},'%'))
+        </if>
+        <if test="params.staffName != null and params.staffName != ''">
+            and staff_name like concat('%',concat(#{params.staffName},'%'))
+        </if>
+        <if test="params.identityNo != null and params.identityNo != ''">
+            and identity_no like concat('%',concat(#{params.identityNo},'%'))
+        </if>
+        <if test="params.deptIds != null and params.deptIds.size > 0">
+            and (dept_id in
+            <foreach collection="params.deptIds" item="item" open="(" close=")" separator=",">
+                #{item.rowId}
+            </foreach>
+            or dept_id is null)
+        </if>
+        <if test="params.staffIdList != null">
+			and created_by in
+			<foreach collection="params.staffIdList" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+    </where>
+    order by row_id 
+  </select>
+  
+  <!-- 根据塞选条件查询人员信息 -->
+  <select id="queryBaseInfoForParams" resultMap="BaseResultMap">
+    select row_id,staff_no,staff_name 
+    from stf_base_info 
+    <where>
+        del_flag = 0
+        <if test="jobStatus != null">
+            and job_status = #{jobStatus} 
+        </if>
+        <if test="staffNo != null and staffNo != ''">
+            and staff_no like concat('%',concat(#{staffNo},'%'))
+        </if>
+        <if test="staffName != null and staffName != ''">
+            and staff_name like concat('%',concat(#{staffName},'%'))
+        </if>
+        <if test="identityNo != null and identityNo != ''">
+            and identity_no like concat('%',concat(#{identityNo},'%'))
+        </if>
+        <if test="deptIds != null and deptIds.size > 0">
+            and dept_id in
+            <foreach collection="deptIds" item="item" open="(" close=")" separator=",">
+                #{item.rowId}
+            </foreach>
+        </if>
+        <if test="ids != null and ids.size > 0">
+            and row_id in
+            <foreach collection="ids" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </where>
+    order by row_id
+  </select>
+  <!-- 根据塞选条件导出人员信息 -->
+  <select id="queryExportExcelInfo" resultMap="BaseResultMap">
+    SELECT
+    if(b.job_status = '9', count(a.staff_id)+1, count(a.staff_id))  AS times, b.*
+	FROM stf_base_info b
+	LEFT JOIN stf_adjustment_work a ON b.row_id = a.staff_id
+	AND a.change_type IN('DIMISSION','RETIRE')
+     <where>
+      b.del_flag = 0
+        <if test="jobStatus != null">
+            and b.job_status = #{jobStatus} 
+        </if>
+        <if test="staffNo != null and staffNo != ''">
+            and b.staff_no like concat('%',concat(#{staffNo},'%'))
+        </if>
+        <if test="staffName != null and staffName != ''">
+            and b.staff_name like concat('%',concat(#{staffName},'%'))
+        </if>
+        <if test="identityNo != null and identityNo != ''">
+            and b.identity_no like concat('%',concat(#{identityNo},'%'))
+        </if>
+        <if test="deptIds != null and deptIds.size > 0">
+            and b.dept_id in
+            <foreach collection="deptIds" item="item" open="(" close=")" separator=",">
+                #{item.rowId}
+            </foreach>
+        </if>
+        <if test="ids != null and ids.size > 0">
+            and b.row_id in
+            <foreach collection="ids" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="staffIdList != null">
+			and b.created_by in
+			<foreach collection="staffIdList" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</where>
+    group by b.row_id order by b.row_id
+  </select>
+  
+  <!-- 查询一个组织机构下人数 -->
+  <select id="queryBaseInfo" resultType="Integer">
+    select count(row_id) 
+    from stf_base_info 
+    where del_flag = 0
+    and dept_id =#{deptId} and job_status=#{isOnJobId}
+  </select>
+  
+   <!-- 查询部门下的在职员工个数，返回所有部门的在职个数 -->
+   <select id="queryCountBaseInfoByDeptId" resultMap="BaseResultMap2">
+    select dept_id deptId, count(row_id) count
+    from stf_base_info 
+    where del_flag = 0
+    and job_status=#{isOnJobId} and dept_id is not null group by dept_id
+   </select>
+  
+    <!-- 查询该职衔下人数 -->
+  <select id="queryCountBaseInfoByPositionId" resultType="Integer">
+    select count(row_id) 
+    from stf_base_info 
+    where del_flag = 0
+    and position_id = #{positionId}
+  </select>
+  
+  <!-- 校验工号是否存在 -->
+  <select id="checkStaffNo" resultType="Integer">
+    select count(*) 
+    from stf_base_info 
+    where del_flag = #{delFlag}
+    and staff_no =#{staffNo}
+  </select>
+  
+  <!-- 所有员工中校验身份证号是否存在 -->
+  <select id="checkIdentityNo" resultType="Integer">
+    select count(*) 
+    from stf_base_info 
+    where del_flag = #{delFlag}
+    and identity_no =#{identityNo}
+  </select>
+  
+  <!-- 在职员工中校验身份证号是否存在 -->
+  <select id="checkIdentityNoByJob" resultType="Integer">
+    select count(*) 
+    from stf_base_info 
+    where del_flag = #{delFlag}
+    and job_status = #{jobStatus}
+    and identity_no =#{identityNo}
+    <if test="rowId != null">
+        and row_id != #{rowId}
+    </if>
+  </select>
+  
+  <!-- 在职员工中校验手机号唯一 -->
+  <select id="checkMobileByJob" resultType="Integer">
+    select count(*) 
+    from stf_base_info 
+    where del_flag = #{delFlag}
+    and job_status = #{jobStatus}
+    and mobile =#{mobile}
+    <if test="rowId != null">
+        and row_id != #{rowId}
+    </if>
+  </select>
+  
+  <!-- 在职员工中校验邮箱唯一 -->
+  <select id="checkEmailByJob" resultType="Integer">
+    select count(*) 
+    from stf_base_info 
+    where del_flag = #{delFlag}
+    and job_status = #{jobStatus}
+    and email =#{email}
+    <if test="rowId != null">
+        and row_id != #{rowId}
+    </if>
+  </select>
+
+  <!-- 更新部门 -->
+  <update id="update" parameterType="com.champlink.common.domain.staff.baseInfo.BaseInfo">
+    update stf_base_info
+    <set>
+        <if test="deptId != null">
+            dept_id=#{deptId},
+        </if> 
+         <if test="createdBy != null">
+            created_by = #{createdBy}
+        </if>
+    </set>
+     where row_id = #{rowId}
+  </update>
+  
+  <!-- 离职异动更新 -->
+  <update id="updateLeaveOffice">
+    update stf_base_info
+    <set>
+        <if test="isBlacklist != null">
+            is_blacklist=#{isBlacklist},
+        </if>
+        <if test="leaveDate != null">
+            leave_date=#{leaveDate},
+        </if>
+        <if test="isOnJob != null">
+            job_status=#{isOnJob}
+        </if>
+    </set>
+    where row_id in 
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+  </update>
+
+  <update id="delDept_ids" parameterType="java.util.List">
+    update stf_base_info
+        set dept_id = null
+     where dept_id in 
+    <foreach collection="list" item="deptId" open="(" separator="," close=")">
+          #{deptId}
+ 	</foreach>
+   </update>
+
+
+ <update id="orgMerge" >
+    update stf_base_info
+        set dept_id = #{targetId}
+     where dept_id = #{sourceId}
+   </update>
+
+  
+  <!-- 查询用户列表信息根据staffIds -->
+  <select id="getBaseInfoByIds" resultMap="BaseResultMap">
+    select * 
+    from stf_base_info 
+    where
+    row_id in 
+    <foreach collection="list" item="item" open="(" close=")" separator="," >
+       #{item}
+    </foreach>
+  </select>
+  
+  <select id="queryByDeptId" resultType="int">
+    select count(row_id) 
+    from stf_base_info 
+    where del_flag = 0
+    and dept_id = #{deptId}
+  </select>
+  
+    <select id="queryByBaseId" resultType="int">
+    select count(row_id) 
+    from stf_base_info 
+    where del_flag = 0
+    and base_id = #{baseId}
+  </select>
+  
+  <!-- 根据身份证查询入职次数 -->
+  <select id="getCountByIdNo" resultType="int">
+    select count(*) 
+    from stf_base_info 
+    where identity_no = #{idNo} 
+    and del_flag = '0'
+  </select>
+  
+  <!-- 通过工号查询员工信息 -->
+  <select id="getBaseInfoByStaffNo" resultMap="BaseResultMap">
+    select * 
+    from stf_base_info 
+    where staff_no =#{staffNo}
+    <if test="delFlag != null">
+    and del_flag = #{delFlag}
+    </if>
+  </select>
+  
+  <!-- 查询是否有离职人员 -->
+  <select id="checkHasLeave" resultType="int">
+    select count(1) 
+    from stf_base_info 
+    where del_flag = '0'
+    and job_status = #{isOnJobId}
+    and row_id in 
+    <foreach collection="ids" item="id" open="(" close=")" separator="," >
+        #{id}
+    </foreach>
+  </select>
+
+    <!--通过工号查询员工信息-->
+    <select id="getBaseInfo" resultMap="BaseResultMap">
+        select * from stf_base_info where staff_no = #{userName}
+    </select>
+
+
+    <resultMap id="BaseSelectMap" type="com.champlink.common.domain.BaseSelect">
+        <id column="rowId" property="rowId" />
+        <result column="name" property="name" />
+    </resultMap>
+
+    <select id="getSalePersonList" resultMap="BaseSelectMap">
+
+        select row_id rowId, staff_name name from stf_base_info
+        <where>
+            <if test="deptId!=null">
+                dept_id = #{deptId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getUserNameJobNumberById" resultMap="BaseResultMap" parameterType="Long">
+        select row_id,staff_no,staff_name
+        from stf_base_info
+        <where>
+            row_id = #{rowId}
+        </where>
+    </select>
+    
+    <!-- 根据组织架构ids 获取员工id -->
+    <select id="getStaffIdByOrgIds" resultType="java.lang.Long">
+        select row_id 
+        from stf_base_info
+        where dept_id in 
+        <foreach collection="orgIds" item="id" open="(" close=")" separator=",">#{id}</foreach>
+    </select>
+    
+    <!-- 根据员工id集合查询员工工号  -->
+     <select id="getStaffNoBystaffIds" resultType="java.lang.String">
+        select staff_no 
+        from stf_base_info
+        where row_id in 
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+    </select>
+</mapper>

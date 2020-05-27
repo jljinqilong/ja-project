@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.contract.ForeignResideDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.contract.ForeignReside">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="work_permit_no" jdbcType="VARCHAR" property="workPermitNo" />
+    <result column="certifying_date" jdbcType="DATE" property="certifyingDate" />
+    <result column="certifying_authority" jdbcType="VARCHAR" property="certifyingAuthority" />
+    <result column="start_date" jdbcType="DATE" property="startDate" />
+    <result column="end_date" jdbcType="DATE" property="endDate" />
+    <result column="file" jdbcType="VARCHAR" property="file" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+
+  <!-- 新增 -->
+  <insert id="add" parameterType="com.champlink.common.domain.staff.contract.ForeignReside" >
+    insert into stf_foreign_reside
+    (staff_id,  work_permit_no,   certifying_date,    certifying_authority,    start_date,    end_date,    file)
+    values 
+    (#{staffId},#{workPermitNo},  #{certifyingDate}, #{certifyingAuthority}, #{startDate}, #{endDate},#{file})
+  </insert>
+  
+  <!-- 删除 -->
+  <update id="delById">
+    update stf_foreign_reside set del_flag = '1'
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 修改 -->
+  <update id="update" parameterType="com.champlink.common.domain.staff.contract.ForeignReside">
+    update stf_foreign_reside
+    <set>
+        <if test="workPermitNo != null" >
+        work_permit_no = #{workPermitNo},
+        </if>
+        <if test="certifyingDate != null" >
+        certifying_date = #{certifyingDate},
+        </if>
+        <if test="certifyingAuthority != null" >
+        certifying_authority = #{certifyingAuthority},
+        </if>
+        <if test="startDate != null" >
+        start_date = #{startDate},
+        </if>
+        <if test="endDate != null" >
+        end_date = #{endDate},
+        </if>
+        <if test="file != null" >
+        file = #{file},
+        </if>
+    </set>
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 查询列表 -->
+  <select id="pageList" resultMap="BaseResultMap">
+      select * from stf_foreign_reside
+   <where>
+     del_flag= '0'
+     <if test="params.staffId != null and params.staffId != ''">
+         and staff_id = #{params.staffId}
+     </if>
+     <if test="params.workPermitNo != null and params.workPermitNo != ''">
+         and work_permit_no=#{params.workPermitNo}
+     </if>
+   </where>
+  </select>
+  
+  <!-- 根据rowId查询明细 -->
+  <select id="getById" resultMap="BaseResultMap">
+      select * from stf_foreign_reside where ROW_ID = #{rowId}
+  </select>
+  
+</mapper>

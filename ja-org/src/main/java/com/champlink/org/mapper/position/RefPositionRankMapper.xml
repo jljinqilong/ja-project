@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.org.dao.position.RefPositionRankDao">
+	<resultMap id="BaseResultMap" type="com.champlink.common.domain.org.position.RefPositionRank">
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="position_id" jdbcType="BIGINT" property="positionId" />
+		<result column="rank_id" jdbcType="BIGINT" property="rankId" />
+	</resultMap>
+	<insert id="addPosition" parameterType="com.champlink.common.domain.org.position.RefPositionRank" >
+		insert into org_ref_position_rank (position_id,rank_id)
+		values
+		(#{positionId},#{rankId})
+	</insert>
+	
+		<!-- 根据职衔id查询 -->
+	<select id="getByPositionId" resultMap="BaseResultMap">
+		select * from org_ref_position_rank where position_id = #{positionId}
+	</select>
+	
+	<delete id="delByPositionIdAndRankId">
+		delete from org_ref_position_rank where position_id = #{positionId} and rank_id = #{rankId}
+	</delete>
+	
+	<delete id="delByRankId">
+		delete from org_ref_position_rank where rank_id = #{rankId}
+	</delete>
+	
+	<delete id="delByPositionId">
+		delete from org_ref_position_rank where position_id = #{positionId}
+	</delete>
+	
+</mapper>

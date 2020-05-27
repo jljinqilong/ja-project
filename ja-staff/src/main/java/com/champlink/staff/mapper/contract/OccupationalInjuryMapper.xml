@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.contract.OccupationalInjuryDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.contract.OccupationalInjury">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="occupational_injury_tyle" jdbcType="BIGINT" property="occupationalInjuryTyle" />
+    <result column="occupational_injury_start_date" jdbcType="DATE" property="occupationalInjuryStartDate" />
+    <result column="disability_identification_time" jdbcType="DATE" property="disabilityIdentificationTime" />
+    <result column="disability_level" jdbcType="BIGINT" property="disabilityLevel" />
+    <result column="part_name" jdbcType="VARCHAR" property="partName" />
+    <result column="occupational_injury_time" jdbcType="DATE" property="occupationalInjuryTime" />
+    <result column="nurse_level" jdbcType="BIGINT" property="nurseLevel" />
+    <result column="occupational_injury_no" jdbcType="VARCHAR" property="occupationalInjuryNo" />
+    <result column="before_injury_salary" jdbcType="DOUBLE" property="beforeInjurySalary" />
+    <result column="accident_state" jdbcType="BIGINT" property="accidentState" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+  
+  <!-- 新增 -->
+  <insert id="add" parameterType="com.champlink.common.domain.staff.contract.OccupationalInjury" >
+    insert into stf_occupational_injury
+    (staff_id,             occupational_injury_tyle,  occupational_injury_start_date,    disability_identification_time,
+     disability_level,     part_name,                 occupational_injury_time,
+     nurse_level,          occupational_injury_no,    before_injury_salary,              accident_state)
+    values 
+    (#{staffId},           #{occupationalInjuryTyle},   #{occupationalInjuryStartDate},  #{disabilityIdentificationTime},
+    #{disabilityLevel},    #{partName},                 #{occupationalInjuryTime},
+    #{nurseLevel},         #{occupationalInjuryNo},     #{beforeInjurySalary},           #{accidentState})
+  </insert>
+  
+  <!-- 删除 -->
+  <update id="delById">
+    update stf_occupational_injury set del_flag = '1'
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 修改 -->
+  <update id="update" parameterType="com.champlink.common.domain.staff.contract.OccupationalInjury" >
+    update stf_occupational_injury
+    <set>
+        <if test="occupationalInjuryTyle != null" >
+        occupational_injury_tyle = #{occupationalInjuryTyle},
+        </if>
+        <if test="occupationalInjuryStartDate != null" >
+        occupational_injury_start_date = #{occupationalInjuryStartDate},
+        </if>
+        <if test="disabilityIdentificationTime != null" >
+        disability_identification_time = #{disabilityIdentificationTime},
+        </if>
+        <if test="disabilityLevel != null" >
+        disability_level = #{disabilityLevel},
+        </if>
+        <if test="partName != null" >
+        part_name = #{partName},
+        </if>
+        <if test="occupationalInjuryTime != null" >
+        occupational_injury_time = #{occupationalInjuryTime},
+        </if>
+        <if test="nurseLevel != null" >
+        nurse_level = #{nurseLevel},
+        </if>
+        <if test="occupationalInjuryNo != null" >
+        occupational_injury_no = #{occupationalInjuryNo},
+        </if>
+        <if test="beforeInjurySalary != null" >
+        before_injury_salary = #{beforeInjurySalary},
+        </if>
+        <if test="accidentState != null" >
+        accident_state = #{accidentState},
+        </if>
+    </set>
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 查询列表 -->
+  <select id="pageList" resultMap="BaseResultMap">
+      select * from stf_occupational_injury
+   <where>
+     del_flag= '0'
+     <if test="params.staffId != null and params.staffId != ''">
+         and staff_id = #{params.staffId}
+     </if>
+     <if test="params.occupationalInjuryTyle != null and params.occupationalInjuryTyle != ''">
+         and occupational_injury_tyle=#{params.occupationalInjuryTyle}
+     </if>
+   </where>
+  </select>
+  
+  <!-- 根据rowId查询明细 -->
+  <select id="getById" resultMap="BaseResultMap">
+      select * from stf_occupational_injury where ROW_ID = #{rowId}
+  </select>
+  
+</mapper>

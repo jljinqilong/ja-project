@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.champlink.attendance.dao.OvertimeSheetMapper">
+	<resultMap id="BaseResultMap"
+		type="com.champlink.common.domain.attendance.OvertimeSheet">
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="created_by" jdbcType="BIGINT"
+			property="createdBy" />
+		<result column="created_time" jdbcType="TIMESTAMP"
+			property="createdTime" />
+		<result column="last_update_by" jdbcType="BIGINT"
+			property="lastUpdateBy" />
+		<result column="last_update_time" jdbcType="TIMESTAMP"
+			property="lastUpdateTime" />
+		<result column="base_id" jdbcType="BIGINT" property="baseId" />
+		<result column="base_name" jdbcType="VARCHAR"
+			property="baseName" />
+		<result column="factory_id" jdbcType="BIGINT"
+			property="factoryId" />
+		<result column="factory_name" jdbcType="VARCHAR"
+			property="factoryName" />
+		<result column="staff_id" jdbcType="BIGINT" property="staffId" />
+		<result column="staff_no" jdbcType="VARCHAR" property="staffNo" />
+		<result column="staff_name" jdbcType="VARCHAR"
+			property="staffName" />
+		<result column="job_no_id" jdbcType="BIGINT" property="jobNoId" />
+		<result column="job_no_name" jdbcType="VARCHAR"
+			property="jobNoName" />
+		<result column="dept_id" jdbcType="BIGINT" property="deptId" />
+		<result column="dept_name" jdbcType="VARCHAR"
+			property="deptName" />
+		<result column="start_date" jdbcType="TIMESTAMP"
+			property="startDate" />
+		<result column="end_date" jdbcType="TIMESTAMP"
+			property="endDate" />
+		<result column="overtime_time" jdbcType="DOUBLE"
+			property="overtimeTime" />
+		<result column="reason" jdbcType="VARCHAR" property="reason" />
+		<result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+	</resultMap>
+
+	<!-- 删除 -->
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		update
+		atd_overtime_sheet
+		set del_flag = 1
+		where row_id =
+		#{rowId,jdbcType=BIGINT}
+	</update>
+
+	<!-- 插入 -->
+	<insert id="insert"
+		parameterType="com.champlink.common.domain.attendance.OvertimeSheet">
+		insert into atd_overtime_sheet (created_by,
+		created_time,
+		last_update_by, last_update_time, base_id,
+		base_name,
+		factory_id, factory_name,
+		staff_id, staff_no, staff_name,
+		job_no_id,
+		job_no_name, dept_id,
+		dept_name, start_date, end_date,
+		overtime_time,
+		reason
+		)
+		values (#{createdBy,jdbcType=BIGINT},
+		#{createdTime,jdbcType=TIMESTAMP},
+		#{lastUpdateBy,jdbcType=BIGINT},
+		#{lastUpdateTime,jdbcType=TIMESTAMP},
+		#{baseId,jdbcType=BIGINT},
+		#{baseName,jdbcType=VARCHAR}, #{factoryId,jdbcType=BIGINT},
+		#{factoryName,jdbcType=VARCHAR},
+		#{staffId,jdbcType=BIGINT},
+		#{staffNo,jdbcType=VARCHAR},
+		#{staffName,jdbcType=VARCHAR},
+		#{jobNoId,jdbcType=BIGINT}, #{jobNoName,jdbcType=VARCHAR},
+		#{deptId,jdbcType=BIGINT},
+		#{deptName,jdbcType=VARCHAR},
+		#{startDate,jdbcType=TIMESTAMP},
+		#{endDate,jdbcType=TIMESTAMP},
+		#{overtimeTime,jdbcType=BIGINT}, #{reason,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateByPrimaryKey"
+		parameterType="com.champlink.common.domain.attendance.OvertimeSheet">
+		update atd_overtime_sheet
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=BIGINT},
+			</if>
+			<if test="createdTime != null">
+				created_time = #{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by =
+				#{lastUpdateBy,jdbcType=BIGINT},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time =
+				#{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="baseId != null">
+				base_id =
+				#{baseId,jdbcType=BIGINT},
+			</if>
+			<if test="baseName != null">
+				base_name = #{baseName,jdbcType=VARCHAR},
+			</if>
+			<if test="factoryId != null">
+				factory_id = #{factoryId,jdbcType=BIGINT},
+			</if>
+			<if test="factoryName != null">
+				factory_name =
+				#{factoryName,jdbcType=VARCHAR},
+			</if>
+			<if test="staffId != null">
+				staff_id =
+				#{staffId,jdbcType=BIGINT},
+			</if>
+			<if test="staffNo != null">
+				staff_no = #{staffNo,jdbcType=VARCHAR},
+			</if>
+			<if test="staffName != null">
+				staff_name = #{staffName,jdbcType=VARCHAR},
+			</if>
+			<if test="jobNoId != null">
+				job_no_id =
+				#{jobNoId,jdbcType=BIGINT},
+			</if>
+			<if test="jobNoName != null">
+				job_no_name =
+				#{jobNoName,jdbcType=VARCHAR},
+			</if>
+			<if test="deptId != null">
+				dept_id = #{deptId,jdbcType=BIGINT},
+			</if>
+			<if test="deptName != null">
+				dept_name = #{deptName,jdbcType=VARCHAR},
+			</if>
+			<if test="startDate != null">
+				start_date =
+				#{startDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endDate != null">
+				end_date =
+				#{endDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="overtimeTime != null">
+				overtime_time =
+				#{overtimeTime,jdbcType=BIGINT},
+			</if>
+			<if test="reason != null">
+				reason = #{reason,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where row_id = #{rowId,jdbcType=BIGINT}
+	</update>
+
+	<!-- 根据ID查询 -->
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select *
+		from atd_overtime_sheet
+		where del_flag = 0
+		and row_id
+		= #{rowId,jdbcType=BIGINT}
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="pageList" resultMap="BaseResultMap">
+		select *
+		from atd_overtime_sheet
+		<where>
+			del_flag = 0
+			<if test="params.baseId != null and params.baseId != '-1' ">
+				and base_id = #{params.baseId}
+			</if>
+			<if test="params.staffId != null and params.staffId != '-1'">
+				and staff_id = #{params.staffId}
+			</if>
+		</where>
+	</select>
+</mapper>

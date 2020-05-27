@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    config:
+      profile: dev
+      discovery:
+        enabled: true
+        service-id: JA-CONFIG
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://${discovery.host:localhost}:${discovery.port:9999}/eureka

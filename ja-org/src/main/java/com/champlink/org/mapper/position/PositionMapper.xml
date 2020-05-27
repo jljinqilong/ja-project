@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.org.dao.position.PositionDao">
+	<resultMap id="BaseResultMap"
+		type="com.champlink.common.domain.org.position.Position">
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="created_by" jdbcType="BIGINT"
+			property="createdBy" />
+		<result column="created_time" jdbcType="TIMESTAMP"
+			property="createdTime" />
+		<result column="last_update_by" jdbcType="BIGINT"
+			property="lastUpdateBy" />
+		<result column="last_update_time" jdbcType="TIMESTAMP"
+			property="lastUpdateTime" />
+		<result column="position_type" jdbcType="INTEGER"
+			property="positionType" />
+		<result column="position_name" jdbcType="VARCHAR"
+			property="positionName" />
+		<result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+		<result column="staff_size" jdbcType="INTEGER"
+			property="staffSize" />
+	</resultMap>
+	<resultMap id="BaseResultMap1"
+		type="com.champlink.common.vo.PositionVO">
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="position_type" jdbcType="INTEGER"
+			property="positionType" />
+		<result column="position_name" jdbcType="VARCHAR"
+			property="positionName" />
+		<result column="rank_name" jdbcType="VARCHAR"
+			property="rankName" />
+		<result column="salary_max" jdbcType="INTEGER"
+			property="salaryMax" />
+		<result column="salary_min" jdbcType="INTEGER"
+			property="salaryMin" />
+		<result column="post_assignment" jdbcType="VARCHAR"
+			property="postAssignment" />
+		<result column="staff_size" jdbcType="INTEGER"
+			property="staffSize" />
+		<result column="file_desc" jdbcType="VARCHAR"
+			property="fileDesc" />
+		<result column="grade_name" jdbcType="VARCHAR"
+			property="gradeName" />
+	</resultMap>
+
+	<!-- 增加 -->
+	<insert id="add" useGeneratedKeys="true" keyProperty="rowId"
+		parameterType="com.champlink.common.domain.org.position.Position">
+		<selectKey keyProperty="rowId" resultType="long"
+			order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+		insert into org_position
+		(created_by, created_time,
+		last_update_by,
+		last_update_time,
+		position_type,position_name,staff_size,file_desc)
+		values
+		(#{createdBy,jdbcType=BIGINT},
+		#{createdTime,jdbcType=TIMESTAMP},
+		#{lastUpdateBy,jdbcType=BIGINT},
+		#{lastUpdateTime,jdbcType=TIMESTAMP},#{positionType},#{positionName},#{staffSize},#{fileDesc})
+	</insert>
+
+
+	<!-- 删除 -->
+	<update id="delById">
+		update org_position set del_flag= '1' where
+		ROW_ID=#{userId}
+	</update>
+
+	<!-- 修改 -->
+	<update id="update"
+		parameterType="com.champlink.common.domain.org.position.Position">
+		update org_position
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=BIGINT},
+			</if>
+			<if test="createdTime != null">
+				created_time = #{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="positionType != null">
+				position_type =#{positionType,jdbcType=VARCHAR},
+			</if>
+			<if test="positionName != null">
+				position_name =#{positionName,jdbcType=VARCHAR},
+			</if>
+			<if test="staffSize != null">
+				staff_size =#{staffSize,jdbcType=VARCHAR},
+			</if>
+			<if test="fileDesc != null">
+				file_desc =#{fileDesc,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ROW_ID = #{rowId}
+	</update>
+
+
+	<!-- 查询列表 -->
+	<select id="pageList" resultMap="BaseResultMap1">
+		SELECT
+		*
+		FROM
+		org_position
+
+		<where>
+			del_flag=0
+			<if
+				test="params.positionType != null and params.positionType != '-1'">
+				and position_type = #{params.positionType}
+			</if>
+			<if
+				test="params.positionName != null and params.positionName != ''">
+				and position_name like concat('%',#{params.positionName},'%')
+			</if>
+			<if test="params.staffIdList != null">
+				and created_by in
+				<foreach collection="params.staffIdList" item="item"
+					open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+
+	<!-- 查询明细 -->
+	<select id="getById" resultMap="BaseResultMap">
+		SELECT * from org_position where
+		row_id = #{rowId} and del_flag=0
+	</select>
+
+
+	<!-- 根据塞选条件查询人 -->
+	<select id="queryPositionForParams" resultMap="BaseResultMap1">
+		SELECT
+		*
+		FROM
+		org_position
+
+		<where>
+			del_flag=0
+			<if test="staffIdList != null">
+				and created_by in
+				<foreach collection="staffIdList" item="item"
+					open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertPositionList" parameterType="java.util.List">
+
+	</insert>
+
+
+	<!-- 导出数据查询 -->
+	<select id="exportList" resultMap="BaseResultMap1">
+		SELECT
+		*
+		FROM
+		org_position
+		<where>
+			del_flag=0
+			<if test="positionType != null and positionType != '-1' ">
+				and position_type = #{positionType}
+			</if>
+			<if test="positionName != null and positionName != ''">
+				and position_name like concat('%',#{positionName},'%')
+			</if>
+			<if test="staffIdList != null">
+				and created_by in
+				<foreach collection="staffIdList" item="item"
+					open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+
+	<!-- 查询所有的职衔 -->
+	<select id="getAllPosition" resultMap="BaseResultMap">
+		SELECT * from org_position
+		where del_flag=0
+
+	</select>
+
+</mapper>

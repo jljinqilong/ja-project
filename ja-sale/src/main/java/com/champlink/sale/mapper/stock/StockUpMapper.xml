@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.stock.StockUpDao" >
+    <resultMap id="BaseResultMap" type="com.champlink.common.domain.sale.stock.StockUp" >
+        <id column="row_id" property="rowId" jdbcType="BIGINT" />
+        <result column="created_by" property="createdBy" jdbcType="BIGINT" />
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+        <result column="last_update_by" property="lastUpdateBy" jdbcType="BIGINT" />
+        <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+        <result column="stock_no" property="stockNo" jdbcType="VARCHAR" />
+        <result column="salesman" property="salesman" jdbcType="VARCHAR" />
+        <result column="stock_address" property="stockAddress" jdbcType="BIGINT" />
+        <result column="stock_date" property="stockDate" jdbcType="TIMESTAMP" />
+        <result column="oa_no" property="oaNo" jdbcType="VARCHAR" />
+        <result column="customer" property="customer" jdbcType="BIGINT" />
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+        <result column="j_customer_name" property="jcustomerName" jdbcType="VARCHAR" />
+        <result column="contract_no" property="contractNo" jdbcType="VARCHAR" />
+        <result column="payment_info" property="paymentInfo" jdbcType="BIGINT" />
+        <result column="contract_address" property="contractAddress" jdbcType="VARCHAR" />
+        <result column="send_num" property="sendNum" jdbcType="DECIMAL" />
+        <result column="new_componentModel" property="newComponentmodel" jdbcType="VARCHAR" />
+        <result column="old_componentModel" property="oldComponentmodel" jdbcType="VARCHAR" />
+        <result column="component_type" property="componentType" jdbcType="VARCHAR" />
+        <result column="battery_process" property="batteryProcess" jdbcType="VARCHAR" />
+        <result column="package_num" property="packageNum" jdbcType="DECIMAL" />
+        <result column="coating" property="coating" jdbcType="VARCHAR" />
+        <result column="component_level" property="componentLevel" jdbcType="VARCHAR" />
+        <result column="single_power" property="singlePower" jdbcType="VARCHAR" />
+        <result column="type_a" property="typeA" jdbcType="BIGINT" />
+        <result column="total_send_num" property="totalSendNum" jdbcType="DECIMAL" />
+        <result column="unit" property="unit" jdbcType="VARCHAR" />
+        <result column="delivery_method" property="deliveryMethod" jdbcType="BIGINT" />
+        <result column="mode" property="mode" jdbcType="VARCHAR" />
+        <result column="al_process" property="alProcess" jdbcType="VARCHAR" />
+        <result column="junction_box" property="junctionBox" jdbcType="VARCHAR" />
+        <result column="shipments_inspection" property="shipmentsInspection" jdbcType="VARCHAR" />
+        <result column="power_require" property="powerRequire" jdbcType="VARCHAR" />
+        <result column="other_instruction" property="otherInstruction" jdbcType="VARCHAR" />
+        <result column="is_declaration" property="isDeclaration" jdbcType="VARCHAR" />
+        <result column="invoice_no" property="invoiceNo" jdbcType="VARCHAR" />
+        <result column="customer_requirement_exw" property="customerRequirementExw" jdbcType="VARCHAR" />
+        <result column="customer_requirement_etd" property="customerRequirementEtd" jdbcType="VARCHAR" />
+        <result column="customer_requirement_eta" property="customerRequirementEta" jdbcType="VARCHAR" />
+        <result column="goods_agent" property="goodsAgent" jdbcType="VARCHAR" />
+        <result column="shipment_port" property="shipmentPort" jdbcType="VARCHAR" />
+        <result column="destination_port" property="destinationPort" jdbcType="VARCHAR" />
+        <result column="customer_address" property="customerAddress" jdbcType="VARCHAR" />
+        <result column="contacts" property="contacts" jdbcType="VARCHAR" />
+        <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+        <result column="destination_country" property="destinationCountry" jdbcType="VARCHAR" />
+        <result column="boat_company" property="boatCompany" jdbcType="VARCHAR" />
+        <result column="telex" property="telex" jdbcType="VARCHAR" />
+        <result column="is_cover" property="isCover" jdbcType="VARCHAR" />
+        <result column="al_vender" property="alVender" jdbcType="VARCHAR" />
+        <result column="line_num" property="lineNum" jdbcType="DECIMAL" />
+        <result column="eva" property="eva" jdbcType="BIGINT" />
+        <result column="glass" property="glass" jdbcType="VARCHAR" />
+        <result column="wiring_head" property="wiringHead" jdbcType="VARCHAR" />
+        <result column="nameplate" property="nameplate" jdbcType="VARCHAR" />
+        <result column="bomid" property="bomid" jdbcType="VARCHAR" />
+        <result column="power" property="power" jdbcType="VARCHAR" />
+        <result column="trade_type" property="tradeType" jdbcType="VARCHAR" />
+        <result column="package_method" property="packageMethod" jdbcType="VARCHAR" />
+        <result column="line_length" property="lineLength" jdbcType="VARCHAR" />
+        <result column="hole_location" property="holeLocation" jdbcType="VARCHAR" />
+        <result column="check_date" property="checkDate" jdbcType="TIMESTAMP" />
+        <result column="sure_one" property="sureOne" jdbcType="VARCHAR" />
+        <result column="sure_two" property="sureTwo" jdbcType="VARCHAR" />
+        <result column="plan_date" property="planDate" jdbcType="TIMESTAMP" />
+        <result column="actual_date" property="actualDate" jdbcType="TIMESTAMP" />
+        <result column="block_num" property="blockNum" jdbcType="DECIMAL" />
+        <result column="tile_num" property="tileNum" jdbcType="DECIMAL" />
+        <result column="unsent_num" property="unsentNum" jdbcType="DECIMAL" />
+        <result column="declare_time" property="declareTime" jdbcType="TIMESTAMP" />
+        <result column="declare_broker" property="declareBroker" jdbcType="VARCHAR" />
+        <result column="declare_no" property="declareNo" jdbcType="VARCHAR" />
+        <result column="load_time" property="loadTime" jdbcType="TIMESTAMP" />
+        <result column="leave_time" property="leaveTime" jdbcType="TIMESTAMP" />
+        <result column="load_no" property="loadNo" jdbcType="VARCHAR" />
+        <result column="invoice" property="invoice" jdbcType="VARCHAR" />
+        <result column="bill_no" property="billNo" jdbcType="VARCHAR" />
+        <result column="invoice_bill" property="invoiceBill" jdbcType="VARCHAR" />
+        <result column="invoice_bill_copy" property="invoiceBillCopy" jdbcType="VARCHAR" />
+        <result column="policy" property="policy" jdbcType="VARCHAR" />
+        <result column="dn" property="dn" jdbcType="VARCHAR" />
+        <result column="inv" property="inv" jdbcType="VARCHAR" />
+        <result column="bl" property="bl" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    row_id, created_by, created_time, last_update_by, last_update_time, stock_no, salesman,
+    stock_address, stock_date, oa_no, customer, customer_name, contract_no, payment_info,
+    contract_address, send_num, new_componentModel, old_componentModel, component_type,
+    battery_process, package_num, coating, component_level, single_power, type_a, total_send_num,
+    unit, delivery_method, mode, al_process, junction_box, shipments_inspection, power_require,
+    other_instruction, is_declaration, invoice_no, customer_requirement_exw, customer_requirement_etd,
+    customer_requirement_eta, goods_agent, shipment_port, destination_port, customer_address,
+    contacts, telephone, destination_country, boat_company, telex, is_cover, al_vender,
+    line_num, eva, glass, wiring_head, nameplate, bomid, power, trade_type, package_method,
+    line_length, hole_location, check_date, sure_one, sure_two, plan_date, actual_date,
+    block_num, tile_num, unsent_num, declare_time, declare_broker, declare_no, load_time,
+    leave_time, load_no, invoice, bill_no, invoice_bill, invoice_bill_copy, policy, dn,
+    inv, bl
+  </sql>
+
+
+
+    <select id="searchList" resultMap="BaseResultMap">
+
+        SELECT t.row_id, t.created_by, t.created_time, t.last_update_by, t.last_update_time, t.stock_no, t.salesman,
+    t.stock_address, t.stock_date, t.oa_no, t.customer, t.customer_name j_customer_name, t.contract_no, t.payment_info,
+    t.contract_address, t.send_num, t.new_componentModel, t.old_componentModel, t.component_type,
+    t.battery_process, t.package_num, t.coating, t.component_level, t.single_power, t.type_a, t.total_send_num,
+    t.unit, t.delivery_method, t.mode, t.al_process, t.junction_box, t.shipments_inspection, t.power_require,
+    t.other_instruction, t.is_declaration, t.invoice_no, t.customer_requirement_exw, t.customer_requirement_etd,
+    t.customer_requirement_eta, t.goods_agent, t.shipment_port, t.destination_port, t.customer_address,
+    t.contacts, t.telephone, t.destination_country, t.boat_company, t.telex, t.is_cover, t.al_vender,
+    t.line_num, t.eva, t.glass, t.wiring_head, t.nameplate, t.bomid, t.power, t.trade_type, t.package_method,
+    t.line_length, t.hole_location, t.check_date, t.sure_one, t.sure_two, t.plan_date, t.actual_date,
+    t.block_num, t.tile_num, t.unsent_num, t.declare_time, t.declare_broker, t.declare_no, t.load_time,
+    t.leave_time, t.load_no, t.invoice, t.bill_no, t.invoice_bill, t.invoice_bill_copy, t.policy, t.dn,
+    t.inv, t.bl,t1.`customer_name`
+    FROM sale_stockup t LEFT JOIN sale_customer t1 ON t.`customer` = t1.`ROW_ID`
+    <where>
+        <if test="params.customer!=null and params.customer!=''">
+            and t.customer = #{params.customer}
+        </if>
+        <if test="params.stockAddress!=null and params.stockAddress!=''">
+            and t.stock_address = #{params.stockAddress}
+        </if>
+        <if test="params.stockNo!=null and params.stockNo!=''">
+            and t.stock_no = #{params.stockNo}
+        </if>
+
+    </where>
+        order by t.created_time desc
+    </select>
+
+
+    <insert id="add">
+        insert into sale_stockup ( created_by, created_time,
+      last_update_by, last_update_time, stock_no,
+      salesman, stock_address, stock_date,
+      oa_no, customer, customer_name,
+      contract_no, payment_info, contract_address,
+      send_num, new_componentModel, old_componentModel,
+      component_type, battery_process, package_num,
+      coating, component_level, single_power,
+      type_a, total_send_num, unit,
+      delivery_method, mode, al_process,
+      junction_box, shipments_inspection, power_require,
+      other_instruction, is_declaration, invoice_no,
+      customer_requirement_exw, customer_requirement_etd,
+      customer_requirement_eta, goods_agent, shipment_port,
+      destination_port, customer_address, contacts,
+      telephone, destination_country, boat_company,
+      telex, is_cover, al_vender,
+      line_num, eva, glass,
+      wiring_head, nameplate, bomid,
+      power, trade_type, package_method,
+      line_length, hole_location, check_date,
+      sure_one, sure_two, plan_date,
+      actual_date, block_num, tile_num,
+      unsent_num, declare_time, declare_broker,
+      declare_no, load_time, leave_time,
+      load_no, invoice, bill_no,
+      invoice_bill, invoice_bill_copy, policy,
+      dn, inv, bl)
+    values ( #{createdBy,jdbcType=BIGINT}, now(),
+      #{lastUpdateBy,jdbcType=BIGINT}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{stockNo,jdbcType=VARCHAR},
+      #{salesman,jdbcType=VARCHAR}, #{stockAddress,jdbcType=BIGINT}, #{stockDate,jdbcType=TIMESTAMP},
+      #{oaNo,jdbcType=VARCHAR}, #{customer,jdbcType=BIGINT}, #{customerName,jdbcType=VARCHAR},
+      #{contractNo,jdbcType=VARCHAR}, #{paymentInfo,jdbcType=BIGINT}, #{contractAddress,jdbcType=VARCHAR},
+      #{sendNum,jdbcType=DECIMAL}, #{newComponentmodel,jdbcType=VARCHAR}, #{oldComponentmodel,jdbcType=VARCHAR},
+      #{componentType,jdbcType=VARCHAR}, #{batteryProcess,jdbcType=VARCHAR}, #{packageNum,jdbcType=DECIMAL},
+      #{coating,jdbcType=VARCHAR}, #{componentLevel,jdbcType=VARCHAR}, #{singlePower,jdbcType=VARCHAR},
+      #{typeA,jdbcType=BIGINT}, #{totalSendNum,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR},
+      #{deliveryMethod,jdbcType=BIGINT}, #{mode,jdbcType=VARCHAR}, #{alProcess,jdbcType=VARCHAR},
+      #{junctionBox,jdbcType=VARCHAR}, #{shipmentsInspection,jdbcType=VARCHAR}, #{powerRequire,jdbcType=VARCHAR},
+      #{otherInstruction,jdbcType=VARCHAR}, #{isDeclaration,jdbcType=VARCHAR}, #{invoiceNo,jdbcType=VARCHAR},
+      #{customerRequirementExw,jdbcType=VARCHAR}, #{customerRequirementEtd,jdbcType=VARCHAR},
+      #{customerRequirementEta,jdbcType=VARCHAR}, #{goodsAgent,jdbcType=VARCHAR}, #{shipmentPort,jdbcType=VARCHAR},
+      #{destinationPort,jdbcType=VARCHAR}, #{customerAddress,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR},
+      #{telephone,jdbcType=VARCHAR}, #{destinationCountry,jdbcType=VARCHAR}, #{boatCompany,jdbcType=VARCHAR},
+      #{telex,jdbcType=VARCHAR}, #{isCover,jdbcType=VARCHAR}, #{alVender,jdbcType=VARCHAR},
+      #{lineNum,jdbcType=DECIMAL}, #{eva,jdbcType=BIGINT}, #{glass,jdbcType=VARCHAR},
+      #{wiringHead,jdbcType=VARCHAR}, #{nameplate,jdbcType=VARCHAR}, #{bomid,jdbcType=VARCHAR},
+      #{power,jdbcType=VARCHAR}, #{tradeType,jdbcType=VARCHAR}, #{packageMethod,jdbcType=VARCHAR},
+      #{lineLength,jdbcType=VARCHAR}, #{holeLocation,jdbcType=VARCHAR}, #{checkDate,jdbcType=TIMESTAMP},
+      #{sureOne,jdbcType=VARCHAR}, #{sureTwo,jdbcType=VARCHAR}, #{planDate,jdbcType=TIMESTAMP},
+      #{actualDate,jdbcType=TIMESTAMP}, #{blockNum,jdbcType=DECIMAL}, #{tileNum,jdbcType=DECIMAL},
+      #{unsentNum,jdbcType=DECIMAL}, #{declareTime,jdbcType=TIMESTAMP}, #{declareBroker,jdbcType=VARCHAR},
+      #{declareNo,jdbcType=VARCHAR}, #{loadTime,jdbcType=TIMESTAMP}, #{leaveTime,jdbcType=TIMESTAMP},
+      #{loadNo,jdbcType=VARCHAR}, #{invoice,jdbcType=VARCHAR}, #{billNo,jdbcType=VARCHAR},
+      #{invoiceBill,jdbcType=VARCHAR}, #{invoiceBillCopy,jdbcType=VARCHAR}, #{policy,jdbcType=VARCHAR},
+      #{dn,jdbcType=VARCHAR}, #{inv,jdbcType=VARCHAR}, #{bl,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="del">
+        delete from sale_stockup
+                where row_id = #{rowId,jdbcType=BIGINT}
+    </delete>
+
+
+    <select id="get" resultMap="BaseResultMap">
+        SELECT t.row_id, t.created_by, t.created_time, t.last_update_by, t.last_update_time, t.stock_no, t.salesman,
+            t.stock_address, t.stock_date, t.oa_no, t.customer, t.customer_name j_customer_name, t.contract_no, t.payment_info,
+            t.contract_address, t.send_num, t.new_componentModel, t.old_componentModel, t.component_type,
+            t.battery_process, t.package_num, t.coating, t.component_level, t.single_power, t.type_a, t.total_send_num,
+            t.unit, t.delivery_method, t.mode, t.al_process, t.junction_box, t.shipments_inspection, t.power_require,
+            t.other_instruction, t.is_declaration, t.invoice_no, t.customer_requirement_exw, t.customer_requirement_etd,
+            t.customer_requirement_eta, t.goods_agent, t.shipment_port, t.destination_port, t.customer_address,
+            t.contacts, t.telephone, t.destination_country, t.boat_company, t.telex, t.is_cover, t.al_vender,
+            t.line_num, t.eva, t.glass, t.wiring_head, t.nameplate, t.bomid, t.power, t.trade_type, t.package_method,
+            t.line_length, t.hole_location, t.check_date, t.sure_one, t.sure_two, t.plan_date, t.actual_date,
+            t.block_num, t.tile_num, t.unsent_num, t.declare_time, t.declare_broker, t.declare_no, t.load_time,
+            t.leave_time, t.load_no, t.invoice, t.bill_no, t.invoice_bill, t.invoice_bill_copy, t.policy, t.dn,
+            t.inv, t.bl,t1.`customer_name`
+            FROM sale_stockup t LEFT JOIN sale_customer t1 ON t.`customer` = t1.`ROW_ID`
+        where t.row_id = #{rowId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectStockNo" resultType="int">
+        select count(*) num from sale_stockup where stock_no =#{stockNo}
+    </select>
+
+
+    <update id="update">
+        update sale_stockup
+        <set >
+
+            <if test="lastUpdateBy != null" >
+                last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+            </if>
+
+            <if test="salesman != null" >
+                salesman = #{salesman,jdbcType=VARCHAR},
+            </if>
+            <if test="stockAddress != null" >
+                stock_address = #{stockAddress,jdbcType=BIGINT},
+            </if>
+            <if test="stockDate != null" >
+                stock_date = #{stockDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="oaNo != null" >
+                oa_no = #{oaNo,jdbcType=VARCHAR},
+            </if>
+            <if test="customer != null" >
+                customer = #{customer,jdbcType=BIGINT},
+            </if>
+            <if test="customerName != null" >
+                customer_name = #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="contractNo != null" >
+                contract_no = #{contractNo,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentInfo != null" >
+                payment_info = #{paymentInfo,jdbcType=BIGINT},
+            </if>
+            <if test="contractAddress != null" >
+                contract_address = #{contractAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="sendNum != null" >
+                send_num = #{sendNum,jdbcType=DECIMAL},
+            </if>
+            <if test="newComponentmodel != null" >
+                new_componentModel = #{newComponentmodel,jdbcType=VARCHAR},
+            </if>
+            <if test="oldComponentmodel != null" >
+                old_componentModel = #{oldComponentmodel,jdbcType=VARCHAR},
+            </if>
+            <if test="componentType != null" >
+                component_type = #{componentType,jdbcType=VARCHAR},
+            </if>
+            <if test="batteryProcess != null" >
+                battery_process = #{batteryProcess,jdbcType=VARCHAR},
+            </if>
+            <if test="packageNum != null" >
+                package_num = #{packageNum,jdbcType=DECIMAL},
+            </if>
+            <if test="coating != null" >
+                coating = #{coating,jdbcType=VARCHAR},
+            </if>
+            <if test="componentLevel != null" >
+                component_level = #{componentLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="singlePower != null" >
+                single_power = #{singlePower,jdbcType=VARCHAR},
+            </if>
+            <if test="typeA != null" >
+                type_a = #{typeA,jdbcType=BIGINT},
+            </if>
+            <if test="totalSendNum != null" >
+                total_send_num = #{totalSendNum,jdbcType=DECIMAL},
+            </if>
+            <if test="unit != null" >
+                unit = #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryMethod != null" >
+                delivery_method = #{deliveryMethod,jdbcType=BIGINT},
+            </if>
+            <if test="mode != null" >
+                mode = #{mode,jdbcType=VARCHAR},
+            </if>
+            <if test="alProcess != null" >
+                al_process = #{alProcess,jdbcType=VARCHAR},
+            </if>
+            <if test="junctionBox != null" >
+                junction_box = #{junctionBox,jdbcType=VARCHAR},
+            </if>
+            <if test="shipmentsInspection != null" >
+                shipments_inspection = #{shipmentsInspection,jdbcType=VARCHAR},
+            </if>
+            <if test="powerRequire != null" >
+                power_require = #{powerRequire,jdbcType=VARCHAR},
+            </if>
+            <if test="otherInstruction != null" >
+                other_instruction = #{otherInstruction,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeclaration != null" >
+                is_declaration = #{isDeclaration,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceNo != null" >
+                invoice_no = #{invoiceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="customerRequirementExw != null" >
+                customer_requirement_exw = #{customerRequirementExw,jdbcType=VARCHAR},
+            </if>
+            <if test="customerRequirementEtd != null" >
+                customer_requirement_etd = #{customerRequirementEtd,jdbcType=VARCHAR},
+            </if>
+            <if test="customerRequirementEta != null" >
+                customer_requirement_eta = #{customerRequirementEta,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsAgent != null" >
+                goods_agent = #{goodsAgent,jdbcType=VARCHAR},
+            </if>
+            <if test="shipmentPort != null" >
+                shipment_port = #{shipmentPort,jdbcType=VARCHAR},
+            </if>
+            <if test="destinationPort != null" >
+                destination_port = #{destinationPort,jdbcType=VARCHAR},
+            </if>
+            <if test="customerAddress != null" >
+                customer_address = #{customerAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="contacts != null" >
+                contacts = #{contacts,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null" >
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="destinationCountry != null" >
+                destination_country = #{destinationCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="boatCompany != null" >
+                boat_company = #{boatCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="telex != null" >
+                telex = #{telex,jdbcType=VARCHAR},
+            </if>
+            <if test="isCover != null" >
+                is_cover = #{isCover,jdbcType=VARCHAR},
+            </if>
+            <if test="alVender != null" >
+                al_vender = #{alVender,jdbcType=VARCHAR},
+            </if>
+            <if test="lineNum != null" >
+                line_num = #{lineNum,jdbcType=DECIMAL},
+            </if>
+            <if test="eva != null" >
+                eva = #{eva,jdbcType=BIGINT},
+            </if>
+            <if test="glass != null" >
+                glass = #{glass,jdbcType=VARCHAR},
+            </if>
+            <if test="wiringHead != null" >
+                wiring_head = #{wiringHead,jdbcType=VARCHAR},
+            </if>
+            <if test="nameplate != null" >
+                nameplate = #{nameplate,jdbcType=VARCHAR},
+            </if>
+            <if test="bomid != null" >
+                bomid = #{bomid,jdbcType=VARCHAR},
+            </if>
+            <if test="power != null" >
+                power = #{power,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeType != null" >
+                trade_type = #{tradeType,jdbcType=VARCHAR},
+            </if>
+            <if test="packageMethod != null" >
+                package_method = #{packageMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="lineLength != null" >
+                line_length = #{lineLength,jdbcType=VARCHAR},
+            </if>
+            <if test="holeLocation != null" >
+                hole_location = #{holeLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="checkDate != null" >
+                check_date = #{checkDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sureOne != null" >
+                sure_one = #{sureOne,jdbcType=VARCHAR},
+            </if>
+            <if test="sureTwo != null" >
+                sure_two = #{sureTwo,jdbcType=VARCHAR},
+            </if>
+            <if test="planDate != null" >
+                plan_date = #{planDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualDate != null" >
+                actual_date = #{actualDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="blockNum != null" >
+                block_num = #{blockNum,jdbcType=DECIMAL},
+            </if>
+            <if test="tileNum != null" >
+                tile_num = #{tileNum,jdbcType=DECIMAL},
+            </if>
+            <if test="unsentNum != null" >
+                unsent_num = #{unsentNum,jdbcType=DECIMAL},
+            </if>
+            <if test="declareTime != null" >
+                declare_time = #{declareTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="declareBroker != null" >
+                declare_broker = #{declareBroker,jdbcType=VARCHAR},
+            </if>
+            <if test="declareNo != null" >
+                declare_no = #{declareNo,jdbcType=VARCHAR},
+            </if>
+            <if test="loadTime != null" >
+                load_time = #{loadTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="leaveTime != null" >
+                leave_time = #{leaveTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loadNo != null" >
+                load_no = #{loadNo,jdbcType=VARCHAR},
+            </if>
+            <if test="invoice != null" >
+                invoice = #{invoice,jdbcType=VARCHAR},
+            </if>
+            <if test="billNo != null" >
+                bill_no = #{billNo,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceBill != null" >
+                invoice_bill = #{invoiceBill,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceBillCopy != null" >
+                invoice_bill_copy = #{invoiceBillCopy,jdbcType=VARCHAR},
+            </if>
+            <if test="policy != null" >
+                policy = #{policy,jdbcType=VARCHAR},
+            </if>
+            <if test="dn != null" >
+                dn = #{dn,jdbcType=VARCHAR},
+            </if>
+            <if test="inv != null" >
+                inv = #{inv,jdbcType=VARCHAR},
+            </if>
+            <if test="bl != null" >
+                bl = #{bl,jdbcType=VARCHAR},
+            </if>
+            last_update_time = now()
+        </set>
+
+        where row_id = #{rowId,jdbcType=BIGINT}
+    </update>
+
+</mapper>

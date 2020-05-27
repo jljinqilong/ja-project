@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.customer.CustomerContactsDao">
+
+	<resultMap id="BaseResult" type="com.champlink.common.domain.sale.customer.CustomerContacts">
+		<id column="ROW_ID" property="rowId" />
+        <result column="created_by" property="createdBy"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="last_update_by" property="lastUpdateBy"></result>
+        <result column="last_update_time" property="lastUpdateTime"></result>
+        <result column="modifiction" property="modifiction"></result>
+        <result column="del_flag" property="delFlag"></result>
+        <result column="customer_id" property="customerId"></result>
+        <result column="name" property="name"></result>
+        <result column="position" property="position"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="mail" property="mail"></result>
+        <result column="tel" property="tel"></result>
+        <result column="fax" property="fax"></result>
+
+    </resultMap>
+
+    <!-- 批量添加 -->
+    <insert id="insertContactsBatch" parameterType="java.util.List" >
+        insert into sale_customer_contacts (
+            CREATED_BY,CREATED_TIME,LAST_UPDATE_BY,MODIFICTION,CUSTOMER_ID,NAME,
+            POSITION,MOBILE,MAIL,TEL,FAX
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (   #{item.createdBy,jdbcType=BIGINT},
+                now(),
+                #{item.lastUpdateBy,jdbcType=BIGINT},
+                #{item.modifiction,jdbcType=INTEGER},
+                #{item.customerId,jdbcType=BIGINT},
+                #{item.name,jdbcType=VARCHAR},
+                #{item.position,jdbcType=VARCHAR},
+                #{item.mobile,jdbcType=VARCHAR},
+                #{item.mail,jdbcType=VARCHAR},
+                #{item.tel,jdbcType=VARCHAR},
+                #{item.fax,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据客户id删除联系人 -->
+    <delete id="deleteContactsByCustomerId" parameterType="long" >
+        delete from sale_customer_contacts
+        where customer_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+	<!-- 新增 -->
+	<insert id="add" parameterType="com.champlink.common.domain.sale.customer.Customer">
+		insert into sale_customer_contacts(
+            created_by, created_time
+        )
+		values (
+            #{createdBy},
+            now()
+
+        )
+	</insert>
+
+    <!-- 查询列表 -->
+    <select id="pageList" resultMap="BaseResult">
+        select * from sale_customer_contacts
+        <where>
+            1=1
+            <if test="params.customerName != null and params.customerName != ''">
+                and customer_name like concat(#{params.customerName},'%')
+            </if>
+
+        </where>
+    </select>
+
+    <select id="checkCustomerByName" resultType="Long" parameterType="com.champlink.common.domain.sale.customer.Customer">
+        select count(1) from sale_customer_contacts
+        <where>
+            1=1
+            <choose>
+                <when test="customerName != null and customerName != '' and shortName != null and shortName != ''">
+                    and (customer_name = #{customerName} or short_name = #{shortName})
+                </when>
+                <when test="customerName != null and customerName != ''">
+                    and customer_name = #{customerName}
+                </when>
+                <when test="shortName != null and shortName != ''">
+                    and short_name = #{shortName}
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+            <if test="rowId != null and rowId != ''">
+                and row_id != #{rowId}
+            </if>
+        </where>
+    </select>
+
+
+    <update id="update">
+        update sale_customer_contacts
+        <set>
+            <if test="name != null">
+                NAME=#{name},
+            </if>
+
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+    <select id="getContactsByCustomerId" resultMap="BaseResult">
+        select co.customer_id, co.name, co.position, co.mobile, co.mail, co.tel, co.fax
+        from sale_customer_contacts co
+        <where>
+            1=1
+            <if test="customerId != null">
+                and co.customer_id = #{customerId}
+            </if>
+
+        </where>
+    </select>
+
+</mapper>

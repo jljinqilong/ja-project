@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.system.dao.RefUserResourceDao">
+
+	<!-- 用户资源设置：给用户添加资源 -->
+	<insert id="addBatch" parameterType="com.champlink.common.domain.system.RefUserResource">
+		insert into sys_ref_user_resource (resource_id, USER_ID) values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.resourceId},#{item.userId})
+		</foreach>
+	</insert>
+
+	<!-- 删除指定用户的用户资源关系 -->
+	<delete id="delByUid">
+		delete from sys_ref_user_resource where USER_ID=#{userId}
+	</delete>
+
+</mapper>

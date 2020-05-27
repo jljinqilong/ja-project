@@ -1,0 +1,19 @@
+server:
+  port: 10000
+spring:
+  application:
+    name: JA-CONFIG
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native: 
+          search-locations: classpath:/configs/
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://${discovery.host:localhost}:${discovery.port:9999}/eureka

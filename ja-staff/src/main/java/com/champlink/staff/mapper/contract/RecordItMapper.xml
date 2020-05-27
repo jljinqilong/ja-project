@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.contract.RecordItDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.contract.RecordIt">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="certificate_name" jdbcType="VARCHAR" property="certificateName" />
+    <result column="computer_rank" jdbcType="VARCHAR" property="computerRank" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+  
+  <!-- 新增 -->
+  <insert id="add" parameterType="com.champlink.common.domain.staff.contract.RecordIt">
+      insert into stf_record_it
+      (staff_id,certificate_name, computer_rank)
+      values
+      (#{staffId},#{certificateName}, #{computerRank})
+  </insert>
+
+  <!-- 删除 -->
+  <update id="delById">
+      update stf_record_it set del_flag= '1' where ROW_ID=#{rowId}
+  </update>
+
+  <!-- 修改 -->
+  <update id="update" parameterType="com.champlink.common.domain.staff.contract.RecordIt">
+      update stf_record_it
+      <set>
+          <if test="certificateName != null">
+              certificate_name=#{certificateName},
+          </if>
+          <if test="computerRank != null">
+              computer_rank=#{computerRank},
+          </if>
+      </set>
+      where row_id = #{rowId}
+  </update>
+  
+  <!-- 查询列表 -->
+  <select id="pageList" resultMap="BaseResultMap">
+      select * from stf_record_it
+      <where>
+	      del_flag= '0'
+	      <if test="params.staffId != null and params.staffId != ''">
+	          and staff_id = #{params.staffId}
+	      </if>
+	      <if test="params.certificateName != null and params.certificateName != ''">
+	          and certificate_name=#{params.certificateName}
+	      </if>
+      </where>
+  </select>
+  
+  <!-- 根据rowId查询明细 -->
+  <select id="getById" resultMap="BaseResultMap">
+      select * from stf_record_it where ROW_ID = #{rowId}
+  </select>
+  
+  <!-- 根据staffId查询明细 -->
+  <select id="getByStaffId" resultType="com.champlink.common.domain.staff.contract.RecordIt">
+      select * from stf_record_it where staff_id = #{staffId}
+  </select>
+  
+</mapper>

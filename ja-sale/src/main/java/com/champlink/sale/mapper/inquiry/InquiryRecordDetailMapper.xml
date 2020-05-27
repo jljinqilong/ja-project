@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.inquiry.InquiryRecordDetailDao">
+    <resultMap id="BaseResultMap" type="com.champlink.common.domain.sale.inquiry.InquiryRecordDetail">
+        <id column="ROW_ID" property="rowId" jdbcType="BIGINT"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="BIGINT"/>
+        <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="LAST_UPDATE_BY" property="lastUpdateBy" jdbcType="BIGINT"/>
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="del_flag" property="delFlag" jdbcType="INTEGER"/>
+        <result column="inquiry_id" property="inquiryId" jdbcType="BIGINT"/>
+
+        <result column="inquiry_person" property="inquiryPerson" jdbcType="VARCHAR"/>
+        <result column="product_id" property="productId" jdbcType="BIGINT"/>
+        <result column="CUSTOMER_ID" property="customerId" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="product_no" property="productNo" jdbcType="VARCHAR"/>
+
+        <result column="customerName" property="customerName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ROW_ID, CREATED_BY, CREATED_TIME, LAST_UPDATE_BY, LAST_UPDATE_TIME, del_flag, inquiry_id,
+        inquiry_person, product_id, CUSTOMER_ID, price, remark,product_no
+    </sql>
+
+    <!--添加记录-->
+    <insert id="insert" parameterType="com.champlink.common.domain.sale.inquiry.InquiryRecordDetail">
+        insert into sale_inquiry_record_detail (CREATED_BY, CREATED_TIME,del_flag,inquiry_id,
+        inquiry_person, product_id, CUSTOMER_ID, price, remark,product_no)
+        values (#{createdBy,jdbcType=BIGINT}, now(), #{delFlag,jdbcType=INTEGER},
+        #{inquiryId,jdbcType=BIGINT},#{inquiryPerson,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT},
+        #{customerId,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR},#{productNo}
+        )
+    </insert>
+
+    <!--逻辑删除询单记录-->
+    <update id="updateDelFlag" parameterType="long">
+        update sale_inquiry_record_detail set del_flag = 1,i.LAST_UPDATE_BY=loginId,LAST_UPDATE_TIME=now()
+        where ROW_ID in
+        <foreach item="id" collection="idArr" open="(" separator="," close=")">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+    <!--编辑-->
+    <update id="update" parameterType="com.champlink.common.domain.sale.inquiry.InquiryRecordDetail">
+        update sale_inquiry_record_detail
+        <set>
+            LAST_UPDATE_TIME = now(),
+            <if test="lastUpdateBy != null">
+                LAST_UPDATE_BY = #{lastUpdateBy,jdbcType=BIGINT},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="inquiryId != null">
+                inquiry_id = #{inquiryId,jdbcType=BIGINT},
+            </if>
+            <if test="inquiryPerson != null">
+                inquiry_person = #{inquiryPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="productId != null">
+                product_id = #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="customerId != null">
+                CUSTOMER_ID = #{customerId,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="productNo != null">
+                product_no = #{productNo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ROW_ID = #{rowId,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据询价id获取询单list -->
+    <select id="selectInquiryRecordDetailByRowId" resultMap="BaseResultMap" >
+        select d.ROW_ID, d.CREATED_BY, d.CREATED_TIME, d.LAST_UPDATE_BY, d.LAST_UPDATE_TIME, d.del_flag, d.inquiry_id,
+        d.inquiry_person, d.product_id, d.CUSTOMER_ID, d.price, d.remark,c.customer_name customerName,
+        p.product_no
+
+        from sale_inquiry_record_detail d
+        left join sale_customer c on d.customer_id = c.row_id
+        left join sale_product p on p.row_id = d.product_id
+        where d.del_flag = 0 and d.inquiry_id = #{rowId}
+    </select>
+
+    <select id="selectByRowId" resultMap="BaseResultMap">
+        select c.customer_name customerName,d.*
+        from sale_inquiry_record_detail d
+        left join sale_customer c on d.customer_id = c.row_id
+        where d.row_id = #{rowId}
+    </select>
+
+    <!-- 根据询价id获取询单list -->
+    <select id="pageList" resultMap="BaseResultMap" >
+        select d.ROW_ID, d.CREATED_BY, d.CREATED_TIME, d.LAST_UPDATE_BY, d.LAST_UPDATE_TIME, d.del_flag, d.inquiry_id,
+        d.inquiry_person, d.product_id, d.CUSTOMER_ID, d.price, d.remark,c.customer_name customerName,
+        p.product_no
+
+        from sale_inquiry_record_detail d
+        left join sale_customer c on d.customer_id = c.row_id
+        left join sale_product p on p.row_id = d.product_id
+        where d.del_flag = 0 and d.inquiry_id = #{params.inquiryId}
+    </select>
+</mapper>

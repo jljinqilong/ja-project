@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.area.AreaDao">
+    <resultMap id="BaseResult" type="com.champlink.common.domain.sale.area.Area">
+        <id column="ROW_ID" property="rowId" />
+        <result column="CREATED_DATE" property="createdDate" />
+        <result column="USER_NAME" property="userName" />
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" />
+        <result column="LAST_UPDATE_BY" property="lastUpdateBy" />
+        <result column="REGION_NAME" property="regionName" />
+        <result column="STATUS" property="status" />
+
+        <association property="areaDetailList" column="{regionId=row_id}" select="areaDetailList" javaType="java.util.ArrayList"></association>
+    </resultMap>
+
+
+    <resultMap id="DetailResult" type="com.champlink.common.domain.sale.area.AreaDetail">
+        <id column="row_id" property="rowId"/>
+        <result column="region_id" property="regionId"/>
+        <result column="region_id" property="regionId" />
+        <result column="continent_id" property="continentId" />
+        <result column="country_id" property="countryId" />
+        <result column="z_currency_id" property="zCurrencyId" />
+        <result column="f_currency_id" property="fCurrencyId" />
+        <result column="price" property="price" />
+        <result column="created_by" property="createdBy"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="region_name" property="regionName"/>
+
+    </resultMap>
+
+    <!-- 查询区域 -->
+    <select id="searchAreaList" resultMap="BaseResult">
+
+        SELECT row_id,created_date,user_name,last_update_time,last_update_by,MODIFICTION,region_name,STATUS FROM sale_region a
+        <where>
+            <if test="params.regionName != null and params.regionName != ''">
+                and region_name like CONCAT('%',#{params.regionName},'%')
+            </if>
+            <if test="params.countryId!=null and params.countryId!=''">
+                and exists (SELECT 1 FROM sale_region_dtls WHERE region_id = a.row_id AND country_id = #{params.countryId})
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询区域下的地区-->
+    <select id="areaDetailList" resultMap="DetailResult">
+        select row_id,region_id,continent_id,country_id,z_currency_id,f_currency_id,price from sale_region_dtls where region_id = #{regionId}
+    </select>
+
+    <select id="searchAreaByRegionName" resultType="int">
+          select count(*) num from sale_region where region_name = #{regionName}
+
+    </select>
+
+    <!-- 根据区域名称和id查询是否存在除本条记录以外的记录 -->
+    <select id="searchAreaByRegionNameAndId" resultType="int">
+
+        select count(*) from sale_region where region_name = #{regionName} <![CDATA[ and row_id <> #{rowId}   ]]>
+    </select>
+
+    <!-- 增加区域 -->
+    <insert id="insertRegion" parameterType="java.util.List" useGeneratedKeys="true" keyColumn="row_id" keyProperty="rowId">
+
+        insert into sale_region (user_name,created_date,region_name,created_by,created_time) values
+        (
+        #{userName},
+        now(),
+        #{regionName},
+        #{createdBy},
+        now()
+        )
+
+    </insert>
+
+    <!-- 插入区域明细信息 -->
+    <insert id="insertRegionDetail">
+        insert into sale_region_dtls (region_id, continent_id, country_id, z_currency_id, f_currency_id,price,created_by,created_time)
+        values
+        <foreach collection="areaDetailList" item="item" separator=",">
+            (#{regionId},#{item.continentId}, #{item.countryId}, #{item.zCurrencyId}, #{item.fCurrencyId},#{item.price},#{item.createdBy},now())
+        </foreach>
+
+    </insert>
+
+    <!-- 根据id查询区域信息-->
+    <select id="getAreaById" resultMap="BaseResult">
+
+        select * from sale_region where row_id = #{rowId}
+    </select>
+
+    <!-- 修改-->
+    <update id="updateArea">
+
+        update sale_region set region_name = #{regionName} where row_id = #{rowId}
+    </update>
+
+    <!--修改 删除-->
+   <delete id="deleteAreaDetail">
+       delete from sale_region_dtls where region_id = #{regionId}
+   </delete>
+
+    <!--删除区域明细-->
+    <delete id="delDetailById">
+        delete from sale_region_dtls where region_id = #{rowId}
+
+    </delete>
+
+    <!-- 删除区域 -->
+    <delete id="delAreaById">
+        delete from sale_region where row_id = #{rowId}
+    </delete>
+
+    <resultMap id="BaseSelectResult" type="com.champlink.common.domain.BaseSelect">
+        <result column="rowId" property="rowId"/>
+        <result column="name" property="name" />
+
+    </resultMap>
+    <!--查询所有区域信息-->
+    <select id="getAllArea" resultMap="BaseSelectResult">
+        select  row_id as rowId,region_name as name from sale_region
+    </select>
+
+    <select id="searchAreaDetail" resultMap="DetailResult">
+        SELECT  t1.`ROW_ID`,t1.`REGION_ID`,t2.`CREATED_BY`,t2.`CREATED_TIME`,t2.`REGION_NAME`,t1.`CONTINENT_ID`,t1.`COUNTRY_ID`,t1.z_currency_id,t1.`PRICE` FROM sale_region_dtls t1
+        LEFT JOIN sale_region t2 ON t1.`REGION_ID` = t2.`ROW_ID`
+		<where>
+            <if test="params.regionName !=null and params.regionName != ''">
+                and t2.region_name like CONCAT('%',#{params.regionName},'%')
+            </if>
+            <if test="params.countryId!=null and params.countryId!=''">
+                and t1.country_id = #{params.countryId}
+            </if>
+
+        </where>
+
+
+		ORDER BY t2.`ROW_ID`DESC
+    </select>
+
+    <!-- 根据区域名称和国家id查询 -->
+    <select id="getCountry" resultType="int">
+        SELECT count(*) countryNum
+        FROM sale_region_dtls t1
+        LEFT JOIN sale_region t2 ON t1.`REGION_ID` = t2.`ROW_ID`
+        where t2.region_name = #{regionName} and t1.COUNTRY_ID = #{countryId}
+    </select>
+
+    <select id="getArea" resultMap="BaseResult">
+        select * from sale_region where region_name = #{regionName}
+    </select>
+
+
+    <insert id="insertDetail" parameterType="map">
+        insert into sale_region_dtls (region_id, continent_id, country_id, z_currency_id, f_currency_id,price,created_by,created_time)
+        values
+            (#{regionId},#{continentId}, #{countryId}, #{zCurrencyId}, #{fCurrencyId},#{price},#{createdBy},now())
+    </insert>
+
+    <select id="getAreaByOrgIds" resultMap="BaseResult">
+        select * from sale_region
+        WHERE ROW_ID in
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+</mapper>

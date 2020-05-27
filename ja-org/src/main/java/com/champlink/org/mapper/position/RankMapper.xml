@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.org.dao.position.RankDao">
+	<resultMap id="BaseResultMap"
+		type="com.champlink.common.domain.org.position.Rank">
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="created_by" jdbcType="BIGINT"
+			property="createdBy" />
+		<result column="created_time" jdbcType="TIMESTAMP"
+			property="createdTime" />
+		<result column="last_update_by" jdbcType="BIGINT"
+			property="lastUpdateBy" />
+		<result column="last_update_time" jdbcType="TIMESTAMP"
+			property="lastUpdateTime" />
+		<result column="rank_name" jdbcType="VARCHAR"
+			property="rankName" />
+		<result column="rank_desc" jdbcType="VARCHAR"
+			property="rankDesc" />
+		<result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+		<result column="salary_max" jdbcType="DOUBLE"
+			property="salaryMax" />
+		<result column="salary_min" jdbcType="DOUBLE"
+			property="salaryMin" />
+	</resultMap>
+
+	<!-- 增加 -->
+	<insert id="add"
+		parameterType="com.champlink.common.domain.org.position.Rank">
+		insert into org_rank
+		(created_by, created_time,
+		last_update_by,
+		last_update_time,rank_name,rank_desc,salary_max,salary_min)
+		values
+		(#{createdBy,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP},
+		#{lastUpdateBy,jdbcType=BIGINT},
+		#{lastUpdateTime,jdbcType=TIMESTAMP},#{rankName},#{rankDesc},#{salaryMax},#{salaryMin})
+	</insert>
+
+	<!-- 删除 -->
+	<update id="delById">
+		update org_rank set del_flag= '1' where
+		ROW_ID=#{userId}
+	</update>
+
+	<!-- 修改 -->
+	<update id="update"
+		parameterType="com.champlink.common.domain.org.position.Rank">
+		update org_rank
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=BIGINT},
+			</if>
+			<if test="createdTime != null">
+				created_time = #{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="rankName != null">
+				rank_name=#{rankName,jdbcType=VARCHAR},
+			</if>
+			<if test="rankDesc != null">
+				rank_desc=#{rankDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="rankDesc != null">
+				salary_max=#{salaryMax,jdbcType=INTEGER},
+			</if>
+			<if test="rankDesc != null">
+				salary_min=#{salaryMin,jdbcType=INTEGER},
+			</if>
+		</set>
+		where row_id = #{rowId,jdbcType=BIGINT}
+	</update>
+
+	<!-- 查询列表 -->
+	<select id="pageList" resultMap="BaseResultMap">
+		select * from org_rank
+		<where>
+			del_flag=0
+			<if test="params.rankName != null and params.rankName != ''">
+				and rank_name like concat('%',#{params.rankName},'%')
+			</if>
+			<if test="params.staffIdList != null">
+				and created_by in
+				<foreach collection="params.staffIdList" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+
+	</select>
+	<!-- 查询明细 -->
+	<select id="getById" resultMap="BaseResultMap">
+		select * from org_rank where
+		row_id = #{rowId} and del_flag=0
+	</select>
+
+	<select id="getByRankType" resultMap="BaseResultMap">
+		select * from org_rank
+		where del_flag=0
+	</select>
+
+
+	<select id="getRankByGrade" resultMap="BaseResultMap">
+		select * from org_rank where del_flag = 0 and row_id in (
+		select rank_id
+		from org_ref_grade_rank
+		where del_flag = 0 and grade_id in
+		<foreach collection="list" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+		)
+	</select>
+
+	<select id="getAllRank" resultMap="BaseResultMap">
+		select * from org_rank where del_flag = 0
+	</select>
+</mapper>

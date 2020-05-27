@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.system.dao.UploadFileMapper">
+<resultMap id="BaseSingleResultMap" type="com.champlink.common.form.file.UploadFileForm">
+	<id column="ROW_ID" property="rowId" jdbcType="BIGINT" />
+	<result column="CREATED_BY" property="createdBy" jdbcType="BIGINT" />
+	<result column="CREATED_TIME" property="createdTime" jdbcType="DATE" />
+	<result column="ORIGIN_NAME" property="originName" jdbcType="VARCHAR" />
+	<result column="NEW_NAME" property="newName" jdbcType="VARCHAR" />
+</resultMap>
+
+
+<!-- 添加 -->
+<insert id="addUploadFile" parameterType="com.champlink.common.form.file.UploadFileForm">
+	insert into upload_file
+	(row_id,created_by,created_time,origin_name,new_name)
+	values
+	(#{rowId,jdbcType=BIGINT},#{createdBy,jdbcType=BIGINT},now(),#{originName,jdbcType=VARCHAR},#{newName,jdbcType=VARCHAR})
+	<selectKey keyProperty="rowId" resultType="long" order="AFTER">
+		select LAST_INSERT_ID()
+	</selectKey>
+</insert>
+
+<update id="deleteFile">
+    update upload_file 
+    set del_flag = 1
+    where new_name = #{name}
+</update>
+
+<select id="getFileInfo" resultMap="BaseSingleResultMap">
+	select origin_name, new_name
+	from upload_file
+	where NEW_NAME like "%"#{name}"%"
+</select>
+
+</mapper>

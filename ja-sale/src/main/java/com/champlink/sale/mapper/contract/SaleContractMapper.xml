@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.contract.SaleContractDao">
+    <resultMap id="BaseResult" type="com.champlink.common.domain.sale.contract.SaleContract">
+        <id column="ROW_ID" property="rowId" />
+        <result column="created_date" property="createdDate" />
+        <result column="created_by" property="createdBy" />
+        <result column="user_name" property="userName" />
+        <result column="depart_id" property="departId" />
+        <result column="org_id" property="orgId" />
+        <result column="contract_no" property="contractNo" />
+        <result column="contract_type" property="contractType" />
+        <result column="STATUS" property="status" />
+        <result column="contract_title" property="contractTitle" />
+        <result column="customer" property="customer" />
+        <result column="customer_name" property="customerName" />
+        <result column="pay_method" property="payMethod" />
+        <result column="CLIENT_CONTRACTOR" property="clientContractor" />
+        <result column="CLIENT_NAME" property="clientName"/>
+        <result column="OUR_SIGNATORY" property="ourSignatory" />
+        <result column="sign_date" property="signDate" />
+        <result column="PAYMENT_AMOUNT" property="paymentAmount" />
+        <result column="UNPAYMENT_AMOUNT" property="unPaymentAmount" />
+        <result column="TICKET_AMOUNT" property="ticketAmount" />
+        <result column="UNTICKET_AMOUNT" property="unTicketAmount" />
+        <result column="total_amount" property="totalAmount" />
+        <result column="contract_date_s" property="contractDateS" />
+        <result column="contract_date_e" property="contractDateE" />
+        <result column="next_time" property="nextTime" />
+        <result column="sale_currency" property="saleCurrency" />
+        <result column="get_no_date" property="getNoDate" />
+        <result column="salesman" property="businessPerson" />
+        <result column="sale_area_id" property="areaId" />
+        <result column="REGION_NAME" property="regionName"/>
+        <result column="project_address_id" property="projectArea" />
+        <result column="destination_country_id" property="countryId" />
+        <result column="remark" property="remark" />
+        <result column="planed_amount" property="planedAmount"/>
+        <result column="unplaned_amount" property="unPlanedAmount"/>
+
+        <result column="business_person" property="businessPerson"/>
+        <result column="area_id" property="areaId"/>
+        <result column="country_id" property="countryId"/>
+        <result column="province_id" property="provinceId"/>
+        <result column="city_id" property="cityId"/>
+        <result column="delivery_address" property="deliveryAddress" />
+
+        <result column="country_name" property="countryName"/>
+        <result column="province_name" property="provinceName"/>
+        <result column="city_name" property="cityName"/>
+        <result column="inquiries_id" property="inquiriesId"/>
+        <result column="inquiries_no" property="inquiriesNo"/>
+
+        <association property="productList" select="selectProdcution" javaType="java.util.ArrayList" column="{saleContractId = row_id}"></association>
+        <association property="saleDeliveryList" select="selectDeliveryInfo" javaType="java.util.ArrayList" column="{saleContractId = row_id}"></association>
+
+       <!-- <association  property="product" javaType="com.champlink.common.domain.sale.product.Product">
+            <id column="row_id" property="rowId" />
+            <result column="bom_id" property="bomId" />
+            <result column="bom_no" property="bomNo" />
+            <result column="product_no" property="productNo"/>
+            <result column="silicon_type" property="siliconType"/>
+            <result column="cell_number" property="cellNumber"/>
+            <result column="mudule_type" property="muduleType" />
+            <result column="mudule_code" property="muduleCode"/>
+            <result column="rated_power" property="ratedPower"/>
+            <result column="cellTechnology" property="cellTechnology"/>
+            <result column="status" property="status"/>
+            <result column="del_flag" property="delFlag"/>
+
+        </association>-->
+
+    </resultMap>
+
+    <!--查询合同-->
+    <select id="searchSaleContractList" resultMap="BaseResult">
+        SELECT t.row_id,t.user_name,t.depart_id,t.created_date,t.org_id,t.contract_no,t.contract_type,
+            t.contract_title,t.customer,t1.customer_name,t.next_time,
+            t.pay_method,t.CLIENT_CONTRACTOR,t2.`NAME` client_name,
+            t.OUR_SIGNATORY,t.sign_date,
+            COALESCE(t.PAYMENT_AMOUNT,0) PAYMENT_AMOUNT,
+            COALESCE(t.UNPAYMENT_AMOUNT,0) UNPAYMENT_AMOUNT,
+            COALESCE(t.TICKET_AMOUNT,0) TICKET_AMOUNT,
+            COALESCE(t.UNTICKET_AMOUNT,0) UNTICKET_AMOUNT,
+            t.last_update_by,t.last_update_time,t.sale_currency,t.get_no_date,t.business_person,t.area_id,t.project_area,t.country_id,t.province_id,city_id,t.delivery_address,
+            t.status,
+            COALESCE(t.total_amount,0) total_amount,
+            t.contract_date_s,t.contract_date_e,t.remark,t.created_by,
+            COALESCE(t.planed_amount,0) planed_amount,
+            COALESCE(t.unplaned_amount,0) unplaned_amount
+        FROM sale_contract t LEFT JOIN sale_customer t1 ON t.customer = t1.row_id
+        LEFT JOIN sale_customer_contacts t2 ON t.`CLIENT_CONTRACTOR` = t2.`ROW_ID`
+      <where>
+          <if test="params.contractNo != null and params.contractNo != ''">
+            and t.contract_no like CONCAT('%',#{params.contractNo},'%')
+          </if>
+
+          <if test="params.customer != null and params.customer !=''">
+              and t.customer = #{params.customer}
+          </if>
+          <if test="params.payMethod != null and params.payMethod != ''">
+              and t.pay_method = #{params.payMethod}
+          </if>
+          <if test="params.orgId != null and params.orgId !=''">
+              and t.org_id = #{params.orgId}
+          </if>
+          <if test="params.contractType != null and params.contractType != ''">
+              and t.contract_type =#{params.contractType}
+          </if>
+          <if test="params.deptId != null and params.deptId != ''">
+              and t.depart_id =#{params.deptId}
+          </if>
+          <if test="params.contractDateQ !=null and params.contractDateQ != ''">
+                <![CDATA[  and t.SIGN_DATE >=#{params.contractDateQ}     ]]>
+          </if>
+          <if test="params.contractDateZ != null and params.contractDateZ != ''">
+              <![CDATA[  and t.SIGN_DATE <=#{params.contractDateZ}     ]]>
+          </if>
+          <if test="params.ourSignatory != null and params.ourSignatory !=''">
+              and t.our_signatory = #{params.ourSignatory}
+          </if>
+          <if test="params.contractTitle != null and params.contractTitle != ''">
+              and t.contract_title like  CONCAT('%',#{params.contractTitle},'%')
+          </if>
+          <if test="params.status != null">
+              and t.status = #{params.status}
+          </if>
+
+      </where>
+        order by t.created_time desc
+    </select>
+
+    <!--查询最后一个合同编号-->
+    <select id="getLastSaleContractNo" resultType="string">
+    SELECT SUBSTRING(MAX(contract_no),17) contract_no4 FROM sale_contract where SUBSTRING(contract_no,9,8)=DATE_FORMAT(NOW(),'%Y%m%d');
+    </select>
+
+    <!--增加销售合同-->
+    <insert id="insertSaleContract" parameterType="java.util.List" useGeneratedKeys="true" keyColumn="row_id" keyProperty="rowId">
+          INSERT INTO `sale_contract` ( `CREATED_BY`, `CREATED_TIME`,`USER_NAME`, `CREATED_DATE`,`DEPART_ID`, `ORG_ID`, `CONTRACT_NO`, `CONTRACT_TYPE`,
+                                        `CONTRACT_TITLE`, `CUSTOMER`, `PAY_METHOD`, `CLIENT_CONTRACTOR`, `OUR_SIGNATORY`,
+                                        `SIGN_DATE`, `PAYMENT_AMOUNT`, `UNPAYMENT_AMOUNT`, `TICKET_AMOUNT`, `UNTICKET_AMOUNT`,
+                                        `LAST_UPDATE_BY`, `LAST_UPDATE_TIME`, `STATUS`, `TOTAL_AMOUNT`, `CONTRACT_DATE_S`, `CONTRACT_DATE_E`, `REMARK`, `NEXT_TIME`,
+                                        `SALE_CURRENCY`,`GET_NO_DATE`,`BUSINESS_PERSON`,`AREA_ID`,`PROJECT_AREA`,`COUNTRY_ID`,province_id,city_id,delivery_address,`PLANED_AMOUNT`,`UNPLANED_AMOUNT`,inquiries_id,inquiries_no)
+                                  VALUES(
+                                          #{createdBy},now(),#{userName},now(),#{departId},#{orgId},#{contractNo},#{contractType},
+                                          #{contractTitle},#{customer},#{payMethod},#{clientContractor},#{ourSignatory},
+                                          #{signDate},#{paymentAmount},#{unPaymentAmount},#{ticketAmount},#{unTicketAmount},
+                                          #{lastUpdateBy},now(),#{status},#{totalAmount},#{contractDateS},#{contractDateE},#{remark},#{nextTime}
+                                          ,#{saleCurrency},#{getNoDate},#{businessPerson},#{areaId},#{projectArea},#{countryId},#{provinceId},#{cityId},#{deliveryAddress},#{planedAmount},#{unPlanedAmount},
+                                          #{inquiriesId},#{inquiriesNo}
+                                          )
+
+
+
+    </insert>
+
+    <!--增加合同关联产品信息-->
+    <insert id="insertSaleContractDetail">
+
+        INSERT INTO sale_contract_proddetail (sale_contract_id,production_id,production_no,created_by,created_time,remark,
+                      num,unit_price,unit,amount,power,total_power,present_num)
+        values
+        <foreach collection="saleContractDetailList" item="item" separator=",">
+            (#{saleContractId},#{item.productionId}, #{item.productionNo},#{item.createdBy}, now(),
+              #{item.remark},#{item.num},#{item.unitPrice},#{item.unit},#{item.amount},#{item.power},#{item.totalPower},#{item.presentNum})
+        </foreach>
+
+    </insert>
+
+    <!-- 增加合同付款计划 -->
+    <insert id="insertSalePayPlan">
+        INSERT INTO sale_pay_plan (sale_contract_id,sale_contract_no,pay_date,pay_amount,pay_method,status,remark)
+          VALUES
+        <foreach collection="salePayPlanList" item="item" separator=",">
+            (#{saleContractId},#{item.saleContractNo},#{item.payDate}, #{item.payAmount}, #{item.payMethod},#{item.status},#{item.remark})
+        </foreach>
+    </insert>
+
+    <!--删除付款计划明细-->
+    <delete id="delPayPlanById">
+        delete from sale_pay_plan where sale_contract_id = #{rowId}
+    </delete>
+
+    <!--删除合同中产品明细-->
+    <delete id="delSaleContractProdDetailById">
+
+        delete from sale_contract_proddetail where sale_contract_id=#{rowId}
+    </delete>
+    
+    <!--删除合同-->
+    <delete id="delSaleContractById">
+
+        delete from sale_contract where row_id = #{rowId}
+    </delete>
+
+
+
+    <resultMap id="ProductMap" type="com.champlink.common.domain.sale.contract.SaleContractDetail">
+        <id column="p_id" property="rowId"/>
+        <result column="sale_contract_id" property="saleContractId"/>
+        <result column="production_id" property="productionId"/>
+        <result column="num" property="num"/>
+        <result column="unit_price" property="unitPrice"/>
+        <result column="unit" property="unit"/>
+        <result column="amount" property="amount"/>
+        <result column="remark" property="remark"/>
+        <result column="power" property="power" />
+        <result column="total_power" property="totalPower" />
+        <result column="present_num" property="presentNum" />
+
+        <association property="product" javaType="com.champlink.common.domain.sale.product.Product">
+            <id column="row_id" property="rowId" />
+            <result column="bom_id" property="bomId" />
+            <result column="bom_no" property="bomNo" />
+            <result column="product_no" property="productNo"/>
+            <result column="silicon_type" property="siliconType"/>
+            <result column="cell_number" property="cellNumber"/>
+            <result column="mudule_type" property="muduleType" />
+            <result column="mudule_code" property="muduleCode"/>
+            <result column="rated_power" property="ratedPower"/>
+            <result column="cellTechnology" property="cellTechnology"/>
+            <result column="status" property="status"/>
+            <result column="del_flag" property="delFlag"/>
+     </association>
+    </resultMap>
+
+    <resultMap id="SaleDeliveryMap" type="com.champlink.common.domain.sale.contract.SaleDelivery">
+        <id column="row_id" property="rowId"/>
+        <result column="sale_contract_id" property="saleContractId"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="delivery_num" property="deliveryNum"/>
+    </resultMap>
+
+    <!--根据id查询销售合同信息-->
+    <select id="getSaleContractById" resultMap="BaseResult">
+
+        SELECT t.row_id,t.user_name,t.depart_id,t.created_date,t.org_id,t.contract_no,t.contract_type,t.contract_title,t.customer,t1.customer_name,
+	            t.pay_method,t.CLIENT_CONTRACTOR,t.OUR_SIGNATORY,t.sign_date,t.PAYMENT_AMOUNT,
+	            t.UNPAYMENT_AMOUNT,t.TICKET_AMOUNT,t.UNTICKET_AMOUNT,t.last_update_by,t.last_update_time,
+	            t.sale_currency,t.get_no_date,t.business_person,t.area_id,t.project_area,t.country_id,t.province_id,t.city_id,t.delivery_address,
+	            t.status,t.total_amount,t.contract_date_s,t.contract_date_e,t.remark,t.created_by,t.next_time,
+	            t2.salesman,t2.project_address_id,t2.destination_country_id,t2.sale_area_id,t3.`REGION_NAME`,t.planed_amount,t.unplaned_amount,
+	            t4.name country_name,t5.name province_name, t6.name city_name
+			     FROM sale_contract t LEFT JOIN sale_customer t1 ON t.customer = t1.row_id
+			     LEFT JOIN sale_inquiry_record t2 ON t.`ROW_ID` = t2.`contract_id`
+			     LEFT JOIN sale_region t3 ON t3.`ROW_ID` = t.`AREA_ID`
+			     LEFT JOIN sale_country_prov_city t4 ON t4.row_id = t.country_id
+			     LEFT JOIN sale_country_prov_city t5 ON t5.row_id = t.province_id
+			     LEFT JOIN sale_country_prov_city t6 ON t6.row_id = t.city_id
+	where t.row_id =#{rowId}
+
+    </select>
+
+    <!--查询产品信息-->
+    <select id="selectProdcution" resultMap="ProductMap">
+       SELECT t.row_id p_id ,t.`created_by` ,t.`created_time`,t.`sale_contract_id`,t.`production_id`,t.num,t.`unit_price`,t.`unit`,t.`amount`,
+              t.`remark`,t.`power`,t.`total_power`,t.present_num,
+                t1.`row_id`,t1.`bom_id`,t1.`bom_no`,t1.`product_no`,t1.`silicon_type`,t1.`cell_number`,t1.`mudule_type`,
+	            t1.mudule_code,t1.`rated_power`,t1.`cell_Technology`,t1.`status`,t1.`del_flag`
+	    FROM sale_contract_proddetail t
+		LEFT JOIN sale_product t1 ON t.`production_id` = t1.`row_id`
+		LEFT JOIN sale_contract t2 ON t2.`ROW_ID` = t.`sale_contract_id`
+		WHERE t.`sale_contract_id` =#{saleContractId}
+    </select>
+
+    <!--交期信息-->
+    <select id="selectDeliveryInfo" resultMap="SaleDeliveryMap">
+
+        select row_id,created_by,last_update_by,delivery_time,delivery_num,sale_contract_id from sale_contract_delivery_info
+        where sale_contract_id = #{saleContractId}
+    </select>
+
+
+    <!--更新操作-->
+    <update id="update">
+
+            update sale_contract
+            <set >
+                <if test="contractNo != null">
+                    contract_no = #{contractNo,jdbcType=VARCHAR},
+                </if>
+                <if test="departId != null" >
+                    DEPART_ID = #{departId,jdbcType=BIGINT},
+                </if>
+                <if test="orgId != null" >
+                    ORG_ID = #{orgId,jdbcType=BIGINT},
+                </if>
+                <if test="contractType != null" >
+                    CONTRACT_TYPE = #{contractType,jdbcType=BIGINT},
+                </if>
+                <if test="contractTitle != null" >
+                    CONTRACT_TITLE = #{contractTitle,jdbcType=VARCHAR},
+                </if>
+                <if test="customer != null" >
+                    CUSTOMER = #{customer,jdbcType=BIGINT},
+                </if>
+                <if test="payMethod != null" >
+                    PAY_METHOD = #{payMethod,jdbcType=BIGINT},
+                </if>
+                <if test="clientContractor != null" >
+                    CLIENT_CONTRACTOR = #{clientContractor,jdbcType=VARCHAR},
+                </if>
+                <if test="signDate != null" >
+                    SIGN_DATE = #{signDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="paymentAmount != null" >
+                    PAYMENT_AMOUNT = #{paymentAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="unPaymentAmount != null" >
+                    UNPAYMENT_AMOUNT = #{unPaymentAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="ticketAmount != null" >
+                    TICKET_AMOUNT = #{ticketAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="unTicketAmount != null" >
+                    UNTICKET_AMOUNT = #{unTicketAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="totalAmount != null" >
+                    TOTAL_AMOUNT = #{totalAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="contractDateS != null" >
+                    CONTRACT_DATE_S = #{contractDateS,jdbcType=TIMESTAMP},
+                </if>
+                <if test="contractDateE != null" >
+                    CONTRACT_DATE_E = #{contractDateE,jdbcType=TIMESTAMP},
+                </if>
+                <if test="remark != null" >
+                    REMARK = #{remark,jdbcType=VARCHAR},
+                </if>
+                <if test="nextTime != null">
+                    next_time = #{nextTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="lastUpdateBy !=null" >
+                    last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+                </if>
+                <if test="saleCurrency !=null" >
+                    sale_currency = #{saleCurrency,jdbcType=BIGINT},
+                </if>
+                <if test="businessPerson !=null" >
+                    business_person = #{businessPerson,jdbcType=BIGINT},
+                </if>
+                <if test="areaId !=null" >
+                    area_id = #{areaId,jdbcType=BIGINT},
+                </if>
+                <if test="projectArea !=null" >
+                    project_area = #{projectArea,jdbcType=BIGINT},
+                </if>
+                <if test="countryId !=null" >
+                    country_id = #{countryId,jdbcType=BIGINT},
+                </if>
+                <if test="provinceId !=null" >
+                    province_id = #{provinceId,jdbcType=BIGINT},
+                </if>
+                <if test="cityId !=null" >
+                    city_id = #{cityId,jdbcType=BIGINT},
+                </if>
+                <if test="deliveryAddress !=null" >
+                    delivery_address = #{deliveryAddress,jdbcType=BIGINT},
+                </if>
+                <if test="getNoDate != null" >
+                    GET_NO_DATE = #{getNoDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="planedAmount != null" >
+                    planed_amount = #{planedAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="unPlanedAmount != null" >
+                    unplaned_amount = #{unPlanedAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="status != null" >
+                    status = #{status},
+                </if>
+                <if test="saleCurrency != null">
+                    sale_currency = #{saleCurrency,jdbcType=VARCHAR},
+                </if>
+                last_update_time = now()
+            </set>
+            where row_id = #{rowId}
+    </update>
+
+
+    <resultMap id="InvoiceMap" type="com.champlink.common.domain.sale.contract.InvoiceForm">
+        <id column="ROW_ID" property="rowId" />
+        <result column="CREATED_BY" property="createdBy" />
+        <result column="CREATED_TIME" property="createdTime" />
+        <result column="SALE_CONTRACT_ID" property="saleContractId" />
+        <result column="KPRQ" property="kprq" />
+        <result column="INVOICE_CONTEXT" property="invoiceContext" />
+        <result column="INVOICE_NO" property="invoiceNo" />
+        <result column="INVOICE_AMOUNT" property="invoiceAmount" />
+        <result column="INVOICE_TYPE" property="invoiceTypeId" />
+        <result column="INVOICE_USER" property="invoiceUserName" />
+        <result column="REMARK" property="remark" />
+
+    </resultMap>
+
+    <!--根据销售单id查询发票信息-->
+    <select id="searchInvoiceById" resultMap="InvoiceMap">
+      select row_id,created_by,created_time,sale_contract_id,kprq,invoice_context,invoice_no,invoice_amount,invoice_type,invoice_user,remark
+      from sale_invoice
+      where sale_contract_id = #{saleContractId}
+
+    </select>
+
+    <!--插入发票信息-->
+    <insert id="insertSaleInvoice">
+          insert into sale_invoice(created_by,created_time,sale_contract_id,kprq,invoice_context,invoice_no,invoice_amount,invoice_type,
+                invoice_user,remark) values (
+                    #{createdBy},now(),#{saleContractId},#{kprq},#{invoiceContext},#{invoiceNo},#{invoiceAmount},#{invoiceTypeId},#{invoiceUserName},#{remark}
+
+                )
+
+    </insert>
+
+    <!--根据发票id删除发票信息-->
+    <delete id="delInvoieByid">
+        delete from sale_invoice where row_id =#{rowId}
+
+    </delete>
+
+    <!--根据发票id查询单张发票的信息-->
+    <select id="getSingleInvoiceById" resultMap="InvoiceMap">
+        select * from sale_invoice where row_id = #{invoiceId};
+
+    </select>
+
+    <!--根据id和号码查询-->
+    <select id="searchInvoiceByInvoiceIdAndSaleContractId" resultType="int">
+
+      select count(*) as num from sale_invoice where row_id = #{rowId} and sale_contract_id = #{saleContractId}
+
+    </select>
+
+    <!--更新发票信息-->
+    <update id="updateInvoice">
+        update sale_invoice
+        <set>
+            <if test="invoiceForm.invoiceNo!=null">
+              invoice_no = #{invoiceForm.invoiceNo},
+            </if>
+            <if test="invoiceForm.invoiceAmount!=null">
+                invoice_amount = #{invoiceForm.invoiceAmount},
+            </if>
+            <if test="invoiceForm.invoiceContext!=null">
+                invoice_context = #{invoiceForm.invoiceContext},
+            </if>
+            <if test="invoiceForm.invoiceTypeId!=null">
+                invoice_type = #{invoiceForm.invoiceTypeId},
+            </if>
+            <if test="invoiceForm.invoiceUserName!=null">
+                invoice_user = #{invoiceForm.invoiceUserName},
+            </if>
+            <if test="invoiceForm.kprq!=null">
+                kprq = #{invoiceForm.kprq},
+            </if>
+            <if test="invoiceForm.remark!=null">
+                remark = #{invoiceForm.remark},
+            </if>
+            last_update_by = #{invoiceForm.lastUpdateBy},last_update_time = now()
+        </set>
+            where row_id =#{rowId} and sale_contract_id = #{saleContractId}
+    </update>
+
+    <!--根据发票和销售单查询信息-->
+    <select id="selectInvoiceByIdAndNo" resultType="int">
+      select count(*) as num from sale_invoice where sale_contract_id =#{saleContractId} and invoice_no = #{invoiceNo}
+      <if test="rowId!=null and rowId !=''">
+          and <![CDATA[ row_id <> #{rowId} ]]>
+      </if>
+
+    </select>
+
+    <!--根据id查询合同总金额-->
+    <select id="selectTotleAmountById" resultType="decimal">
+
+        select COALESCE(TOTAL_AMOUNT,0) TOTAL_AMOUNT from sale_contract where row_id = #{saleContractId}
+    </select>
+
+    <!--已存在的发票金额-->
+    <select id="selectExistsInvoiceAmountById" resultType="decimal">
+
+        select COALESCE(SUM(invoice_amount),0) TOTAL_AMOUNT from sale_invoice where sale_contract_id = #{saleContractId}
+    </select>
+
+    <!--查询除此条记录以外的所有发票金额之和-->
+    <select id="selectTotalInvoiceAmountNoThis" resultType="decimal">
+        select coalesce(sum(invoice_amount),0) total_amount from sale_invoice where sale_contract_id = #{saleContractId} and
+        <![CDATA[row_id <> #{rowId}]]>
+    </select>
+
+    <!--根据客户查询合同-->
+    <select id="searchSaleContractByCustomer" resultType="com.champlink.common.domain.sale.contract.SaleContract">
+        select t.*,c.customer_name from sale_contract t
+        left join sale_customer c on c.row_id = t.customer
+        where t.customer = #{params.customer}
+    </select>
+
+    <!--更新已开票金额和未开票金额-->
+    <update id="updateContractFpAmount">
+        update sale_contract set
+                  TICKET_AMOUNT = TICKET_AMOUNT+ #{invoiceAmount},
+                  UNTICKET_AMOUNT = UNTICKET_AMOUNT - #{invoiceAmount}
+          where row_id = #{saleContractId}
+
+    </update>
+
+    <!--查询当前合同所有发票金额之和-->
+    <select id="selectAllInvoiceAmount" resultType="decimal">
+        select sum(invoice_amount) allInvoiceAmount from sale_invoice where sale_contract_id = #{saleContractId}
+    </select>
+
+    <!--更新合同已开票金额和未开票金额-->
+    <update id="updateContractFpAmountById">
+        update sale_contract set
+                  TICKET_AMOUNT = #{allInvoiceAmount},
+                  UNTICKET_AMOUNT = total_amount - #{allInvoiceAmount}
+          where row_id = #{saleContractId}
+    </update>
+
+
+    <resultMap id="PayPlanMap" type="com.champlink.common.domain.sale.contract.SalePayPlan">
+
+        <id column="ROW_ID" property="rowId" />
+        <result column="CREATED_BY" property="createdBy" />
+        <result column="CREATED_TIME" property="createdTime" />
+        <result column="sale_contract_id" property="saleContractId" />
+        <result column="sale_contract_no" property="saleContractNo" />
+        <result column="pay_date" property="payDate" />
+        <result column="pay_amount" property="payAmount" />
+        <result column="pay_method" property="payMethod" />
+        <result column="STATUS" property="status" />
+        <result column="remark" property="remark" />
+
+        <association property="salePayPlanDetailList" column="{pay_plan_id=row_id}" select="getSalePayPlanDetail" javaType="java.util.ArrayList"></association>
+
+    </resultMap>
+
+
+    <!--根据回款计划id查询回款总金额-->
+    <select id="getYfAmountById" resultType="decimal">
+        select sum(amount) amount from sale_pay_plan_detail where pay_plan_id = #{payPlanId}
+
+    </select>
+
+    <!--根据计划单id 查询回款计划单信息-->
+    <select id="getSalePayPlanById" resultMap="PayPlanMap">
+
+        SELECT row_id,created_by,created_time,sale_contract_id,sale_contract_no,pay_date,pay_amount,pay_method,STATUS,remark FROM sale_pay_plan where row_id =#{payPlanId}
+    </select>
+
+
+    <!--添加付款计划明细-->
+    <insert id="insertSalePayPlanDetail" parameterType="map">
+        insert into sale_pay_plan_detail (created_by,created_time,pay_plan_id,amount,period,pay_method,type_id,payee,payee_name )
+        values (
+            #{createdBy},now(),#{payPlanId},#{amount},#{period},#{payMethod},#{typeId},#{payee},#{payeeName}
+
+        )
+    </insert>
+    
+    <!--更新已付款金额和未付款金额-->
+    <update id="updatePayMentAmount">
+        update sale_contract set
+                  PAYMENT_AMOUNT = PAYMENT_AMOUNT + #{amount},
+                  UNPAYMENT_AMOUNT = UNPAYMENT_AMOUNT - #{amount}
+                 where row_id  = #{saleContractId}
+
+    </update>
+
+    <!--根据id更新已回款和未回款金额-->
+    <update id="updatePayMentAmountById">
+        update sale_contract set
+                  PAYMENT_AMOUNT =  #{totalAmount},
+                  UNPAYMENT_AMOUNT = TOTAL_AMOUNT - #{totalAmount}
+                 where row_id  = #{saleContractId}
+    </update>
+
+    <!--更新合同中的已计划和为计划金额-->
+    <update id="updatePlanedAmount">
+        update sale_contract set
+                  PLANED_AMOUNT =  PLANED_AMOUNT + #{payAmount},
+                  UNPLANED_AMOUNT = UNPAYMENT_AMOUNT - #{payAmount}
+                 where row_id  = #{saleContractId}
+
+    </update>
+
+    <!--根据合同id更新已计划和未计划合同金-->
+    <update id="updatePlanedAmountById">
+        update sale_contract set
+                  PLANED_AMOUNT = #{allPlanedAmount} ,
+                  UNPLANED_AMOUNT = UNPAYMENT_AMOUNT - #{allPlanedAmount}
+                 where row_id  = #{saleContractId}
+    </update>
+
+
+    <resultMap id="PayPlanDetailMap" type="com.champlink.common.domain.sale.contract.SalePayPlanDetail">
+
+        <id column="ROW_ID" property="rowId" />
+        <result column="CREATED_BY" property="createdBy" />
+        <result column="CREATED_TIME" property="createdTime" />
+        <result column="pay_plan_id" property="payPlanId" />
+        <result column="amount" property="amount" />
+        <result column="period" property="period" />
+        <result column="pay_method" property="payMethod" />
+        <result column="type_id" property="typeId" />
+        <result column="payee" property="payee" />
+        <result column="payee_name" property="payeeName" />
+    </resultMap>
+    
+    <!--查询回款计划明细-->
+    <select id="getSalePayPlanDetailById" resultMap="PayPlanDetailMap">
+        select * from sale_pay_plan_detail where row_id = #{id}
+    </select>
+
+    <!--根据回款单id查询回款明细list-->
+   <select id="getSalePayPlanDetail" resultMap="PayPlanDetailMap">
+
+        select * from sale_pay_plan_detail where pay_plan_id = #{payPlanId}
+    </select>
+
+    <!--删除明细数据-->
+    <delete id="delPayPlanDetailById">
+
+        delete from sale_pay_plan_detail where row_id = #{id}
+    </delete>
+
+    <!--更新明细数据-->
+    <update id="updateSalePayPlanDetail">
+        update sale_pay_plan_detail
+         <set>
+             <if test="amount != null">
+                 amount = #{amount},
+             </if>
+             <if test="period != null">
+                 period = #{period},
+             </if>
+             <if test="payMethod !=null">
+                pay_method = #{payMethod},
+             </if>
+             <if test="typeId != null">
+                 type_id = #{typeId},
+             </if>
+             <if test="payee !=null">
+                 payee = #{payee},
+             </if>
+         </set>
+        where row_id = #{rowId}
+    </update>
+
+    <!--获取实际回款总金额-->
+    <select id="getTotalPaymentAmount" resultType="decimal">
+        select sum(amount) total_amount from sale_pay_plan_detail where sale_contract_id = #{saleContractId}
+    </select>
+
+    <select id="getSaleContractListById" resultMap="BaseResult">
+        select * from sale_contract
+        <where>
+            <if test="params.transferMan!=null and params.transferMan !=''">
+                transfer_man = #{params.transferMan}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateTransferMan">
+        update sale_contract set transfer_man = #{staffId} where row_id = #{rowId}
+    </update>
+    
+    <insert id="insterBatchSaleContract" parameterType="com.champlink.common.domain.sale.contract.SaleContract">
+	    INSERT INTO SALE_CONTRACT (
+    		`CREATED_BY`, `CREATED_TIME`,`USER_NAME`, `CREATED_DATE`,`DEPART_ID`, `ORG_ID`, `CONTRACT_NO`, 
+    		`CONTRACT_TYPE`,`CONTRACT_TITLE`, `CUSTOMER`, `PAY_METHOD`, `CLIENT_CONTRACTOR`, `OUR_SIGNATORY`,
+            `SIGN_DATE`, `PAYMENT_AMOUNT`, `UNPAYMENT_AMOUNT`, `TICKET_AMOUNT`, `UNTICKET_AMOUNT`,
+            `LAST_UPDATE_BY`, `LAST_UPDATE_TIME`, `STATUS`, `TOTAL_AMOUNT`, `CONTRACT_DATE_S`, `CONTRACT_DATE_E`, 
+            `REMARK`, `NEXT_TIME`,`SALE_CURRENCY`,`GET_NO_DATE`,`BUSINESS_PERSON`,`AREA_ID`,`PROJECT_AREA`,`COUNTRY_ID`
+		)
+	      VALUES
+	    <foreach collection="list" item="item" separator=",">
+	        (
+		       #{item.createdBy},now(),#{item.userName},now(),#{item.departId},#{item.orgId},#{item.contractNo},#{item.contractType},
+               #{item.contractTitle},#{item.customer},#{item.payMethod},#{item.clientContractor},#{item.ourSignatory},
+               #{item.signDate},#{item.paymentAmount},#{item.unPaymentAmount},#{item.ticketAmount},#{item.unTicketAmount},
+               #{item.lastUpdateBy},now(),#{item.status},#{item.totalAmount},#{item.contractDateS},#{item.contractDateE},#{item.remark},
+               #{item.nextTime},#{item.saleCurrency},#{item.getNoDate},#{item.businessPerson},#{item.areaId},#{item.projectArea},#{item.countryId}
+	        )
+	    </foreach>
+	</insert>
+	
+    <insert id="insterBatchSaleContractDetail" parameterType="com.champlink.common.domain.sale.contract.SaleContractDetail">
+	    INSERT INTO SALE_CONTRACT_PRODDETAIL (
+	           SALE_CONTRACT_ID,PRODUCTION_ID,PRODUCTION_NO,CREATED_BY,CREATED_TIME,REMARK,
+               NUM,UNIT_PRICE,UNIT,AMOUNT,POWER,TOTAL_POWER,PRESENT_NUM
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+             	#{item.saleContractId},#{item.productionId}, #{item.productionNo},#{item.createdBy}, now(),
+             	#{item.remark},#{item.num},#{item.unitPrice},#{item.unit},#{item.amount},#{item.power},#{item.totalPower},#{item.presentNum}
+            )
+        </foreach>
+	</insert>
+	
+    <insert id="insterBatchSaleInvoice" parameterType="com.champlink.common.domain.sale.contract.InvoiceForm">
+	    INSERT INTO SALE_INVOICE (
+    		CREATED_BY,CREATED_TIME,SALE_CONTRACT_ID,KPRQ,INVOICE_CONTEXT,
+    		INVOICE_NO,INVOICE_AMOUNT,INVOICE_TYPE,INVOICE_USER,REMARK
+		)
+	      VALUES
+	    <foreach collection="list" item="item" separator=",">
+	        (
+		      #{item.createdBy},now(),#{item.saleContractId},#{item.kprq},#{item.invoiceContext},
+		      #{item.invoiceNo},#{item.invoiceAmount},#{item.invoiceTypeId},#{item.invoiceUserName},#{item.remark}
+	        )
+	    </foreach>
+	</insert>
+
+    <!-- 查询合同号是否存在 -->
+    <select id="getIsnewContract" resultType="int">
+        select count(*) from sale_contract where contract_no = #{saleContractNo}
+    </select>
+
+    <select id="getIsnewContractTitle" resultType="int">
+        select count(*) from sale_contract where CONTRACT_TITLE = #{saleContractTitle}
+    </select>
+
+    <!--插入交期信息-->
+    <insert id="insertSaleDelivery">
+        INSERT INTO sale_contract_delivery_info ( created_by,created_time,last_update_by,last_update_time,sale_contract_id,delivery_time,delivery_num)
+        values
+        <foreach collection="saleDeliveryList" item="item" separator=",">
+            (
+              #{item.createdBy},
+                #{item.createdTime},
+                #{item.lastUpdateBy},
+                #{item.lastUpdateTime},
+                #{rowId},
+                #{item.deliveryTime},
+                #{item.deliveryNum}
+            )
+        </foreach>
+    </insert>
+
+    <!--删除交期信息-->
+    <delete id="delDeliveryById">
+        delete from sale_contract_delivery_info where sale_contract_id = #{rowId}
+    </delete>
+    
+    <select id="checkContractNoIsExist" parameterType="java.lang.String" resultMap="BaseResult" >
+	  SELECT *
+	  FROM SALE_CONTRACT 
+	  WHERE CONTRACT_NO in
+	  <foreach item="item" index="index" collection="list"
+	      open="(" separator="," close=")">
+	        #{item}
+	  </foreach>
+	</select>
+
+
+</mapper>

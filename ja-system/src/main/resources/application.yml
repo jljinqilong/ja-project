@@ -1,0 +1,71 @@
+server:
+  port: 10002
+spring:
+  application:
+    name: JA-SYSTEM
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.3.138:3333/ja_erp?zeroDateTimeBehavior=convertToNull&useUnicode=TRUE&characterEncoding=utf8&autoReconnect=true
+    username: root
+    password: 123456
+  redis:
+    host: 192.168.3.138
+    port: 6379
+    database: 0
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1
+        min-idle: 0
+  activemq:
+    broker-url: tcp://192.168.3.138:61616
+    user: admin
+    password: admin
+    pool:
+      enabled: true
+      max-connections: 50
+  messages:
+    basename: i18n/messages
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+  cas:
+    sign-out-filters: /logout
+    auth-filters: /*
+    validate-filters: /*
+    request-wrapper-filters: /*
+    assertion-filters: /*
+    cas-server-login-url: http://localhost:8080/login
+    cas-server-url-prefix: http://localhost:8080
+    redirect-after-validation: true
+    use-session: true
+    server-name: http://localhost:8001
+mybatis:
+  type-aliases-package: com.champlink.common.domain.system
+  mapper-locations: classpath*:com/champlink/system/mapper/**/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    com.champlink.system.dao: DEBUG
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+JA-SYSTEM: 
+  ribbon:
+    ConnectTimeout: 500
+    ReadTimeout: 1000
+    OkToRetryOnAllOperations: true
+    MaxAutoRetriesNextServer: 2
+    MaxAutoRetries: 3

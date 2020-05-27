@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.emolument.dao.EltRefStaffEmolumentDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.emolument.EltRefStaffEmolument">
+
+    <id column="row_id" property="rowId" jdbcType="BIGINT" />
+        <result column="rule_id" property="ruleId" jdbcType="BIGINT" />
+        <result column="staff_id" property="staffId" jdbcType="BIGINT" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="del_flag" property="delFlag" jdbcType="BIGINT" />
+  </resultMap>
+  
+  <!--基础字段-->
+    <sql id="Base_Column_List" >
+        row_id, rule_id, staff_id, type, del_flag
+    </sql>
+
+    <!--根据规则id查询-->
+    <select id="select" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from elt_ref_staff_emolument
+        <where>
+            del_flag=0
+            <if test="params.ruleId != null and params.ruleId != ''">
+                and rule_id = #{params.ruleId}
+            </if>
+            <if test="params.staffId != null and params.staffId != ''">
+                and staff_id like concat('%',#{params.staffId},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--根据员工id进行删除-->
+    <update id="deleteByStaffId" parameterType="java.lang.Long" >
+        update elt_ref_staff_emolument set del_flag = 1
+          where staff_id = #{staffId}
+    </update>
+
+    <!--根据规则id进行删除-->
+    <update id="deleteRuleId" parameterType="java.lang.Long" >
+        update elt_ref_staff_emolument set del_flag = 1
+        where rule_id = #{ruleId}
+    </update>
+
+  <!--添加数据-->
+  <insert id="insert" parameterType="java.util.List">
+    insert into elt_ref_staff_emolument
+      (rule_id,
+       staff_id,
+       type)
+    values
+      <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.ruleId},
+         #{item.staffId},
+         #{item.type})
+      </foreach>
+  </insert>
+  
+  <!-- 查询员工薪酬规则列表 
+  <select id="searchEltRefStaffEmolumentList" resultMap="BaseResultMap" parameterType="com.champlink.common.domain.emolument.EltRefStaffEmolument">
+    select 
+    staff_id,accumulation_id,social_security_id,subsidy_ids,performance_id,fixed_salary_id,job_subsidy_id
+     from elt_performance
+     <where>
+        <if test="staffId != null and staffId !='' ">
+            and staff_id = #{staffId}
+        </if>
+       
+    </where>
+  </select>
+  -->
+</mapper>

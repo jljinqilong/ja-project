@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.baseInfo.RelationshipInnerMapper">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.baseInfo.RelationshipInner">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="relative_name" jdbcType="VARCHAR" property="relativeName" />
+    <result column="relationship" jdbcType="VARCHAR" property="relationship" />
+    <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="dept" jdbcType="VARCHAR" property="dept" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="relative_id" jdbcType="VARCHAR" property="relativeId" />
+  </resultMap>
+  
+  <!-- 添加 -->
+  <insert id="insertRelationshipInner" parameterType="com.champlink.common.domain.staff.baseInfo.RelationshipInner">
+      insert into stf_relationship_inner
+        (staff_id, relative_name,relationship,company,dept,contact,relative_id)
+      values 
+        (#{staffId},#{relativeName},#{relationship},#{company},#{dept},#{contact},#{relativeId})
+  </insert>
+  
+  <!-- 更新 -->
+  <update id="updateRelationshipInner" parameterType="com.champlink.common.domain.staff.baseInfo.RelationshipInner">
+    update stf_relationship_inner
+    <set>
+        <if test="staffId != null">
+            staff_id = #{staffId},
+        </if>
+        <if test="relativeName != null">
+            relative_name = #{relativeName},
+        </if>
+        <if test="relationship != null">
+            relationship = #{relationship},
+        </if>
+        <if test="company != null">
+            company = #{company},
+        </if>
+        <if test="dept != null">
+            dept = #{dept},
+        </if>
+        <if test="contact != null">
+            contact = #{contact},
+        </if>
+        <if test="relativeId != null">
+            relative_id = #{relativeId}
+        </if>
+    </set>
+    where row_id = #{rowId}
+  </update>
+  
+  <!-- 根据人员id删除 -->
+  <delete id="delRelationshipInnerListByStaffId">
+    delete from stf_relationship_inner where row_id = #{rowId}
+  </delete>
+  
+  <!-- 根据人员id查询 -->
+  <select id="queryRelationshipInnerList" resultMap="BaseResultMap">
+    select * 
+    from stf_relationship_inner
+    where staff_id = #{staffId}
+  </select>
+  
+  <select id="getByRowId" resultMap="BaseResultMap">
+    select * 
+    from stf_relationship_inner
+    where row_id = #{rowId}
+  </select>
+  
+    <!-- 根据人员id删除 -->
+  <delete id="delAllByStaffId">
+    delete from stf_relationship_inner where staff_id = #{staffId}
+  </delete>
+</mapper>

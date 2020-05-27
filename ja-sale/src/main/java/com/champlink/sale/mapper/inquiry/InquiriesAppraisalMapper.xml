@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.inquiry.InquiriesAppraisalDao">
+    <resultMap id="BaseResultMap" type="com.champlink.common.domain.sale.inquiry.Inquiries">
+        <id column="ROW_ID" property="rowId" jdbcType="BIGINT"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="BIGINT"/>
+        <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="LAST_UPDATE_BY" property="lastUpdateBy" jdbcType="BIGINT"/>
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="inquiry_no" property="inquiryNo" jdbcType="VARCHAR"/>
+        <result column="CUSTOMER_ID" property="customerId" jdbcType="BIGINT"/>
+        <result column="org_id" property="orgId" jdbcType="BIGINT"/>
+        <result column="product_type_id" property="productTypeId" jdbcType="BIGINT"/>
+        <result column="order_total" property="orderTotal" jdbcType="DECIMAL"/>
+        <result column="selling_price" property="sellingPrice" jdbcType="DECIMAL"/>
+        <result column="trade_mode_id" property="tradeModeId" jdbcType="BIGINT"/>
+        <result column="first_year_attenuation" property="firstYearAttenuation" jdbcType="VARCHAR"/>
+        <result column="payment_term" property="paymentTerm" jdbcType="VARCHAR"/>
+        <result column="certification_require" property="certificationRequire" jdbcType="VARCHAR"/>
+        <result column="output_power" property="outputPower" jdbcType="VARCHAR"/>
+        <result column="plate_require" property="plateRequire" jdbcType="VARCHAR"/>
+        <result column="warranty_require" property="warrantyRequire" jdbcType="VARCHAR"/>
+        <result column="special_require" property="specialRequire" jdbcType="VARCHAR"/>
+        <result column="sale_area_id" property="saleAreaId" jdbcType="BIGINT"/>
+        <result column="salesman_id" property="salesmanId" jdbcType="BIGINT"/>
+        <result column="violate_clause" property="violateClause" jdbcType="VARCHAR"/>
+        <result column="inquiry_time" property="inquiryTime" jdbcType="VARCHAR"/>
+        <result column="number" property="number" jdbcType="BIGINT"/>
+        <result column="bom_require" property="bomRequire" jdbcType="VARCHAR"/>
+        <result column="cost" property="cost" jdbcType="VARCHAR"/>
+        <result column="gross_profit_ratio" property="grossProfitRatio" jdbcType="VARCHAR"/>
+        <result column="del_flag" property="delFlag" jdbcType="VARCHAR"/>
+
+        <result column="power" property="power" jdbcType="VARCHAR"/>
+        <result column="battery_type_id" property="batteryTypeId" jdbcType="BIGINT"/>
+        <result column="main_gate_number" property="mainGateNumber" jdbcType="DECIMAL"/>
+        <result column="border_color_id" property="borderColorId" jdbcType="BIGINT"/>
+        <result column="border_specification_id" property="borderSpecificationId" jdbcType="BIGINT"/>
+        <result column="backboard_color_id" property="backboardColorId" jdbcType="BIGINT"/>
+        <result column="backboard_material_id" property="backboardMaterialId" jdbcType="BIGINT"/>
+        <result column="junction_box_id" property="junctionBoxId"/>
+        <result column="glass" property="glass" jdbcType="VARCHAR"/>
+        <result column="eva_id" property="evaId" jdbcType="BIGINT"/>
+        <result column="status" property="status"/>
+        <result column="inquiry_title" jdbcType="VARCHAR" property="inquiryTitle"/>
+        <result column="estimated_sales_amount" jdbcType="DECIMAL" property="estimatedSalesAmount"/>
+        <result column="estimated_signing_Date" jdbcType="TIMESTAMP" property="estimatedSigningDate"/>
+        <result column="sales_phase_id" jdbcType="BIGINT" property="salesPhaseId"/>
+        <result column="product_no" jdbcType="VARCHAR" property="productNo"/>
+        <result column="actual_follow_time" jdbcType="TIMESTAMP" property="actualFollowTime"/>
+        <result column="contract_status" property="contractStatus" />
+        <result column="contract_no" property="contractNo"/>
+        <result column="contract_id" property="contractId" />
+
+        <result column="project_address_id" jdbcType="BIGINT" property="projectAddressId" />
+        <result column="destination_country_id" jdbcType="BIGINT" property="destinationCountryId" />
+        <result column="salesman" jdbcType="VARCHAR" property="salesman" />
+
+        <result column="customerName" property="customerName" jdbcType="VARCHAR"/>
+        <result column="productNo" property="productNo" jdbcType="VARCHAR"/>
+        <result column="saleAreaName" property="saleAreaName" jdbcType="VARCHAR"/>
+
+
+
+    </resultMap>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+
+    <sql id="Base_Column_List">
+        ROW_ID, CREATED_BY, CREATED_TIME, LAST_UPDATE_BY, LAST_UPDATE_TIME, inquiry_no, CUSTOMER_ID,
+        org_id, product_type_id, order_total, selling_price, trade_mode_id, first_year_attenuation,
+        payment_term, certification_require, output_power, plate_require, warranty_require,
+        special_require, sale_area_id, salesman_id, violate_clause, inquiry_time, `number`,
+        bom_require, cost, gross_profit_ratio,del_flag, power, battery_type_id, main_gate_number,
+        border_color_id, border_specification_id, backboard_color_id, backboard_material_id,
+        junction_box_id, glass, eva_id,status,inquiry_title, estimated_sales_amount,
+        estimated_signing_Date, sales_phase_id, product_no, actual_follow_time,contract_status,contract_no,contract_id,
+        project_address_id, destination_country_id, salesman
+    </sql>
+
+    <!--添加询价记录-->
+    <insert id="insert" parameterType="com.champlink.common.domain.sale.inquiry.Inquiries">
+       insert into  sale_inquiries_appraisal (
+        CREATED_BY, CREATED_TIME,
+        inquiry_no,
+        CUSTOMER_ID,org_id, product_type_id,
+        order_total, selling_price, trade_mode_id,
+        first_year_attenuation, payment_term, certification_require,
+        output_power, plate_require, warranty_require,
+        special_require, sale_area_id, salesman_id,
+        violate_clause, inquiry_time, number,
+        bom_require, cost, gross_profit_ratio,power, battery_type_id, main_gate_number,
+        border_color_id, border_specification_id, backboard_color_id, backboard_material_id,
+        junction_box_id, glass, eva_id,status,inquiry_title, estimated_sales_amount,
+        estimated_signing_Date, sales_phase_id, product_no, actual_follow_time,contract_status,contract_no,contract_id,
+        project_address_id, destination_country_id, salesman
+        )
+        values (
+        #{createdBy}, now(),
+        #{inquiryNo},
+        #{customerId}, #{orgId}, #{productTypeId},
+        #{orderTotal}, #{sellingPrice}, #{tradeModeId},
+        #{firstYearAttenuation}, #{paymentTerm},
+        #{certificationRequire},
+        #{outputPower}, #{plateRequire}, #{warrantyRequire},
+        #{specialRequire}, #{saleAreaId}, #{salesmanId},
+        #{violateClause}, #{inquiryTime}, #{number},
+        #{bomRequire}, #{cost}, #{grossProfitRatio},
+        #{power}, #{batteryTypeId},
+        #{mainGateNumber}, #{borderColorId}, #{borderSpecificationId},
+        #{backboardColorId}, #{backboardMaterialId},
+        #{junctionBoxId}, #{glass}, #{evaId},1,#{inquiryTitle},
+        #{estimatedSalesAmount}, #{estimatedSigningDate},
+        #{salesPhaseId}, #{productNo}, #{actualFollowTime},
+        #{contractStatus}, #{contractNo}, #{contractId},
+        #{projectAddressId}, #{destinationCountryId}, #{salesman}
+        )
+    </insert>
+
+    <!--获取最大的询价编号-->
+    <select id="getMaxInquiryNo" resultType="String" parameterType="java.lang.String">
+        select max(inquiry_no) FROM ja_erp.sale_inquiries_appraisal
+        where inquiry_no like concat(#{prefix},'%');
+    </select>
+
+    <!--更新-->
+    <update id="update" parameterType="com.champlink.common.domain.sale.inquiry.Inquiries">
+        update sale_inquiries_appraisal
+        <set>
+            LAST_UPDATE_TIME = now(),
+            <if test="lastUpdateBy != null">
+                LAST_UPDATE_BY = #{lastUpdateBy,jdbcType=BIGINT},
+            </if>
+            <if test="inquiryNo != null">
+                inquiry_no = #{inquiryNo,jdbcType=VARCHAR},
+            </if>
+            <if test="customerId != null">
+                CUSTOMER_ID = #{customerId,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="productTypeId != null">
+                product_type_id = #{productTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="orderTotal != null">
+                order_total = #{orderTotal,jdbcType=DECIMAL},
+            </if>
+            <if test="sellingPrice != null">
+                selling_price = #{sellingPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeModeId != null">
+                trade_mode_id = #{tradeModeId,jdbcType=BIGINT},
+            </if>
+            <if test="firstYearAttenuation != null">
+                first_year_attenuation = #{firstYearAttenuation,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentTerm != null">
+                payment_term = #{paymentTerm,jdbcType=VARCHAR},
+            </if>
+            <if test="certificationRequire != null">
+                certification_require = #{certificationRequire,jdbcType=VARCHAR},
+            </if>
+            <if test="outputPower != null">
+                output_power = #{outputPower,jdbcType=VARCHAR},
+            </if>
+            <if test="plateRequire != null">
+                plate_require = #{plateRequire,jdbcType=VARCHAR},
+            </if>
+            <if test="warrantyRequire != null">
+                warranty_require = #{warrantyRequire,jdbcType=VARCHAR},
+            </if>
+            <if test="specialRequire != null">
+                special_require = #{specialRequire,jdbcType=VARCHAR},
+            </if>
+            <if test="saleAreaId != null">
+                sale_area_id = #{saleAreaId,jdbcType=BIGINT},
+            </if>
+            <if test="salesmanId != null">
+                salesman_id = #{salesmanId,jdbcType=BIGINT},
+            </if>
+            <if test="violateClause != null">
+                violate_clause = #{violateClause,jdbcType=VARCHAR},
+            </if>
+            <if test="inquiryTime != null">
+                inquiry_time = #{inquiryTime,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                number = #{number,jdbcType=BIGINT},
+            </if>
+            <if test="bomRequire != null">
+                bom_require = #{bomRequire,jdbcType=VARCHAR},
+            </if>
+            <if test="cost != null">
+                cost = #{cost,jdbcType=VARCHAR},
+            </if>
+            <if test="grossProfitRatio != null">
+                gross_profit_ratio = #{grossProfitRatio,jdbcType=VARCHAR},
+            </if>
+            <if test="power != null">
+                power = #{power,jdbcType=VARCHAR},
+            </if>
+            <if test="batteryTypeId != null">
+                battery_type_id = #{batteryTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="mainGateNumber != null">
+                main_gate_number = #{mainGateNumber,jdbcType=DECIMAL},
+            </if>
+            <if test="borderColorId != null">
+                border_color_id = #{borderColorId,jdbcType=BIGINT},
+            </if>
+            <if test="borderSpecificationId != null">
+                border_specification_id = #{borderSpecificationId,jdbcType=BIGINT},
+            </if>
+            <if test="backboardColorId != null">
+                backboard_color_id = #{backboardColorId,jdbcType=BIGINT},
+            </if>
+            <if test="backboardMaterialId != null">
+                backboard_material_id = #{backboardMaterialId,jdbcType=BIGINT},
+            </if>
+            <if test="junctionBoxId != null">
+                junction_box_id = #{junctionBoxId},
+            </if>
+            <if test="glass != null">
+                glass = #{glass,jdbcType=VARCHAR},
+            </if>
+            <if test="evaId != null">
+                eva_id = #{evaId,jdbcType=BIGINT},
+            </if>
+            <if test="inquiryTitle != null">
+                inquiry_title = #{inquiryTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedSalesAmount != null">
+                estimated_sales_amount = #{estimatedSalesAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="estimatedSigningDate != null">
+                estimated_signing_Date = #{estimatedSigningDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="salesPhaseId != null">
+                sales_phase_id = #{salesPhaseId,jdbcType=BIGINT},
+            </if>
+            <if test="productNo != null">
+                product_no = #{productNo,jdbcType=VARCHAR},
+            </if>
+            <if test="actualFollowTime != null">
+                actual_follow_time = #{actualFollowTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="contractStatus != null">
+                contract_status = #{contractStatus},
+            </if>
+            <if test="contractNo != null">
+                contract_no = #{contractNo},
+            </if>
+            <if test="contractId != null">
+                contract_id = #{contractId},
+            </if>
+            <if test="projectAddressId != null">
+                project_address_id = #{projectAddressId,jdbcType=BIGINT},
+            </if>
+            <if test="destinationCountryId != null">
+                destination_country_id = #{destinationCountryId,jdbcType=BIGINT},
+            </if>
+            <if test="salesman != null">
+                salesman = #{salesman,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ROW_ID = #{rowId,jdbcType=BIGINT}
+    </update>
+
+
+    <!--查询询单信息-->
+    <select id="selectByRowId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+         select
+        i.ROW_ID, i.CREATED_BY, i.CREATED_TIME, i.LAST_UPDATE_BY, i.LAST_UPDATE_TIME, i.inquiry_no, i.CUSTOMER_ID,
+        i.org_id, i.product_type_id, i.order_total, i.selling_price, i.trade_mode_id, i.first_year_attenuation,
+        i.payment_term, i.certification_require, i.output_power, i.plate_require, i.warranty_require,
+        i.special_require, i.sale_area_id, i.salesman_id, i.violate_clause, i.inquiry_time, i.number,
+        i.bom_require, cost, i.gross_profit_ratio,i.power, i.battery_type_id, i.main_gate_number,
+        i.border_color_id, i.border_specification_id, i.backboard_color_id, i.backboard_material_id,
+        i.junction_box_id, i.glass, i.eva_id,i.status,i.inquiry_title, i.estimated_sales_amount,
+        i.estimated_signing_Date, i.sales_phase_id, i.product_no, i.actual_follow_time,
+        i.contract_status,i.contract_no,i.contract_id,i.project_address_id, i.destination_country_id, i.salesman,
+        c.customer_name customerName,
+        p.product_no productNo,
+        r.region_name saleAreaName
+        from sale_inquiries_appraisal i
+        left join sale_customer c on i.customer_id = c.row_id
+        left join sale_product p on p.row_id = i.product_type_id
+        left join sale_region r on r.row_id = i.sale_area_id
+        where i.ROW_ID = #{rowId,jdbcType=BIGINT}
+    </select>
+
+    <update id="updateDelFlag" parameterType="long">
+        update sale_inquiries_appraisal set del_flag = 1
+        where ROW_ID in
+        <foreach item="id" collection="array" open="(" separator=","
+                 close=")">
+            #{id}
+        </foreach>
+    </update>
+
+
+
+
+
+    <select id="updateStatus">
+        update sale_inquiries_appraisal set status = #{status},LAST_UPDATE_BY=#{loginId},LAST_UPDATE_TIME=now()
+        where ROW_ID = #{rowId}
+    </select>
+
+</mapper>

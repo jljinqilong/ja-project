@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.system.dao.ModuleLogMapper">
+	<resultMap id="RMBase" type="com.champlink.common.domain.system.ModuleLog">
+		<id column="row_id" property="rowId" />
+		<result column="opt_time" property="optTime" />
+		<result column="opt_staff_id" property="optStaffId" />
+		<result column="opt_staff_no" property="optStaffNo" />
+		<result column="opt_staff_name" property="optStaffName" />
+		<result column="opt_type" property="optType" />
+		<result column="opt_describe" property="optDescribe" />
+		<result column="app_code" property="appCode" />
+		<result column="table_id" property="tableId" />
+		<result column="del_flag" property="delFlag" />
+	</resultMap>
+
+	<!-- 新增 -->
+	<insert id="add" parameterType="com.champlink.common.domain.system.ModuleLog">
+		insert into sys_module_log (opt_time, opt_staff_id, opt_staff_no, opt_staff_name, opt_type, opt_describe, app_code, table_id)
+		values (#{optTime}, #{optStaffId}, #{optStaffNo}, #{optStaffName}, #{optType}, #{optDescribe}, #{appCode}, #{tableId})
+	</insert>
+
+	<!-- 查询列表 -->
+	<select id="pageList" resultMap="RMBase">
+		select * from sys_module_log ml
+		<where>
+			ml.del_flag=0
+			<if test="params.appCode != null and params.appCode != ''">
+			    and ml.app_code = #{params.appCode}
+			</if>
+			<if test="params.tableId != null and params.tableId != ''">
+                and ml.table_id = #{params.tableId}
+            </if>
+			<if test="params.optType != null and params.optType != ''">
+				and ml.opt_type = #{params.optType}
+			</if>
+			<if test="params.optKey != null and params.optKey != ''">
+			    and ml.opt_staff_no = #{params.optKey}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 查询所有列表 -->
+    <select id="allList" resultMap="RMBase">
+        select * from sys_module_log ml
+        <where>
+            ml.del_flag=0
+            <if test="appCode != null and appCode != ''">
+                and ml.app_code = #{appCode}
+            </if>
+            <if test="tableId != null and tableId != ''">
+                and ml.table_id = #{tableId}
+            </if>
+            <if test="optType != null and optType != ''">
+                and ml.opt_type = #{optType}
+            </if>
+        </where>
+    </select>
+	
+</mapper>

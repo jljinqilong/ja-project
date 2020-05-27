@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.emolument.dao.EltAllowanceDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.emolument.EltAllowance">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="created_time" jdbcType="DATE" property="createdTime" />
+    <result column="last_update_by" jdbcType="BIGINT" property="lastUpdateBy" />
+    <result column="last_update_time" jdbcType="DATE" property="lastUpdateTime" />
+    <result column="base_id" jdbcType="BIGINT" property="baseId" />
+    <result column="allowance_category" jdbcType="VARCHAR" property="allowanceCategory" />
+    <result column="money" jdbcType="REAL" property="money" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+  
+  <!-- 新增岗位津贴规则 -->
+  <insert id="add" parameterType="com.champlink.common.domain.emolument.EltAllowance" >
+    insert into elt_allowance
+      (base_id,
+      created_by,
+      created_time,
+      last_update_by,
+      last_update_time,
+      allowance_category,
+      money,
+      remarks)
+    values
+      (#{baseId,jdbcType=BIGINT},
+       #{createdBy,jdbcType=BIGINT},
+       NOW(),
+       #{lastUpdateBy,jdbcType=BIGINT},
+       #{lastUpdateTime,jdbcType=DATE},
+       #{allowanceCategory,jdbcType=VARCHAR},
+       #{money,jdbcType=FLOAT},
+       #{remarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 查询岗位津贴规则列表 -->
+  <select id="pageList" resultMap="BaseResultMap" parameterType="com.champlink.common.domain.emolument.EltAllowance">
+    select 
+      row_id,
+      created_by,
+      created_time,
+      last_update_by,
+      last_update_time,
+      base_id,
+      allowance_category,
+      money,
+      remarks
+     from elt_allowance
+    <where>
+      del_flag=0
+      <if test="params.baseId != null and params.baseId != -1">
+        and base_id = #{params.baseId}
+      </if>
+      <if test="params.allowanceCategory != null and params.allowanceCategory != ''">
+        and allowance_category like concat('%',#{params.allowanceCategory})
+      </if>
+    </where> 
+  </select>
+  
+  <!-- 删除 -->
+  <update id="delById">
+    update elt_allowance set del_flag=1 where ROW_ID=#{eltAllowanceId}
+  </update>
+  
+  <!-- 批量删除 -->
+  <update id="beachDel">
+    update elt_allowance set del_flag=1 
+    where ROW_ID in 
+    <foreach collection="list" item="item" open="(" separator="," close=")">#{item}</foreach>
+  </update>
+
+  <!-- 清空 -->
+  <update id="empty">
+    update elt_allowance set del_flag=1
+  </update>
+  
+  <!-- 根据id获取详情 -->
+  <select id="getById" resultMap="BaseResultMap">
+    select * from elt_allowance where row_id = #{rowId} and del_flag=0
+  </select>
+  
+  <!-- 修改 -->
+  <update id="update" parameterType="com.champlink.common.domain.emolument.EltAllowance" >
+    update elt_allowance
+    <set>
+      <if test="baseId != null">
+        base_id = #{baseId,jdbcType=BIGINT},
+      </if>
+      <if test="allowanceCategory != null">
+        allowance_category = #{allowanceCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=FLOAT},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=FLOAT},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=DATE},
+      </if>
+      <if test="lastUpdateBy != null">
+        last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+      </if>
+
+        last_update_time = NOW()
+
+    </set>
+    where ROW_ID = #{rowId,jdbcType=BIGINT}
+  </update>
+
+  <select id="getByName" resultMap="BaseResultMap">
+    select * from elt_allowance
+      where  allowance_category = #{allowanceCategory} and
+      base_id = #{baseId} and del_flag = 0
+  </select>
+  
+</mapper>

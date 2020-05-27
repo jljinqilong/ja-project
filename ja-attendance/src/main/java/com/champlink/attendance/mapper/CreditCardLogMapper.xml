@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.attendance.dao.CreditCardLogMapper">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.attendance.CreditCardLog">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="last_update_by" jdbcType="BIGINT" property="lastUpdateBy" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="staff_no" jdbcType="VARCHAR" property="staffNo" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="org_id" jdbcType="BIGINT" property="orgId" />
+    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
+    
+    <result column="machine_id" jdbcType="BIGINT" property="machineId" />
+    <result column="machine_name" jdbcType="VARCHAR" property="machineName" />
+    
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+  
+  <!-- 删除 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from atd_credit_card_log
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </delete>
+  
+  <!-- 插入 -->
+  <insert id="insert" parameterType="com.champlink.common.domain.attendance.CreditCardLog">
+    insert into atd_credit_card_log (created_by, created_time, 
+      last_update_by, last_update_time, staff_id, 
+      staff_no, staff_name, org_id, 
+      org_name, status, machine_id, machine_name, time, 
+      del_flag)
+    values (#{createdBy,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateBy,jdbcType=BIGINT}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{staffId,jdbcType=BIGINT}, 
+      #{staffNo,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, #{orgId,jdbcType=BIGINT}, 
+      #{orgName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{machineId,jdbcType=BIGINT}, 
+      #{machineName,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP}, 
+      #{delFlag,jdbcType=INTEGER})
+  </insert>
+  
+  <!-- 更新 -->
+  <update id="updateByPrimaryKey" parameterType="com.champlink.common.domain.attendance.CreditCardLog">
+    update atd_credit_card_log
+    set created_by = #{createdBy,jdbcType=BIGINT},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      staff_id = #{staffId,jdbcType=BIGINT},
+      staff_no = #{staffNo,jdbcType=VARCHAR},
+      staff_name = #{staffName,jdbcType=VARCHAR},
+      org_id = #{orgId,jdbcType=BIGINT},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=INTEGER}
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 根据ID查询 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select *
+    from atd_credit_card_log
+    where del_flag = 0
+    and row_id = #{rowId,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 查询所有-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select *
+    from atd_credit_card_log
+    where del_flag = 0
+  </select>
+  
+    <!-- 分页查询-->
+  <select id="pageList" resultMap="BaseResultMap">
+    select *
+    from atd_credit_card_log
+    <where>
+     del_flag = 0
+     <if test="params.staffNo != null and params.staffNo != ''">
+        and staff_no = #{params.staffNo}
+     </if>
+     </where>
+  </select>
+  
+    <!-- 批量插入 -->
+  <insert id="insertList" parameterType="java.util.List">
+    insert into atd_credit_card_log (created_by, created_time, 
+      last_update_by, last_update_time, staff_id, 
+      staff_no, staff_name, org_id, 
+      org_name, status, machine_id, machine_name, time)
+    values
+    <foreach collection="list" item="item" separator=",">
+     (#{item.createdBy,jdbcType=BIGINT}, #{item.createdTime,jdbcType=TIMESTAMP}, 
+      #{item.lastUpdateBy,jdbcType=BIGINT}, #{item.lastUpdateTime,jdbcType=TIMESTAMP}, #{item.staffId,jdbcType=BIGINT}, 
+      #{item.staffNo,jdbcType=VARCHAR}, #{item.staffName,jdbcType=VARCHAR}, #{item.orgId,jdbcType=BIGINT}, 
+      #{item.orgName,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, #{item.machineId,jdbcType=BIGINT}, 
+      #{item.machineName,jdbcType=VARCHAR}, 
+      #{item.time,jdbcType=TIMESTAMP})
+      </foreach>
+  </insert>
+  
+</mapper>

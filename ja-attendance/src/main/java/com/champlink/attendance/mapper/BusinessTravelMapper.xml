@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.champlink.attendance.dao.BusinessTravelMapper">
+	<resultMap id="BaseResultMap"
+		type="com.champlink.common.domain.attendance.BusinessTravel">
+		<id column="row_id" jdbcType="BIGINT" property="rowId" />
+		<result column="created_by" jdbcType="BIGINT"
+			property="createdBy" />
+		<result column="created_time" jdbcType="TIMESTAMP"
+			property="createdTime" />
+		<result column="last_update_by" jdbcType="BIGINT"
+			property="lastUpdateBy" />
+		<result column="last_update_time" jdbcType="TIMESTAMP"
+			property="lastUpdateTime" />
+		<result column="staff_id" jdbcType="BIGINT" property="staffId" />
+		<result column="staff_no" jdbcType="VARCHAR" property="staffNo" />
+		<result column="staff_name" jdbcType="VARCHAR"
+			property="staffName" />
+		<result column="job_no_id" jdbcType="BIGINT" property="jobNoId" />
+		<result column="job_no_name" jdbcType="VARCHAR"
+			property="jobNoName" />
+		<result column="dept_id" jdbcType="BIGINT" property="deptId" />
+		<result column="dept_name" jdbcType="VARCHAR"
+			property="deptName" />
+		<result column="grade_id" jdbcType="BIGINT" property="gradeId" />
+		<result column="grade_name" jdbcType="VARCHAR"
+			property="gradeName" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="agent_staff_id" jdbcType="BIGINT"
+			property="agentStaffId" />
+		<result column="agent_staff_no" jdbcType="VARCHAR"
+			property="agentStaffNo" />
+		<result column="agent_staff_name" jdbcType="VARCHAR"
+			property="agentStaffName" />
+		<result column="start_date" jdbcType="TIMESTAMP"
+			property="startDate" />
+		<result column="end_date" jdbcType="TIMESTAMP"
+			property="endDate" />
+		<result column="hours" jdbcType="DOUBLE" property="hours" />
+		<result column="together_name" jdbcType="VARCHAR"
+			property="togetherName" />
+		<result column="travel_mode" jdbcType="BIGINT"
+			property="travelMode" />
+		<result column="country_id" jdbcType="BIGINT"
+			property="countryId" />
+		<result column="province_id" jdbcType="BIGINT"
+			property="provinceId" />
+		<result column="city_id" jdbcType="BIGINT" property="cityId" />
+		<result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+	</resultMap>
+
+	<!-- 删除 -->
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		update
+		atd_business_travel
+		set del_flag = 1
+		where row_id =
+		#{rowId,jdbcType=BIGINT}
+	</update>
+
+	<!-- 插入 -->
+	<insert id="insert"
+		parameterType="com.champlink.common.domain.attendance.BusinessTravel">
+		insert into atd_business_travel (row_id, created_by,
+		created_time,
+		last_update_by, last_update_time, staff_id,
+		staff_no,
+		staff_name, job_no_id,
+		job_no_name, dept_id, dept_name,
+		grade_id,
+		grade_name, status,
+		agent_staff_id, agent_staff_no, agent_staff_name,
+		start_date, end_date, hours,
+		together_name, travel_mode, country_id,
+		province_id,
+		city_id)
+		values (#{rowId,jdbcType=BIGINT},
+		#{createdBy,jdbcType=BIGINT},
+		#{createdTime,jdbcType=TIMESTAMP},
+		#{lastUpdateBy,jdbcType=BIGINT}, #{lastUpdateTime,jdbcType=TIMESTAMP},
+		#{staffId,jdbcType=BIGINT},
+		#{staffNo,jdbcType=VARCHAR},
+		#{staffName,jdbcType=VARCHAR},
+		#{jobNoId,jdbcType=BIGINT},
+		#{jobNoName,jdbcType=VARCHAR}, #{deptId,jdbcType=BIGINT},
+		#{deptName,jdbcType=VARCHAR},
+		#{gradeId,jdbcType=BIGINT},
+		#{gradeName,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},
+		#{agentStaffId,jdbcType=BIGINT}, #{agentStaffNo,jdbcType=VARCHAR},
+		#{agentStaffName,jdbcType=VARCHAR},
+		#{startDate,jdbcType=TIMESTAMP},
+		#{endDate,jdbcType=TIMESTAMP},
+		#{hours,jdbcType=BIGINT},
+		#{togetherName,jdbcType=VARCHAR}, #{travelMode,jdbcType=BIGINT},
+		#{countryId,jdbcType=BIGINT},
+		#{provinceId,jdbcType=BIGINT},#{cityId,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateByPrimaryKey"
+		parameterType="com.champlink.common.domain.attendance.BusinessTravel">
+		update atd_business_travel
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=BIGINT},
+			</if>
+			<if test="createdTime != null">
+				created_time = #{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+				last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="staffId != null">
+			staff_id = #{staffId,jdbcType=BIGINT},
+			</if>
+			<if test="staffNo != null">
+			staff_no = #{staffNo,jdbcType=VARCHAR},
+			</if>
+			<if test="staffName != null">
+			staff_name = #{staffName,jdbcType=VARCHAR},
+			</if>
+			<if test="jobNoId != null">
+			job_no_id = #{jobNoId,jdbcType=BIGINT},
+			</if>
+			<if test="jobNoName != null">
+			job_no_name = #{jobNoName,jdbcType=VARCHAR},
+			</if>
+			<if test="deptId != null">
+			dept_id = #{deptId,jdbcType=BIGINT},
+			</if>
+			<if test="deptName != null">
+			dept_name = #{deptName,jdbcType=VARCHAR},
+			</if>
+			<if test="gradeId != null">
+			grade_id = #{gradeId,jdbcType=BIGINT},
+			</if>
+			<if test="gradeName != null">
+			grade_name = #{gradeName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+			status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="agentStaffId != null">
+			agent_staff_id = #{agentStaffId,jdbcType=BIGINT},
+			</if>
+			<if test="agentStaffNo != null">
+			agent_staff_no = #{agentStaffNo,jdbcType=VARCHAR},
+			</if>
+			<if test="agentStaffName != null">
+			agent_staff_name = #{agentStaffName,jdbcType=VARCHAR},
+			</if>
+			<if test="startDate != null">
+			start_date = #{startDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endDate != null">
+			end_date = #{endDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="hours != null">
+			hours = #{hours,jdbcType=BIGINT},
+			</if>
+			<if test="togetherName != null">
+			together_name = #{togetherName,jdbcType=VARCHAR},
+			</if>
+			<if test="travelMode != null">
+			travel_mode = #{travelMode,jdbcType=BIGINT},
+			</if>
+			<if test="countryId != null">
+			country_id = #{countryId,jdbcType=BIGINT},
+			</if>
+			<if test="provinceId != null">
+			province_id = #{provinceId,jdbcType=BIGINT},
+			</if>
+			<if test="cityId != null">
+			city_id = #{cityId,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where row_id = #{rowId,jdbcType=BIGINT}
+	</update>
+
+	<!-- 根据ID查询 -->
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select *
+		from atd_business_travel
+		where del_flag = 0
+		and row_id
+		= #{rowId,jdbcType=BIGINT}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select *
+		from
+		atd_business_travel
+		where del_flag = 0
+	</select>
+
+	<select id="pageList" resultMap="BaseResultMap">
+		select *
+		from atd_business_travel
+		<where>
+			del_flag = 0
+			<if test="params.staffId != null and params.staffId != '-1'">
+				and staff_id = #{params.staffId}
+			</if>
+		</where>
+	</select>
+
+</mapper>

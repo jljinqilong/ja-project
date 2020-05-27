@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.system.dao.CodeTypeDao">
+	<resultMap id="RMBase" type="com.champlink.common.domain.system.CodeType">
+		<id column="ROW_ID" property="rowId" />
+		<result column="CODE" property="code" />
+		<result column="NAME" property="name" />
+		<result column="DESC_" property="desc" />
+	</resultMap>
+
+
+	<!-- 修改 -->
+	<update id="update">
+		update SYS_CODE_type
+		<set>
+			<if test="name != null">
+				NAME=#{name},
+			</if>
+			<if test="code != null">
+				code=#{code},
+			</if>
+			<if test="desc != null">
+				desc_=#{desc},
+			</if>
+		</set>
+		where row_id = #{rowId}
+	</update>
+
+	<!-- 根据id查询明细 -->
+	<select id="getById" resultMap="RMBase">
+		select * from SYS_CODE_type where ROW_ID = #{rowId}
+	</select>
+
+	<!-- 查询全部 -->
+	<select id="allList" resultMap="RMBase">
+		select * from SYS_CODE_type
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="pageList" resultMap="RMBase">
+		select * from SYS_CODE_type
+		<where>
+			<if test="params.code != null and params.code != ''">
+				and code like concat('%',concat(#{params.code},'%'))
+			</if>
+			<if test="params.name != null and params.name != ''">
+				and name like concat('%',concat(#{params.name},'%'))
+			</if>
+			<if test="params.status != null and params.status != -1">
+				and status=#{params.status}
+			</if>
+		</where>
+	</select>
+
+<!-- 根据code查询明细 -->
+	<select id="getByCodeType" resultMap="RMBase">
+		select * from SYS_CODE_type where CODE = #{code}
+	</select>
+
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.contract.PunishmentDao">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.contract.Punishment">
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="punishment_name" jdbcType="VARCHAR" property="punishmentName" />
+    <result column="punishment_type" jdbcType="VARCHAR" property="punishmentType" />
+    <result column="punishment_date" jdbcType="TIMESTAMP" property="punishmentDate" />
+    <result column="punishment_gist" jdbcType="VARCHAR" property="punishmentGist" />
+    <result column="punishment_cause" jdbcType="VARCHAR" property="punishmentCause" />
+    <result column="punishment_measure" jdbcType="VARCHAR" property="punishmentMeasure" />
+    <result column="punishment_deadline" jdbcType="VARCHAR" property="punishmentDeadline" />
+    <result column="ratify_unit" jdbcType="VARCHAR" property="ratifyUnit" />
+    <result column="revocation_punishment_date" jdbcType="TIMESTAMP" property="revocationPunishmentDate" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="file" jdbcType="VARCHAR" property="file" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+  
+  <!-- 新增 -->
+  <insert id="add" parameterType="com.champlink.common.domain.staff.contract.Punishment" >
+    insert into stf_punishment
+    (staff_id,            punishment_name,    punishment_type,    punishment_date,    
+     punishment_gist,     punishment_cause,   punishment_measure,
+     punishment_deadline, ratify_unit,        revocation_punishment_date, remark,file)
+    values 
+    (#{staffId},          #{punishmentName},  #{punishmentType},  #{punishmentDate},
+    #{punishmentGist},    #{punishmentCause}, #{punishmentMeasure},
+    #{punishmentDeadline},#{ratifyUnit},      #{revocationPunishmentDate}, #{remark},#{file})
+  </insert>
+  
+  <!-- 删除 -->
+  <update id="delById">
+    update stf_punishment set del_flag = '1'
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 修改 -->
+  <update id="update" parameterType="com.champlink.common.domain.staff.contract.Punishment" >
+    update stf_punishment
+    <set>
+        <if test="punishmentName != null" >
+        punishment_name = #{punishmentName},
+        </if>
+        <if test="punishmentType != null" >
+        punishment_type = #{punishmentType},
+        </if>
+        <if test="punishmentDate != null" >
+        punishment_date = #{punishmentDate},
+        </if>
+        <if test="punishmentGist != null" >
+        punishment_gist = #{punishmentGist},
+        </if>
+        <if test="punishmentCause != null" >
+        punishment_cause = #{punishmentCause},
+        </if>
+        <if test="punishmentMeasure != null" >
+        punishment_measure = #{punishmentMeasure},
+        </if>
+        <if test="punishmentDeadline != null" >
+        punishment_deadline = #{punishmentDeadline},
+        </if>
+        <if test="ratifyUnit != null" >
+        ratify_unit = #{ratifyUnit},
+        </if>
+        <if test="revocationPunishmentDate != null" >
+        revocation_punishment_date = #{revocationPunishmentDate},
+        </if>
+        <if test="remark != null" >
+        remark = #{remark},
+        </if>
+        <if test="file != null" >
+        file = #{file},
+        </if>
+    </set>
+    where ROW_ID = #{rowId}
+  </update>
+  
+  <!-- 查询列表 -->
+  <select id="pageList" resultMap="BaseResultMap">
+      select * from stf_punishment
+    <where>
+     del_flag= '0'
+     <if test="params.staffId != null and params.staffId != ''">
+         and staff_id = #{params.staffId}
+     </if>
+     <if test="params.punishmentName != null and params.punishmentName != ''">
+         and punishment_name=#{params.punishmentName}
+     </if>
+   </where>
+  </select>
+  
+  <!-- 根据rowId查询明细 -->
+  <select id="getById" resultMap="BaseResultMap">
+      select * from stf_punishment where ROW_ID = #{rowId}
+  </select>
+  
+</mapper>

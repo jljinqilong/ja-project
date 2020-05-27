@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.champlink.staff.dao.baseInfo.AddressMapper">
+  <resultMap id="BaseResultMap" type="com.champlink.common.domain.staff.baseInfo.Address">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="row_id" jdbcType="BIGINT" property="rowId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="work_phone" jdbcType="VARCHAR" property="workPhone" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="home_phone" jdbcType="VARCHAR" property="homePhone" />
+    <result column="email_work" jdbcType="VARCHAR" property="emailWork" />
+    <result column="home_address" jdbcType="VARCHAR" property="homeAddress" />
+    <result column="email_personal" jdbcType="VARCHAR" property="emailPersonal" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+  </resultMap>
+  
+  <!-- 批量插入 -->
+  <insert id="insertAddress" parameterType="com.champlink.common.domain.staff.baseInfo.Address">
+      insert into stf_address
+        (staff_id, work_phone, mobile, home_phone, email_work, home_address, email_personal)
+      values 
+        (#{staffId}, #{workPhone}, #{mobile}, #{homePhone}, #{emailWork}, #{homeAddress}, #{emailPersonal})
+  </insert>
+  
+  <!-- 更新 -->
+  <update id="updateAddress" parameterType="com.champlink.common.domain.staff.baseInfo.Address">
+    update stf_address
+    <set>
+        <if test="staffId != null">
+            staff_id = #{staffId},
+        </if>
+        <if test="workPhone != null">
+            work_phone = #{workPhone},
+        </if>
+        <if test="mobile != null">
+            mobile = #{mobile},
+        </if>
+        <if test="homePhone != null">
+            home_phone = #{homePhone},
+        </if>
+        <if test="emailWork != null">
+            email_work = #{emailWork},
+        </if>
+        <if test="homeAddress != null">
+            home_address = #{homeAddress},
+        </if>
+        <if test="emailPersonal != null">
+            email_personal = #{emailPersonal}
+        </if>
+    </set>
+    where row_id = #{rowId}
+  </update>
+  
+  <!-- 根据人员id删除 -->
+  <delete id="delAddressListByStaffId">
+    delete from stf_address where row_id = #{rowId}
+  </delete>
+  
+  <!-- 根据人员id查询 -->
+  <select id="queryAddressList" resultMap="BaseResultMap">
+    select * 
+    from stf_address
+    where staff_id = #{staffId}
+  </select>
+  
+  <select id="getByRowId" resultMap="BaseResultMap">
+    select * 
+    from stf_address
+    where row_id = #{rowId}
+  </select>
+  
+    <!-- 根据人员id删除 -->
+  <delete id="delAllByStaffId">
+    delete from stf_address where staff_id = #{staffId}
+  </delete>
+  
+</mapper>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.payment.PaymentDao" >
+    <resultMap id="BaseResultMap" type="com.champlink.common.domain.sale.payment.PaymentPlanDetail" >
+
+        <id column="row_id" property="rowId" jdbcType="BIGINT" />
+        <result column="created_by" property="createdBy" jdbcType="BIGINT" />
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+        <result column="last_update_by" property="lastUpdateBy" jdbcType="BIGINT" />
+        <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+        <result column="pay_plan_id" property="payPlanId" jdbcType="BIGINT" />
+        <result column="sale_contract_id" property="saleContractId" jdbcType="BIGINT" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="pay_method" property="payMethod" jdbcType="BIGINT" />
+        <result column="type_id" property="typeId" jdbcType="BIGINT" />
+        <result column="payee" property="payee" jdbcType="BIGINT" />
+        <result column="payee_name" property="payeeName" jdbcType="VARCHAR" />
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+        <result column="period" property="period" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="searchList" resultMap="BaseResultMap">
+        SELECT t.*,t1.`CONTRACT_TITLE`,t2.`customer_name`,t1.`DEPART_ID`,t3.period FROM sale_pay_plan_detail t
+	        LEFT JOIN sale_contract t1 ON t.`sale_contract_id` = t1.`ROW_ID`
+	        LEFT JOIN sale_customer t2 ON t1.`customer` = t2.`ROW_ID`
+            LEFT JOIN sale_pay_plan t3 ON t.pay_plan_id = t3.ROW_ID
+	        <where>
+                <if test="params.deptId!=null and params.deptId!=''">
+                    and t1.`DEPART_ID` = #{params.deptId}
+                </if>
+                <if test="params.typeId !=null and params.typeId != ''">
+                    and t.type_id = #{params.typeId}
+                </if>
+                <if test="params.payeeName!=null and params.payeeName!=''">
+                    and t.payee_name like concat('%',#{params.payeeName},'%')
+                </if>
+                <if test="params.returnDateq != null and params.returnDateq !=''">
+                    <![CDATA[ and t.created_time >= #{params.returnDateq} ]]>
+                </if>
+                <if test="params.returnDatez != null and params.returnDatez !=''">
+                    <![CDATA[ and t.created_time <= #{params.returnDatez} ]]>
+                </if>
+            </where>
+    </select>
+
+    <insert id="add" parameterType="java.util.List" useGeneratedKeys="true" keyColumn="row_id" keyProperty="rowId" >
+    insert into sale_pay_plan_detail (created_by, created_time,
+      last_update_by, last_update_time, pay_plan_id,
+      sale_contract_id, amount,
+      pay_method, type_id,
+      payee, payee_name)
+    values ( #{createdBy,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP},
+      #{lastUpdateBy,jdbcType=BIGINT}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{payPlanId,jdbcType=BIGINT},
+      #{saleContractId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL},
+      #{payMethod,jdbcType=BIGINT}, #{typeId,jdbcType=BIGINT},
+      #{payee,jdbcType=BIGINT}, #{payeeName,jdbcType=VARCHAR})
+  </insert>
+
+    <select id="get" resultMap="BaseResultMap">
+        SELECT t.*,t1.`CONTRACT_TITLE`,t2.`customer_name`,t1.`DEPART_ID`,t3.period FROM sale_pay_plan_detail t
+            LEFT JOIN sale_contract t1 ON t.`sale_contract_id` = t1.`ROW_ID`
+            LEFT JOIN sale_customer t2 ON t1.`customer` = t2.`ROW_ID`
+            LEFT JOIN sale_pay_plan t3 ON t.pay_plan_id = t3.ROW_ID
+            where t.row_id = #{rowId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="del" parameterType="java.lang.Long" >
+    delete from sale_pay_plan_detail
+    where row_id = #{rowId,jdbcType=BIGINT}
+  </delete>
+
+    <update id="update" parameterType="map" >
+        update sale_pay_plan_detail
+        <set >
+
+
+            <if test="record.lastUpdateBy != null" >
+                last_update_by = #{record.lastUpdateBy,jdbcType=BIGINT},
+            </if>
+            <if test="record.lastUpdateTime != null" >
+                last_update_time = now(),
+            </if>
+            <if test="record.createdBy != null" >
+                created_by = #{record.createdBy,jdbcType=BIGINT},
+            </if>
+            <if test="record.createdTime != null" >
+                created_time = #{record.createdTime},
+            </if>
+            <if test="record.payPlanId != null" >
+                pay_plan_id = #{record.payPlanId,jdbcType=BIGINT},
+            </if>
+            <if test="record.saleContractId != null" >
+                sale_contract_id = #{record.saleContractId,jdbcType=BIGINT},
+            </if>
+            <if test="record.amount != null" >
+                amount = #{record.amount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.payMethod != null" >
+                pay_method = #{record.payMethod,jdbcType=BIGINT},
+            </if>
+            <if test="record.typeId != null" >
+                type_id = #{record.typeId,jdbcType=BIGINT},
+            </if>
+            <if test="record.payee != null" >
+                payee = #{record.payee,jdbcType=BIGINT},
+            </if>
+            <if test="record.payeeName != null" >
+                payee_name = #{record.payeeName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where row_id = #{record.rowId}
+    </update>
+
+    <select id="searchById" resultMap="BaseResultMap">
+        SELECT t.*,t1.`CONTRACT_TITLE`,t2.`customer_name`,t1.`DEPART_ID` FROM sale_pay_plan_detail t
+	        LEFT JOIN sale_contract t1 ON t.`sale_contract_id` = t1.`ROW_ID`
+	        LEFT JOIN sale_customer t2 ON t1.`customer` = t2.`ROW_ID`
+	        where t1.row_id = #{rowId}
+    </select>
+
+    <!--根据计划单id查询已回款的金额-->
+    <select id="getPaymentAmountByPlanId" resultType="decimal">
+        select COALESCE(sum(amount),0) paymentAmount from sale_pay_plan_detail where pay_plan_id = #{rowId}
+    </select>
+
+    <!--根据回款计划id查询 已回款总金额-->
+    <select id="getPlanTotleAmountById" resultType="decimal">
+
+        SELECT COALESCE(SUM(amount),0) amount FROM sale_pay_plan_detail WHERE pay_plan_id = #{payPlanId}
+    </select>
+
+    <!--不包含本次修改 其他的已回款总金额-->
+    <select id="getPaymentAmountNotThis" resultType="decimal">
+        select coalesce (sum(amount),0) from sale_pay_plan_detail where pay_plan_id = #{payPlanId}
+        <if test="rowId!=null and rowId != ''">
+            <![CDATA[ AND row_id <> #{rowId}  ]]>
+        </if>
+
+    </select>
+
+
+    <!--根据回款计划id查询回款记录-->
+    <select id="getPaymentDetailById" resultMap="BaseResultMap">
+        select * from sale_pay_plan_detail where pay_plan_id = #{payPlanId}
+
+    </select>
+
+</mapper>

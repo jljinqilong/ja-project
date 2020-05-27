@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.champlink.sale.dao.payment.PaymentPlanDao" >
+    <resultMap id="BaseResultMap" type="com.champlink.common.domain.sale.payment.PaymentPlan" >
+        <id column="row_id" property="rowId" jdbcType="BIGINT" />
+        <result column="created_by" property="createdBy" jdbcType="BIGINT" />
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+        <result column="last_update_by" property="lastUpdateBy" jdbcType="BIGINT" />
+        <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+        <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+        <result column="sale_contract_id" property="saleContractId" jdbcType="BIGINT" />
+        <result column="sale_contract_no" property="saleContractNo" jdbcType="VARCHAR" />
+        <result column="period" property="period" jdbcType="VARCHAR" />
+        <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+        <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="customer_name" property="customerName" />
+        <result column="over_day" property="overDate"/>
+        <result column="plan_payment_amount" property="plan_paymentAmount" jdbcType="DECIMAL" />
+        <result column="plan_unPayment_amount" property="plan_unPaymentAmount" jdbcType="DECIMAL" />
+
+        <association property="saleContract" javaType="com.champlink.common.domain.sale.contract.SaleContract">
+            <result column="PAYMENT_AMOUNT" property="paymentAmount" />
+            <result column="CONTRACT_TITLE" property="contractTitle" />
+            <result column="UNPAYMENT_AMOUNT" property="unPaymentAmount" />
+            <result column="OUR_SIGNATORY" property="ourSignatory" />
+            <result column="DEPART_ID" property="departId" />
+            <result column="ORG_ID" property="orgId" />
+            <result column="planed_amount" property="planedAmount"/>
+            <result column="unplaned_amount" property="unPlanedAmount"/>
+            <result column="contract_created_by" property="createdBy"/>
+        </association>
+
+        <association property="paymentPlanDetailList" column="{payPlanId = row_id}" select="selectDetailById" javaType="java.util.List"></association>
+
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    row_id, created_by, created_time, last_update_by, last_update_time, customer_id,
+    sale_contract_id, sale_contract_no, period, pay_amount, pay_date, status, remark
+     </sql>
+
+    <insert id="add" parameterType="com.champlink.common.domain.sale.payment.PaymentPlan" >
+    insert into sale_pay_plan ( created_by, created_time,
+      last_update_by, last_update_time, customer_id,
+      sale_contract_id, sale_contract_no, period,
+      pay_amount, pay_date, status,plan_payment_amount,plan_unPayment_amount,
+      remark)
+    values (#{createdBy,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP},
+      #{lastUpdateBy,jdbcType=BIGINT}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{customerId,jdbcType=BIGINT},
+      #{saleContractId,jdbcType=BIGINT}, #{saleContractNo,jdbcType=VARCHAR}, #{period,jdbcType=VARCHAR},
+      #{payAmount,jdbcType=DECIMAL}, #{payDate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},#{plan_paymentAmount},#{plan_unPaymentAmount},
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+
+    <!--回款计划查询-->
+    <select id="searchList" resultMap="BaseResultMap">
+         SELECT t.`row_id`,t.`sale_contract_id`,t.pay_date,t.`period`,t.`pay_amount`,t1.`PAYMENT_AMOUNT`,t1.`CONTRACT_TITLE`,t2.`customer_name`,t.`status`,t1.`UNPAYMENT_AMOUNT`,
+		TIMESTAMPDIFF(DAY,t1.created_time,CURRENT_TIMESTAMP()) over_day,t1.`OUR_SIGNATORY`,t1.`DEPART_ID`,t1.`ORG_ID`,t1.created_by contract_created_by,t.created_by,t.created_time,t.last_update_time,t.last_update_by
+        ,t.`plan_payment_amount`,t.`plan_unPayment_amount`
+        FROM sale_pay_plan t
+		LEFT JOIN sale_contract t1 ON t.`sale_contract_id` = t1.`ROW_ID`
+		LEFT JOIN sale_customer t2 ON t2.`ROW_ID` = t1.`CUSTOMER`
+		<where>
+            <if test="params.returnDateq != null and params.returnDateq !=''">
+                and <![CDATA[ t.pay_date >= #{params.returnDateq} ]]>
+            </if>
+
+            <if test="params.returnDatez != null and params.returnDatez !=''">
+                and <![CDATA[  t.pay_date <= #{params.returnDatez} ]]>
+            </if>
+            <if test="params.status!=null">
+                and t.status =#{params.status}
+            </if>
+            <if test="params.deptId!=null and params.deptId !=''">
+                and t1.depart_id = #{params.deptId}
+            </if>
+            <!--<if test="params.contractLeader!=null and params.contractLeader!=''">-->
+                <!--and t1.our_signatory =#{params.contractLeader}-->
+            <!--</if>-->
+            <if test="params.ourSignatory!=null and params.ourSignatory!=''">
+                and t1.our_signatory like concat('%',#{params.ourSignatory},'%')
+            </if>
+        </where>
+
+    </select>
+
+    <!--删除-->
+    <delete id="del">
+
+        delete from sale_pay_plan  where row_id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据rowid查询-->
+    <select id="get" resultMap="BaseResultMap">
+        SELECT t.`row_id`,t.`sale_contract_id`,t.pay_date,t.`period`,t.`pay_amount`,t1.`PAYMENT_AMOUNT`,t1.`CONTRACT_TITLE`,t2.`customer_name`,t.`status`,t1.`UNPAYMENT_AMOUNT`,
+
+		TIMESTAMPDIFF(DAY,t1.created_time,CURRENT_TIMESTAMP()) over_day,t1.`OUR_SIGNATORY`,t1.`DEPART_ID`,t1.`ORG_ID`,t.created_by,t.created_time,t.last_update_time,t.last_update_by,
+		t1.planed_amount,t1.unplaned_amount,t.`plan_payment_amount`,t.`plan_unPayment_amount`
+		FROM sale_pay_plan t
+		LEFT JOIN sale_contract t1 ON t.`sale_contract_id` = t1.`ROW_ID`
+		LEFT JOIN sale_customer t2 ON t2.`ROW_ID` = t1.`CUSTOMER`
+		where t.row_id = #{rowId}
+    </select>
+
+    <!--更新-->
+    <update id="update">
+        update sale_pay_plan
+        <set >
+
+            <if test="lastUpdateBy != null" >
+                last_update_by = #{lastUpdateBy,jdbcType=BIGINT},
+            </if>
+
+            <if test="customerId != null" >
+                customer_id = #{customerId,jdbcType=BIGINT},
+            </if>
+
+            <if test="payAmount != null" >
+                pay_amount = #{payAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="payAmount != null" >
+                plan_unPayment_amount = #{payAmount,jdbcType=DECIMAL}-plan_payment_amount,
+            </if>
+            <if test="payDate != null" >
+                pay_date = #{payDate,jdbcType=TIMESTAMP},
+            </if>
+
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+
+    <select id="getContractInfoBy" resultMap="BaseResultMap">
+        select * from sale_pay_plan where sale_contract_id = #{saleContractId}
+    </select>
+
+
+    <resultMap id="PaymentDetailResultMap" type="com.champlink.common.domain.sale.payment.PaymentPlanDetail" >
+
+        <id column="row_id" property="rowId" jdbcType="BIGINT" />
+        <result column="created_by" property="createdBy" jdbcType="BIGINT" />
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+        <result column="last_update_by" property="lastUpdateBy" jdbcType="BIGINT" />
+        <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+        <result column="pay_plan_id" property="payPlanId" jdbcType="BIGINT" />
+        <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+        <result column="sale_contract_id" property="saleContractId" jdbcType="BIGINT" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="period" property="period" jdbcType="INTEGER" />
+        <result column="pay_method" property="payMethod" jdbcType="BIGINT" />
+        <result column="type_id" property="typeId" jdbcType="BIGINT" />
+        <result column="payee" property="payee" jdbcType="BIGINT" />
+        <result column="payee_name" property="payeeName" jdbcType="VARCHAR" />
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!--查询明细-->
+    <select id="selectDetailById" resultMap="PaymentDetailResultMap">
+        select * from sale_pay_plan_detail where pay_plan_id = #{payPlanId}
+    </select>
+
+    <!--根据回款计划id查询是否存在回款记录-->
+    <select id="selectPaymentDetailById" resultType="int">
+        select count(*) from sale_pay_plan_detail where pay_plan_id = #{payPlanId}
+    </select>
+
+    <!--根据合同单查询该合同下所有的计划单总金额-->
+    <select id="getPlanTotalAmountById" resultType="decimal">
+        select COALESCE(sum(pay_amount),0) totalPayAmount from sale_pay_plan where sale_contract_id = #{saleContractId}
+    </select>
+
+    <!--根据合同id和计划单id查询  除本条计划单以外其他计划单 计划金额总额-->
+    <select id="getPlanTotalAmountNoThisById" resultType="decimal">
+        select COALESCE(sum(pay_amount),0) totalPayAmount from sale_pay_plan where sale_contract_id = #{saleContractId} and <![CDATA[  row_id <> #{rowId}]]>
+    </select>
+
+    <!--获取期次-->
+    <select id="getPeriod" resultType="int">
+        select count(*) num from sale_pay_plan where sale_contract_id=#{saleContractId};
+    </select>
+
+    <!--根据回款计划id查询计划回款金额-->
+
+    <select id="getPlanAmountByPlanId" resultType="decimal">
+        select coalesce(pay_amount) pay_amount from sale_pay_plan where row_id = #{payPlanId}
+    </select>
+
+    <!--根据id和回款金额，更新已回款和未回款金额-->
+    <update id="updatePlanPaymentAmount">
+        update sale_pay_plan set
+              plan_payment_amount = plan_payment_amount + #{amount},
+              plan_unPayment_amount = plan_unPayment_amount - #{amount}
+              where row_id = #{payPlanId}
+
+    </update>
+
+    <!--根据id更新计划中的已回款和未回款金额-->
+    <update id="updatePlanPaymentAmountById">
+        update sale_pay_plan set
+              plan_payment_amount = #{plan_totalAmount},
+              plan_unPayment_amount = pay_amount - #{plan_totalAmount}
+              where row_id = #{payPlanId}
+    </update>
+
+</mapper>
