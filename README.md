@@ -16,7 +16,7 @@
         nginx 反向代理 nginx.conf 见 deploy 目录
         redis 配置 端口默认 6379
         
-    前端 根据package.json  npm run build 打包后生成 dist 静态文件，让后将dist放到服务器目录，修改nginx.conf静态文件映射(这样就可以通过nginx访问到前端打包的静态文件)。
+    前端 根据package.json  npm run build 打包后生成 dist 静态文件，然后将dist放到服务器目录，修改nginx.conf静态文件映射(这样就可以通过nginx访问到前端打包的静态文件)。
     后端 依次启动 
         ja-discovery(注册中心Eureka模块) 
         ja-config(配置服务模块,该项目下resources/configs 配置了 dev, test, prd 等环境配置，配置内容是mysql连接url，redis[缓存]，fdfs[文件服务], activemq[消息中间件])
