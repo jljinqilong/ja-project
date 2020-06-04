@@ -11,12 +11,12 @@ spring:
     host: localhost
     port: 6379
   activemq:
-    broker-url: tcp://172.28.9.42:61616
+    broker-url: tcp://172.28.9.42:61616f
     user: admin
     password: admin
 fdfs:
   trackServer: 172.28.9.43:22122
-  connectTimeoutInSeconds: 10
+  connectTimeoutInSeconds: 10f
   networkTimeoutInSeconds: 30
   charset: UTF-8
   httpTrackerHttpPort: 80

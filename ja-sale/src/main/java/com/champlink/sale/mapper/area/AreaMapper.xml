@@ -32,7 +32,7 @@
     <!-- 查询区域 -->
     <select id="searchAreaList" resultMap="BaseResult">
 
-        SELECT row_id,created_date,user_name,last_update_time,last_update_by,MODIFICTION,region_name,STATUS FROM sale_region a
+        SELECT row_id,created_date,user_name,last_update_time,last_update_by,region_name,STATUS FROM sale_region a
         <where>
             <if test="params.regionName != null and params.regionName != ''">
                 and region_name like CONCAT('%',#{params.regionName},'%')
