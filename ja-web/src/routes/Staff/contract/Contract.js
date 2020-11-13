@@ -189,8 +189,10 @@ export default class Contract extends PureComponent {
     if (type === 0) {
       const jobStatus = this.state.jobStatus;
       const deptId = this.props.deptId;
-      if(!!deptId && deptId !== 1) {
-        queryBaseInfoForParams({jobStatus: jobStatus, deptId: deptId}).then(content => {
+      console.log(`---===${deptId}`);
+
+      if (!!deptId && deptId !== 1) {
+        queryBaseInfoForParams({ jobStatus: jobStatus, deptId: deptId }).then(content => {
           if (!!content && !!content.data) {
             this.setState({
               staffAllList: content.data,
@@ -340,7 +342,8 @@ export default class Contract extends PureComponent {
             </a>*/}
             {record.contractState === '3' &&
               record.renewStatus !== '1' && <Divider type="vertical" />}
-            {hasAccessKey('staff.contract.renew') && record.contractState === '3' &&
+            {hasAccessKey('staff.contract.renew') &&
+              record.contractState === '3' &&
               record.renewStatus !== '1' && (
                 <a title="续签合同" onClick={() => this.handleModalVisible(true, 3, record.rowId)}>
                   <Icon type="file" />
@@ -348,38 +351,43 @@ export default class Contract extends PureComponent {
               )}
             {record.contractState === '3' &&
               record.renewStatus !== '1' && <Divider type="vertical" />}
-            {hasAccessKey('staff.contract.termination') && record.contractState === '3' &&
+            {hasAccessKey('staff.contract.termination') &&
+              record.contractState === '3' &&
               record.renewStatus !== '1' && (
                 <a title="终止合同" onClick={() => this.handleModalVisible(true, 4, record.rowId)}>
                   <Icon type="close" />
                 </a>
               )}
             {record.contractState === '2' && <Divider type="vertical" />}
-            {hasAccessKey('staff.contract.remove') && record.contractState === '2' && (
-              <a title="解除合同" onClick={() => this.handleModalVisible(true, 2, record.rowId)}>
-                <Icon type="disconnect" />
-              </a>
-            )}
+            {hasAccessKey('staff.contract.remove') &&
+              record.contractState === '2' && (
+                <a title="解除合同" onClick={() => this.handleModalVisible(true, 2, record.rowId)}>
+                  <Icon type="disconnect" />
+                </a>
+              )}
             {record.contractState === '2' && <Divider type="vertical" />}
-            {hasAccessKey('staff.contract.suspend') && record.contractState === '2' && (
-              <a title="中止合同" onClick={() => this.handleModalVisible(true, 6, record.rowId)}>
-                <Icon type="pause" />
-              </a>
-            )}
+            {hasAccessKey('staff.contract.suspend') &&
+              record.contractState === '2' && (
+                <a title="中止合同" onClick={() => this.handleModalVisible(true, 6, record.rowId)}>
+                  <Icon type="pause" />
+                </a>
+              )}
             {record.contractState === '6' && <Divider type="vertical" />}
-            {hasAccessKey('staff.contract.remove') && record.contractState === '6' && (
-              <a title="解除合同" onClick={() => this.handleModalVisible(true, 2, record.rowId)}>
-                <Icon type="disconnect" />
-              </a>
-            )}
+            {hasAccessKey('staff.contract.remove') &&
+              record.contractState === '6' && (
+                <a title="解除合同" onClick={() => this.handleModalVisible(true, 2, record.rowId)}>
+                  <Icon type="disconnect" />
+                </a>
+              )}
             {record.contractState === '6' &&
-            record.renewStatus !== '1' && <Divider type="vertical" />}
-            {hasAccessKey('staff.contract.renew') && record.contractState === '6' &&
-            record.renewStatus !== '1' && (
-              <a title="续签合同" onClick={() => this.handleModalVisible(true, 3, record.rowId)}>
-                <Icon type="file" />
-              </a>
-            )}
+              record.renewStatus !== '1' && <Divider type="vertical" />}
+            {hasAccessKey('staff.contract.renew') &&
+              record.contractState === '6' &&
+              record.renewStatus !== '1' && (
+                <a title="续签合同" onClick={() => this.handleModalVisible(true, 3, record.rowId)}>
+                  <Icon type="file" />
+                </a>
+              )}
           </Fragment>
         ),
       },
@@ -410,7 +418,7 @@ export default class Contract extends PureComponent {
               loading={loading}
               data={this.props.contractData}
               columns={columns}
-              scroll={{x:1500}}
+              scroll={{ x: 1500 }}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
             />

@@ -4,19 +4,18 @@ import Contract from './Contract';
 import Agreement from '../agreement/Agreement';
 import ModalOrgTree from '../../../components/Org/Org/ModalOrgTree';
 import { hasAccessKey } from '../../../utils/authority';
-import {pageListAgreement} from "../../../services/agreement";
-import {pageListContract} from "../../../services/staffContract";
+import { pageListAgreement } from '../../../services/agreement';
+import { pageListContract } from '../../../services/staffContract';
 export default class ContractTabs extends PureComponent {
-
   state = {
-    contractData:[],
-    agreementData:[],
-    tabKey:'1',
+    contractData: [],
+    agreementData: [],
+    tabKey: '1',
     searchFormValues: {
       pageNum: 1,
       pageSize: 10,
     },
-  }
+  };
 
   /**
    * 请求数据
@@ -25,19 +24,18 @@ export default class ContractTabs extends PureComponent {
     if (!params) {
       params = this.state.searchFormValues;
     }
-    pageListContract(params)
-      .then(response => {
-        if (response.data !== undefined) {
-          this.setState({
-            contractData: {
-              list: response.data.list,
-              pagination: {
-                total: response.data.total,
-              },
+    pageListContract(params).then(response => {
+      if (response.data !== undefined) {
+        this.setState({
+          contractData: {
+            list: response.data.list,
+            pagination: {
+              total: response.data.total,
             },
-          });
-        }
-      });
+          },
+        });
+      }
+    });
   };
 
   /**
@@ -47,19 +45,18 @@ export default class ContractTabs extends PureComponent {
     if (!params) {
       params = this.state.searchFormValues;
     }
-    pageListAgreement(params)
-      .then(response => {
-        if (response.data !== undefined) {
-          this.setState({
-            agreementData: {
-              list: response.data.list,
-              pagination: {
-                total: response.data.total,
-              },
+    pageListAgreement(params).then(response => {
+      if (response.data !== undefined) {
+        this.setState({
+          agreementData: {
+            list: response.data.list,
+            pagination: {
+              total: response.data.total,
             },
-          });
-        }
-      })
+          },
+        });
+      }
+    });
   };
 
   /**
@@ -71,13 +68,13 @@ export default class ContractTabs extends PureComponent {
       const sfvs = this.state.searchFormValues;
       sfvs.deptId = selectedKeys[0];
       this.setState({
-        deptId : selectedKeys[0],
+        deptId: selectedKeys[0],
         searchFormValues: sfvs,
       });
-      if(this.state.tabKey === '1') {
+      if (this.state.tabKey === '1') {
         this.refreshTableContract();
       }
-      if(this.state.tabKey === '2') {
+      if (this.state.tabKey === '2') {
         this.refreshTableAgreement();
       }
     } else {
@@ -86,10 +83,10 @@ export default class ContractTabs extends PureComponent {
       this.setState({
         searchFormValues: sfvs,
       });
-      if(this.state.tabKey === '1') {
+      if (this.state.tabKey === '1') {
         this.refreshTableContract();
       }
-      if(this.state.tabKey === '2') {
+      if (this.state.tabKey === '2') {
         this.refreshTableAgreement();
       }
     }
@@ -97,21 +94,21 @@ export default class ContractTabs extends PureComponent {
 
   callback = key => {
     this.setState({
-      tabKey:key,
-    })
-    if(key === '1') {
+      tabKey: key,
+    });
+    if (key === '1') {
       this.refreshTableContract();
     }
-    if(key === '2') {
+    if (key === '2') {
       this.refreshTableAgreement();
     }
-  }
+  };
 
   render() {
     const TabPane = Tabs.TabPane;
     return (
       <Row gutter={20}>
-        <Col span={7} style={{paddingRight: 0}}>
+        <Col span={7} style={{ paddingRight: 0 }}>
           <Card>
             <ModalOrgTree
               handleClickTreeNode={this.handleClickTreeNode.bind(this)}
@@ -121,23 +118,31 @@ export default class ContractTabs extends PureComponent {
         </Col>
         <Col span={17}>
           <Card>
-            <Tabs onChange={this.callback}
-              defaultActiveKey={hasAccessKey('staff.contract.list') ? '1' : hasAccessKey('staff.agreement.list') ? '2' : ''}>
+            <Tabs
+              onChange={this.callback}
+              defaultActiveKey={
+                hasAccessKey('staff.contract.list')
+                  ? '1'
+                  : hasAccessKey('staff.agreement.list')
+                    ? '2'
+                    : ''
+              }
+            >
               {hasAccessKey('staff.contract.list') && (
-                <TabPane tab="合同列表" key="1">
+                <TabPane tab="" key="1">
                   <Contract
-                    refreshTableContract = {this.refreshTableContract}
-                    deptId = {this.state.deptId}
-                    contractData = {this.state.contractData}
+                    refreshTableContract={this.refreshTableContract}
+                    deptId={this.state.deptId}
+                    contractData={this.state.contractData}
                   />
                 </TabPane>
               )}
               {hasAccessKey('staff.agreement.list') && (
                 <TabPane tab="协议列表" key="2">
                   <Agreement
-                    refreshTableAgreement = {this.refreshTableAgreement}
-                    deptId = {this.state.deptId}
-                    agreementData = {this.state.agreementData}
+                    refreshTableAgreement={this.refreshTableAgreement}
+                    deptId={this.state.deptId}
+                    agreementData={this.state.agreementData}
                   />
                 </TabPane>
               )}

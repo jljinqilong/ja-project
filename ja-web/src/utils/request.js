@@ -4,8 +4,8 @@ import { routerRedux } from 'dva/router';
 import store from '../index';
 import { getToken, setTokenExpired, getLang } from './authority';
 
-// export const serverUrlPre = 'http://47.114.131.102:8080';
-export const serverUrlPre = 'http://localhost:8080';
+export const serverUrlPre = 'http://121.36.102.155:8080';
+// export const serverUrlPre = 'http://localhost:8080';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',

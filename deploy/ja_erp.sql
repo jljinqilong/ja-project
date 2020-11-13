@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : jinlong-huawei
  Source Server Type    : MySQL
- Source Server Version : 50728
- Source Host           : localhost:3306
+ Source Server Version : 50730
+ Source Host           : 121.36.102.155:3306
  Source Schema         : ja_erp
 
  Target Server Type    : MySQL
- Target Server Version : 50728
+ Target Server Version : 50730
  File Encoding         : 65001
 
- Date: 03/06/2020 16:57:34
+ Date: 06/06/2020 17:20:43
 */
 
 SET NAMES utf8mb4;
@@ -4130,13 +4130,14 @@ CREATE TABLE `sale_customer` (
   `update_name` varchar(20) DEFAULT NULL,
   `last_update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`ROW_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sale_customer
 -- ----------------------------
 BEGIN;
 INSERT INTO `sale_customer` VALUES (1, NULL, NULL, NULL, '晶澳太阳能', '晶澳', NULL, 1, 284, 3, NULL, '234300', NULL, 143, NULL, NULL, NULL, NULL, NULL, '', NULL, 139, NULL, NULL, NULL, 0, NULL, NULL, NULL, 'jing-ao', 134, 0.00, 134, NULL, 0, NULL, 200, NULL, '2020-06-01 19:42:51', NULL, NULL, NULL);
+INSERT INTO `sale_customer` VALUES (2, NULL, NULL, NULL, '采普数据系统公司', '采普数据', '江苏省南京市江宁区将军大道168号', 300, 137, 3, NULL, '234100', NULL, 143, NULL, NULL, NULL, NULL, NULL, '', NULL, 139, NULL, NULL, NULL, 0, NULL, NULL, NULL, 'champlink', 134, 0.00, 134, NULL, 0, NULL, 200, NULL, '2020-06-06 17:11:17', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -4162,13 +4163,14 @@ CREATE TABLE `sale_customer_contacts` (
   `update_name` varchar(20) DEFAULT NULL,
   `last_update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`ROW_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sale_customer_contacts
 -- ----------------------------
 BEGIN;
 INSERT INTO `sale_customer_contacts` VALUES (1, 0, 1, '晶澳负责人', '项目经理', '13033037527', '', '', NULL, 0, NULL, 200, NULL, '2020-06-01 19:42:51', NULL, NULL, NULL);
+INSERT INTO `sale_customer_contacts` VALUES (2, 0, 2, 'juery', '通讯员', '13075278656', '', '7490595', NULL, 0, NULL, 200, NULL, '2020-06-06 17:11:17', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -4268,7 +4270,7 @@ CREATE TABLE `sale_inquiries` (
   `COUNTRY_PROV_CITY` varchar(50) DEFAULT NULL,
   `STATUS_NAME` varchar(50) DEFAULT NULL,
   `del_flag` int(10) DEFAULT '0',
-  `status` varchar(10) DEFAULT NULL,
+  `status` varchar(10) DEFAULT '1',
   `created_by` bigint(20) DEFAULT NULL,
   `created_name` varchar(20) DEFAULT NULL,
   `created_time` datetime DEFAULT NULL,
@@ -4276,13 +4278,14 @@ CREATE TABLE `sale_inquiries` (
   `update_name` varchar(20) DEFAULT NULL,
   `last_update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`ROW_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sale_inquiries
 -- ----------------------------
 BEGIN;
 INSERT INTO `sale_inquiries` VALUES (1, 'JA200601001', 1, NULL, NULL, NULL, 781, NULL, NULL, NULL, NULL, 154, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '南方询问', NULL, NULL, NULL, NULL, NULL, 0, NULL, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 287, 291, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 289, 134, 1500.00, 10000.00, NULL, NULL, 0, '1', 200, NULL, '2020-06-01 19:44:20', NULL, NULL, NULL);
+INSERT INTO `sale_inquiries` VALUES (2, 'JA200606001', 2, NULL, NULL, NULL, 781, NULL, NULL, NULL, NULL, 154, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '采普订单跟踪', NULL, NULL, NULL, NULL, NULL, 0, NULL, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 287, 292, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 290, 134, 8400.00, 21000.00, NULL, NULL, 0, '1', 200, NULL, '2020-06-06 17:12:58', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -4303,13 +4306,15 @@ CREATE TABLE `sale_inquiries_delivery_time` (
   `update_name` varchar(20) DEFAULT NULL,
   `last_update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`ROW_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sale_inquiries_delivery_time
 -- ----------------------------
 BEGIN;
 INSERT INTO `sale_inquiries_delivery_time` VALUES (1, '2020-07-23', 50, 1, 0, NULL, NULL, NULL, '2020-06-01 19:44:20', NULL, NULL, NULL);
+INSERT INTO `sale_inquiries_delivery_time` VALUES (2, '2020-06-17T16:00:00.000Z', 130, 2, 0, NULL, NULL, NULL, '2020-06-06 17:12:58', NULL, NULL, NULL);
+INSERT INTO `sale_inquiries_delivery_time` VALUES (3, '2020-07-06', 120, 2, 0, NULL, NULL, NULL, '2020-06-06 17:12:58', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -4428,13 +4433,14 @@ CREATE TABLE `sale_inquiries_product` (
   `update_name` varchar(20) DEFAULT NULL,
   `last_update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`ROW_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sale_inquiries_product
 -- ----------------------------
 BEGIN;
 INSERT INTO `sale_inquiries_product` VALUES (1, NULL, 1, 173, NULL, '100', 15.00, 278, 100, 1500.00, 156, NULL, 1, '10000', 0, 0, NULL, NULL, NULL, '2020-06-01 19:44:20', NULL, NULL, NULL);
+INSERT INTO `sale_inquiries_product` VALUES (2, NULL, 1, 174, NULL, '100', 40.00, 278, 230, 8400.00, 155, NULL, 2, '21000', 20, 0, NULL, NULL, NULL, '2020-06-06 17:12:58', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
